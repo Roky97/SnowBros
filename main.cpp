@@ -13,22 +13,28 @@ void init();
 
 int main(int argc, char **argv){
   init();
+  int w,h;
+  ALLEGRO_DISPLAY       *display = NULL;
+  //ALLEGRO_DISPLAY_MODE   disp_data;
+//  ALLEGRO_MONITOR_INFO info;
+  // al_get_monitor_info(0, &info);
+  // w = info.x2 - info.x1; /* Assume this is 1366 */
+  // h = info.y2 - info.y1; /* Assume this is 768 */
+  al_create_display(256, 224);
 
-  // ALLEGRO_DISPLAY       *display = NULL;
-  // ALLEGRO_DISPLAY_MODE   disp_data;
-  //
+  //cout<<endl<<w<<" "<<h<<endl;
   // al_get_display_mode(al_get_num_display_modes() -1, &disp_data);
-  //
-  // al_set_new_display_flags(ALLEGRO_FULLSCREEN);
-  //
-  // display=al_create_display(disp_data.width, disp_data.height);
-  //
-  // //cout<<endl<<disp_data.width<<" "<<disp_data.height<<endl;
-  // al_clear_to_color(al_map_rgb(255,0,0));
-  // al_flip_display();
-  // // al_rest(1);
-  // al_rest(3);
-  // al_destroy_display(display);
+
+  al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+  display=al_create_display(w, h);
+
+  //cout<<endl<<disp_data.width<<" "<<disp_data.height<<endl;
+  al_clear_to_color(al_map_rgb(255,0,0));
+  al_set_window_title(display, "SnowBros");
+
+
+
+  al_destroy_display(display);
 
 
 
