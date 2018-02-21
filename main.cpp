@@ -109,8 +109,7 @@ int main(int argc, char **argv){
     {
       bool redraw=true;
       //bool extit=false;
-
-      while(!esc)
+okjok      while(!esc)
       {
         //al_wait_for_event(event_queue, &ev);
 
