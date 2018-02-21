@@ -1,40 +1,134 @@
 #include <iostream>
 using namespace std;
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_native_dialog.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
+#include "Giocatore.h"
+#include "Mostro.h"
+enum Tasti {
+   TASTO_SOPRA, TASTO_SOTTO, STASTO_SINISTRA, TASTO_DESTRA
+ };
 
 void init();
 
 int main(int argc, char **argv){
+
   init();
-  int w,h;
+  int w=256;
+  int h=224;
   ALLEGRO_DISPLAY       *display = NULL;
-  //ALLEGRO_DISPLAY_MODE   disp_data;
-//  ALLEGRO_MONITOR_INFO info;
-  // al_get_monitor_info(0, &info);
-  // w = info.x2 - info.x1; /* Assume this is 1366 */
-  // h = info.y2 - info.y1; /* Assume this is 768 */
-  al_create_display(256, 224);
+  ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+  ALLEGRO_TIMER *timer = NULL;
 
-  //cout<<endl<<w<<" "<<h<<endl;
-  // al_get_display_mode(al_get_num_display_modes() -1, &disp_data);
-
-  al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+  //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
   display=al_create_display(w, h);
+  al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+  timer=al_create_timer(1.0/60);
+  // if(!timer)
+  //   cout<<"Caricamento timer fallito"<<endl;
+  event_queue = al_create_event_queue();
 
-  //cout<<endl<<disp_data.width<<" "<<disp_data.height<<endl;
-  al_clear_to_color(al_map_rgb(255,0,0));
-  al_set_window_title(display, "SnowBros");
+  al_register_event_source(event_queue, al_get_display_event_source(display));
+  al_register_event_source(event_queue, al_get_timer_event_source(timer));
+  al_register_event_source(event_queue, al_get_keyboard_event_source());
+  al_clear_to_color(al_map_rgb(0,0,0));
+  al_flip_display();
+
+  // al_clear_to_color(al_map_rgb(255,100,0));
+  // al_set_window_title(display, "SnowBros");
+
+  Giocatore * tommy= new Giocatore();
+  tommy->carica_immagini();
+  al_start_timer(timer);
+
+  bool start=true; //indica che ho appena aperto il gioco
+  bool esc=false; //indica se chiudo il gioco dalla finestra
+
+  // ALLEGRO_BITMAP* schermata1= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_1.png");
+  // ALLEGRO_BITMAP* schermata2= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_2.png");
+  //
+  // al_clear_to_color(al_map_rgb(0,0,0));
+  // al_draw_bitmap(schermata1, 0, 0, 0);
+  // al_flip_display();
+  // al_rest(2);
 
 
+
+  while(!esc)
+  {
+  // al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+    ALLEGRO_EVENT ev;
+    al_wait_for_event(event_queue, &ev);
+    if(start)
+    {
+      bool screen=0;
+      bool redraw=true;
+      ALLEGRO_BITMAP* schermata1= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_1.png");
+      ALLEGRO_BITMAP* schermata2= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_2.png");
+      while(start)
+      {
+        al_wait_for_event(event_queue, &ev);
+        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+         {
+           start=false;
+           esc=true;
+           al_destroy_bitmap(schermata1);
+           al_destroy_bitmap(schermata2);
+           break;
+         }
+        else if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
+          switch (ev.keyboard.keycode) {
+            case ALLEGRO_KEY_ENTER:
+            start=false;
+            redraw=false;
+            al_destroy_bitmap(schermata1);
+            al_destroy_bitmap(schermata2);
+            break;
+          }
+        if(screen && redraw && al_is_event_queue_empty(event_queue))
+        {
+          al_clear_to_color(al_map_rgb(0,0,0));
+          al_draw_bitmap(schermata1, 0, 0, 0);
+          al_flip_display();
+          al_rest(0.5);
+          screen=false;
+
+        }
+        else if(!screen && redraw && al_is_event_queue_empty(event_queue))
+        {
+          al_clear_to_color(al_map_rgb(0,0,0));
+          al_draw_bitmap(schermata2, 0, 0, 0);
+          al_flip_display();
+          al_rest(0.5);
+          screen=true;
+
+        }
+      }
+    }
+
+    int livello=1;
+
+    if(livello==1)
+    {
+      bool redraw=true;
+      //bool extit=false;
+
+      while(!esc)
+      {
+        al_wait_for_event(event_queue, &ev);
+
+
+      }
+    }
+
+
+  }
+
+
+
+  al_rest(1);
 
   al_destroy_display(display);
+  al_destroy_timer(timer);
+  al_destroy_event_queue(event_queue);
+  delete tommy;
 
 
 
@@ -47,4 +141,6 @@ void init()
   al_init();
   al_init_image_addon();
   al_init_primitives_addon();
+  al_install_keyboard();
+
 }
