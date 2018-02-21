@@ -11,8 +11,8 @@ void init();
 int main(int argc, char **argv){
 
   init();
-  int w=256;
-  int h=224;
+  int w=1280;
+  int h=1120;
   ALLEGRO_DISPLAY       *display = NULL;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
@@ -85,7 +85,7 @@ int main(int argc, char **argv){
         if(screen && redraw && al_is_event_queue_empty(event_queue))
         {
           al_clear_to_color(al_map_rgb(0,0,0));
-          al_draw_bitmap(schermata1, 0, 0, 0);
+          al_draw_scaled_bitmap(schermata1, 0, 0, 256, 224, 0,0,w,h,0);
           al_flip_display();
           al_rest(0.5);
           screen=false;
@@ -94,7 +94,7 @@ int main(int argc, char **argv){
         else if(!screen && redraw && al_is_event_queue_empty(event_queue))
         {
           al_clear_to_color(al_map_rgb(0,0,0));
-          al_draw_bitmap(schermata2, 0, 0, 0);
+          al_draw_scaled_bitmap(schermata2, 0, 0, 256, 224, 0,0,w,h,0);
           al_flip_display();
           al_rest(0.5);
           screen=true;
@@ -109,7 +109,7 @@ int main(int argc, char **argv){
     {
       bool redraw=true;
       //bool extit=false;
-okjok      while(!esc)
+      while(!esc)
       {
         //al_wait_for_event(event_queue, &ev);
 
@@ -119,11 +119,10 @@ okjok      while(!esc)
 
 
   }
-//ciao
+
 
 
   al_rest(1);
-dd
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_destroy_event_queue(event_queue);
