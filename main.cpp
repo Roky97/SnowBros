@@ -112,7 +112,7 @@ int main(int argc, char **argv){
 
       while(!esc)
       {
-        al_wait_for_event(event_queue, &ev);
+        //al_wait_for_event(event_queue, &ev);
 
 
       }
