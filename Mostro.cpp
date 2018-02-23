@@ -9,11 +9,11 @@ Mostro::Mostro(int posx, int posy)
 
 	verso_sinistra1= NULL;
 	verso_sinistra2= NULL;
-	verso_sinistra3= NULL;
+	//verso_sinistra3= NULL;
 
 	verso_destra1= NULL;
 	verso_destra2= NULL;
-	verso_destra3= NULL;
+	//verso_destra3= NULL;
 }
 
 void Mostro::setX(int sx)

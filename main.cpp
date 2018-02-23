@@ -1,12 +1,15 @@
 #include <iostream>
+#include <string>
 using namespace std;
 #include "Giocatore.h"
 #include "Mostro.h"
+
 enum Tasti {
    TASTO_SOPRA, TASTO_SOTTO, STASTO_SINISTRA, TASTO_DESTRA
  };
 
 void init();
+void draw(string);
 
 int main(int argc, char **argv){
 
@@ -103,15 +106,15 @@ int main(int argc, char **argv){
       }
     }
 
-    int livello=1;
 
-    if(livello==1)
+
+    if(!esc)
     {
       bool redraw=true;
-      //bool extit=false;
       while(!esc)
       {
-        //al_wait_for_event(event_queue, &ev);
+        al_wait_for_event(event_queue, &ev);
+
 
 
       }

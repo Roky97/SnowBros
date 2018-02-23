@@ -23,12 +23,12 @@ public:
 	//sinistra
 	ALLEGRO_BITMAP *verso_sinistra1;
 	ALLEGRO_BITMAP *verso_sinistra2;
-	ALLEGRO_BITMAP *verso_sinistra3;
+	//ALLEGRO_BITMAP *verso_sinistra3;
 
 	//destra
 	ALLEGRO_BITMAP *verso_destra1;
 	ALLEGRO_BITMAP *verso_destra2;
-	ALLEGRO_BITMAP *verso_destra3;
+	//ALLEGRO_BITMAP *verso_destra3;
 
 
   Mostro(int, int);
