@@ -5,7 +5,13 @@ Giocatore::Giocatore()
   y=128;
   velocita=1;
   vite=3;
+  
   potere_v=false;
+  andando_destra=false;
+  andando_sinistra=false;
+  saltando=false;
+  sparando=false;
+
 
   salta= NULL;
 
