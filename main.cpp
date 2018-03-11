@@ -10,12 +10,13 @@ enum Tasti {
 
 void init();
 void draw(string);
-//int map[3][100][100];
+
 int main(int argc, char **argv){
 
   init();
   int w=1280;
   int h=1120;
+
   ALLEGRO_DISPLAY       *display = NULL;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
