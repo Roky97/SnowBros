@@ -3,14 +3,14 @@
 using namespace std;
 #include "Giocatore.h"
 #include "Mostro.h"
-
+#include "Mappa.h"
 enum Tasti {
    TASTO_SOPRA, TASTO_SOTTO, STASTO_SINISTRA, TASTO_DESTRA
  };
 
 void init();
 void draw(string);
-
+//int map[3][100][100];
 int main(int argc, char **argv){
 
   init();
@@ -20,12 +20,10 @@ int main(int argc, char **argv){
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
 
-  //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
   display=al_create_display(w, h);
   al_set_new_display_flags(ALLEGRO_FULLSCREEN);
   timer=al_create_timer(1.0/60);
-  // if(!timer)
-  //   cout<<"Caricamento timer fallito"<<endl;
+
   event_queue = al_create_event_queue();
 
   al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -34,8 +32,6 @@ int main(int argc, char **argv){
   al_clear_to_color(al_map_rgb(0,0,0));
   al_flip_display();
 
-  // al_clear_to_color(al_map_rgb(255,100,0));
-  // al_set_window_title(display, "SnowBros");
 
   Giocatore * tommy= new Giocatore();
   tommy->carica_immagini();
@@ -44,13 +40,11 @@ int main(int argc, char **argv){
   bool start=true; //indica che ho appena aperto il gioco
   bool esc=false; //indica se chiudo il gioco dalla finestra
 
-  // ALLEGRO_BITMAP* schermata1= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_1.png");
-  // ALLEGRO_BITMAP* schermata2= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_2.png");
-  //
-  // al_clear_to_color(al_map_rgb(0,0,0));
-  // al_draw_bitmap(schermata1, 0, 0, 0);
-  // al_flip_display();
-  // al_rest(2);
+  //creo le mappe in base ai livelli
+  Mappa mappe[2];
+  mappe[1].caricaElementi("./images/objects/tile1.png");
+  mappe[1].caricaMappa("./mappe/mappa1.txt");
+
 
 
 
@@ -111,9 +105,18 @@ int main(int argc, char **argv){
     if(!esc)
     {
       bool redraw=true;
+      unsigned level=1;
       while(!esc)
       {
+
+        al_clear_to_color(al_map_rgb(0,0,0));
         al_wait_for_event(event_queue, &ev);
+        if( redraw && al_is_event_queue_empty(event_queue))
+        {
+        mappe[level].drawMappa();
+        al_flip_display();
+      }
+
 
 
 
