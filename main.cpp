@@ -4,9 +4,10 @@ using namespace std;
 #include "Giocatore.h"
 #include "Mostro.h"
 #include "Mappa.h"
-enum Tasti {
-   TASTO_SOPRA, TASTO_SOTTO, STASTO_SINISTRA, TASTO_DESTRA
+enum mykeys {
+   KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
  };
+ bool key[4] = { false, false, false, false };
 
 void init();
 void draw(string);
@@ -109,14 +110,68 @@ int main(int argc, char **argv){
       unsigned level=1;
       while(!esc)
       {
-
         al_clear_to_color(al_map_rgb(0,0,0));
         al_wait_for_event(event_queue, &ev);
+
+        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+         {
+           esc=true;
+           break;
+         }
+         else if(ev.type == ALLEGRO_EVENT_TIMER)
+         {
+           //fare i movimenti del giocatore
+         }
+
+         else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+         switch(ev.keyboard.keycode) {
+            case ALLEGRO_KEY_UP:
+               key[KEY_UP] = true;
+               break;
+
+            case ALLEGRO_KEY_DOWN:
+               key[KEY_DOWN] = true;
+               break;
+
+            case ALLEGRO_KEY_LEFT:
+               key[KEY_LEFT] = true;
+               break;
+
+            case ALLEGRO_KEY_RIGHT:
+               key[KEY_RIGHT] = true;
+               break;
+         }
+       }
+
+       else if(ev.type == ALLEGRO_EVENT_KEY_UP) {
+         switch(ev.keyboard.keycode) {
+            case ALLEGRO_KEY_UP:
+               key[KEY_UP] = false;
+               break;
+
+            case ALLEGRO_KEY_DOWN:
+               key[KEY_DOWN] = false;
+               break;
+
+            case ALLEGRO_KEY_LEFT:
+               key[KEY_LEFT] = false;
+               break;
+
+            case ALLEGRO_KEY_RIGHT:
+               key[KEY_RIGHT] = false;
+               break;
+
+            // case ALLEGRO_KEY_ESCAPE: //caso mai fare un menu' pausa
+            //    doexit = true;
+            //    break;
+         }
+      }
+
         if( redraw && al_is_event_queue_empty(event_queue))
         {
         mappe[level].drawMappa();
         al_flip_display();
-      }
+        }
 
 
 
