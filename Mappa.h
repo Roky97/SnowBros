@@ -15,6 +15,7 @@ private:
 
 public:
   ALLEGRO_BITMAP *tile;
+  ~Mappa();
   Mappa();
   void caricaElementi(const char* image);
   void caricaMappa (const char* nomefile);

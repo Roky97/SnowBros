@@ -3,6 +3,10 @@ Mappa::Mappa()
 {
   loadcounterX=loadcounterY=0;
 }
+Mappa::~Mappa()
+{
+  al_destroy_bitmap(tile);
+}
 void Mappa::caricaMappa(const char* nomefile)
 {
   ifstream openfile(nomefile);
