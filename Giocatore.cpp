@@ -137,6 +137,7 @@ void Giocatore::drawPersonaggio()
 {
   if(fermo)
     al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+
 }
 
 //MOVIMENTI
@@ -148,4 +149,7 @@ void Giocatore::muovi()
     x+=spostamento;
 
   }
+
+  else if(andando_sinistra && x>=spostamento)
+    x-=spostamento;
 }
