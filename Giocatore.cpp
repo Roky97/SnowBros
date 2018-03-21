@@ -1,9 +1,11 @@
 #include "Giocatore.h"
 Giocatore::Giocatore(int w, int h)
 {
+  this->w=w;
+  this->h=h;
   x=w/2.0 - 30;
   y=h-30*4 -21*(4.363636);
-  velocita=1;
+  spostamento=4;
   vite=3;
 
   fermo=true;
@@ -135,4 +137,13 @@ void Giocatore::drawPersonaggio()
     al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
 
 
+}
+
+void Giocatore::muovi()
+{
+  if(andando_destra && x<=w-30-spostamento)
+  {
+    x+=spostamento;
+    
+  }
 }

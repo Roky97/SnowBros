@@ -13,6 +13,10 @@ using namespace std;
 
 class Giocatore{
 private:
+  
+  unsigned w;
+  unsigned h;
+
   unsigned x;
   unsigned y;
   unsigned velocita;
@@ -34,7 +38,7 @@ public:
   //fermo
   ALLEGRO_BITMAP *fermo_destra;
   ALLEGRO_BITMAP *fermo_sinistra;
-  
+
 	//sinistra
 	ALLEGRO_BITMAP *verso_sinistra1;
 	ALLEGRO_BITMAP *verso_sinistra2;
@@ -50,6 +54,7 @@ public:
   ALLEGRO_BITMAP *sparando_verso_sinistra;
 
   Giocatore(int, int);
+
   //sets
   void setX(unsigned sx);
   void setY(unsigned sy);
@@ -59,6 +64,7 @@ public:
   void setAndando_sinistra(bool s);
   void setSaltando(bool s);
   void setSparando(bool s);
+
   //get
   unsigned getX();
   unsigned getY();
@@ -69,10 +75,14 @@ public:
   bool getSaltando();
   bool getSparando();
 
+  void muovi();
+
   void carica_immagini();
   void diminiusci_vita();
   void potere_verde();
   void drawPersonaggio();
+
+
 
 
 
