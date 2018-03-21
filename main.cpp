@@ -15,15 +15,15 @@ void draw(string);
 int main(int argc, char **argv){
 
   init();
-  int w=1280;
-  int h=1120;
+  int w=1105;
+  int h=1008;
 
   ALLEGRO_DISPLAY       *display = NULL;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
 
   display=al_create_display(w, h);
-  al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+  //al_set_new_display_flags(ALLEGRO_FULLSCREEN);
   timer=al_create_timer(1.0/60);
 
   event_queue = al_create_event_queue();
@@ -35,11 +35,11 @@ int main(int argc, char **argv){
   al_flip_display();
 
 
-  Giocatore * tommy= new Giocatore();
+  Giocatore * tommy= new Giocatore(w,h);
   tommy->carica_immagini();
   al_start_timer(timer);
 
-  bool start=true; //indica che ho appena aperto il gioco
+  bool main_screen=true; //indica che ho appena aperto il gioco
   bool esc=false; //indica se chiudo il gioco dalla finestra
 
   //creo le mappe in base ai livelli
@@ -55,18 +55,20 @@ int main(int argc, char **argv){
   // al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
     ALLEGRO_EVENT ev;
     al_wait_for_event(event_queue, &ev);
-    if(start)
+
+    if(main_screen)
     {
       bool screen=0;
       bool redraw=true;
       ALLEGRO_BITMAP* schermata1= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_1.png");
       ALLEGRO_BITMAP* schermata2= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_2.png");
-      while(start)
+
+      while(main_screen)
       {
         al_wait_for_event(event_queue, &ev);
         if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
          {
-           start=false;
+           main_screen=false;
            esc=true;
            al_destroy_bitmap(schermata1);
            al_destroy_bitmap(schermata2);
@@ -75,7 +77,7 @@ int main(int argc, char **argv){
         else if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
           switch (ev.keyboard.keycode) {
             case ALLEGRO_KEY_ENTER:
-            start=false;
+            main_screen=false;
             redraw=false;
             al_destroy_bitmap(schermata1);
             al_destroy_bitmap(schermata2);
@@ -97,7 +99,6 @@ int main(int argc, char **argv){
           al_flip_display();
           al_rest(0.5);
           screen=true;
-
         }
       }
     }
@@ -120,7 +121,13 @@ int main(int argc, char **argv){
          }
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
+
+
            //fare i movimenti del giocatore
+
+
+
+
          }
 
          else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -170,8 +177,10 @@ int main(int argc, char **argv){
         if( redraw && al_is_event_queue_empty(event_queue))
         {
         mappe[level].drawMappa();
+        tommy->draw();
         al_flip_display();
         }
+
 
 
 
@@ -184,7 +193,7 @@ int main(int argc, char **argv){
 
 
 
-  al_rest(1);
+  //al_rest(1);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_destroy_event_queue(event_queue);
@@ -202,5 +211,4 @@ void init()
   al_init_image_addon();
   al_init_primitives_addon();
   al_install_keyboard();
-
 }

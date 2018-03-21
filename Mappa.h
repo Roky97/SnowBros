@@ -11,8 +11,7 @@ private:
   int loadcounterY;
   int mapsizeX;
   int mapsizeY;
-  int map[100][100];
-
+  int map[12][11];
 public:
   ALLEGRO_BITMAP *tile;
   ~Mappa();
@@ -20,6 +19,7 @@ public:
   void caricaElementi(const char* image);
   void caricaMappa (const char* nomefile);
   void drawMappa();
+
 
 
 };

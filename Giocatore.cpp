@@ -1,11 +1,12 @@
 #include "Giocatore.h"
-Giocatore::Giocatore()
+Giocatore::Giocatore(int w, int h)
 {
-  x=170;
-  y=128;
+  x=w/2.0 - 15;
+  y=h-15 -21*(4.363636);
   velocita=1;
   vite=3;
-  
+
+  fermo=true;
   potere_v=false;
   andando_destra=false;
   andando_sinistra=false;

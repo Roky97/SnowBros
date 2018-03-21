@@ -17,7 +17,9 @@ private:
   unsigned y;
   unsigned velocita;
   unsigned vite;
+  unsigned spostamento;
 
+  bool fermo;
   bool andando_destra;
   bool andando_sinistra;
   bool saltando;
@@ -43,7 +45,7 @@ public:
   ALLEGRO_BITMAP *sparando_verso_destra;
   ALLEGRO_BITMAP *sparando_verso_sinistra;
 
-  Giocatore();
+  Giocatore(int, int);
   //sets
   void setX(unsigned sx);
   void setY(unsigned sy);
@@ -66,6 +68,11 @@ public:
   void carica_immagini();
   void diminiusci_vita();
   void potere_verde();
+  void drawPersonaggio(){
+
+  
+
+  }
 
 
 

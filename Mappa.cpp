@@ -39,7 +39,7 @@ void Mappa::drawMappa() //devo creare gli elentibitmap(mattoni, mostri o altre c
       //cout<<map[i][j]<<" ";
       if(map[i][j] == 1)
       {
-        al_draw_scaled_bitmap(tile, 0, 0, 21, 21, i*102, j*102, 21*5, 21*5, 0);
+        al_draw_scaled_bitmap(tile, 0, 0, 21, 21, i*(92.083333), j*(91.6363636), 21*(4.384920), 21*(4.363636), 0);
         //al_flip_display();
       }
     }
