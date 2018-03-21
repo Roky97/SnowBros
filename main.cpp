@@ -4,10 +4,7 @@ using namespace std;
 #include "Giocatore.h"
 #include "Mostro.h"
 #include "Mappa.h"
-enum mykeys {
-   KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
- };
- bool key[4] = { false, false, false, false };
+
 
 void init();
 void draw(string);
@@ -23,7 +20,6 @@ int main(int argc, char **argv){
   ALLEGRO_TIMER *timer = NULL;
 
   display=al_create_display(w, h);
-  //al_set_new_display_flags(ALLEGRO_FULLSCREEN);
   timer=al_create_timer(1.0/60);
 
   event_queue = al_create_event_queue();
@@ -121,56 +117,38 @@ int main(int argc, char **argv){
          }
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
-
-
            //fare i movimenti del giocatore
-
-
-
-
          }
 
          else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
          switch(ev.keyboard.keycode) {
             case ALLEGRO_KEY_UP:
-               key[KEY_UP] = true;
-               break;
-
-            case ALLEGRO_KEY_DOWN:
-               key[KEY_DOWN] = true;
+               tommy->setSaltando(true);
                break;
 
             case ALLEGRO_KEY_LEFT:
-               key[KEY_LEFT] = true;
+               tommy->setAndando_sinistra(true);
                break;
 
             case ALLEGRO_KEY_RIGHT:
-               key[KEY_RIGHT] = true;
+              tommy->setAndando_destra(true);
                break;
          }
        }
 
-       else if(ev.type == ALLEGRO_EVENT_KEY_UP) {
+       else if(ev.type == ALLEGRO_EVENT_KEY_UP) {  //
          switch(ev.keyboard.keycode) {
             case ALLEGRO_KEY_UP:
                key[KEY_UP] = false;
                break;
 
-            case ALLEGRO_KEY_DOWN:
-               key[KEY_DOWN] = false;
-               break;
-
             case ALLEGRO_KEY_LEFT:
-               key[KEY_LEFT] = false;
+            tommy->setAndando_sinistra(false);
                break;
 
             case ALLEGRO_KEY_RIGHT:
-               key[KEY_RIGHT] = false;
+            tommy->setAndando_destra(false);
                break;
-
-            // case ALLEGRO_KEY_ESCAPE: //caso mai fare un menu' pausa
-            //    doexit = true;
-            //    break;
          }
       }
 
@@ -180,10 +158,6 @@ int main(int argc, char **argv){
         tommy->drawPersonaggio();
         al_flip_display();
         }
-
-
-
-
 
       }
     }

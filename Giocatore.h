@@ -13,7 +13,7 @@ using namespace std;
 
 class Giocatore{
 private:
-  
+
   unsigned w;
   unsigned h;
 
@@ -75,16 +75,12 @@ public:
   bool getSaltando();
   bool getSparando();
 
-  void muovi();
-
+  //Immagini e disegno
   void carica_immagini();
-  void diminiusci_vita();
-  void potere_verde();
   void drawPersonaggio();
 
-
-
-
-
+  //Movimenti
+  void muovi();
+  
 };
 #endif

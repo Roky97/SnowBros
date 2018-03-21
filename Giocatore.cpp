@@ -31,6 +31,7 @@ Giocatore::Giocatore(int w, int h)
 
 }
 
+//SETS
 void Giocatore::setX(unsigned sx)
 {
   x=sx;
@@ -45,6 +46,7 @@ void Giocatore::setVelocita(unsigned v)
 {
   velocita=v;
 }
+
 void Giocatore::setVite(unsigned v)
 {
   vite=v;
@@ -54,27 +56,33 @@ void Giocatore::setAndando_destra(bool d)
 {
   andando_destra=d;
 }
+
 void Giocatore::setAndando_sinistra(bool s)
 {
   andando_sinistra=s;
 }
+
 void Giocatore::setSaltando(bool s)
 {
   saltando=s;
 }
+
 void Giocatore::setSparando(bool s)
 {
   sparando=s;
 }
 
+//GETS
 unsigned Giocatore::getX()
 {
   return x;
 }
+
 unsigned Giocatore::getY()
 {
   return y;
 }
+
 unsigned & Giocatore::getVelocita()
 {
   return velocita;
@@ -83,22 +91,28 @@ unsigned & Giocatore::getVite()
 {
   return vite;
 }
+
 bool Giocatore::getAndando_destra()
 {
   return andando_destra;
 }
+
 bool Giocatore::getAndando_sinistra()
 {
   return andando_sinistra;
 }
+
 bool Giocatore::getSaltando()
 {
   return saltando;
 }
+
 bool Giocatore::getSparando()
 {
   return sparando;
 }
+
+//IMMAGINI E DISEGNO
 
 void Giocatore::carica_immagini()
 {
@@ -119,31 +133,19 @@ void Giocatore::carica_immagini()
   sparando_verso_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
 }
 
-void Giocatore::diminiusci_vita()
-{
-  vite--;
-}
-void Giocatore::potere_verde()
-{
-  if(potere_v)
-  {
-    velocita*=3;
-  }
-}
-
 void Giocatore::drawPersonaggio()
 {
   if(fermo)
     al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
-
-
 }
+
+//MOVIMENTI
 
 void Giocatore::muovi()
 {
   if(andando_destra && x<=w-30-spostamento)
   {
     x+=spostamento;
-    
+
   }
 }
