@@ -124,6 +124,7 @@ int main(int argc, char **argv){
          switch(ev.keyboard.keycode) {
             case ALLEGRO_KEY_UP:
                tommy->setSaltando(true);
+               tommy->setF
                break;
 
             case ALLEGRO_KEY_LEFT:
@@ -138,9 +139,6 @@ int main(int argc, char **argv){
 
        else if(ev.type == ALLEGRO_EVENT_KEY_UP) {  //
          switch(ev.keyboard.keycode) {
-            case ALLEGRO_KEY_UP:
-               key[KEY_UP] = false;
-               break;
 
             case ALLEGRO_KEY_LEFT:
             tommy->setAndando_sinistra(false);
