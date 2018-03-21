@@ -177,7 +177,7 @@ int main(int argc, char **argv){
         if( redraw && al_is_event_queue_empty(event_queue))
         {
         mappe[level].drawMappa();
-        tommy->draw();
+        tommy->drawPersonaggio();
         al_flip_display();
         }
 

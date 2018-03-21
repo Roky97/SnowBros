@@ -1,8 +1,8 @@
 #include "Giocatore.h"
 Giocatore::Giocatore(int w, int h)
 {
-  x=w/2.0 - 15;
-  y=h-15 -21*(4.363636);
+  x=w/2.0 - 30;
+  y=h-30*4 -21*(4.363636);
   velocita=1;
   vite=3;
 
@@ -102,6 +102,9 @@ void Giocatore::carica_immagini()
 {
   salta= al_load_bitmap("./images/giocatore/salto.png");
 
+  fermo_destra=al_load_bitmap("./images/giocatore/fermo_dx.png");
+  fermo_sinistra=al_load_bitmap("./images/giocatore/sinistra_dx.png");
+
 	verso_sinistra1= al_load_bitmap("./images/giocatore/sinistra_1.png");
 	verso_sinistra2= al_load_bitmap("./images/giocatore/sinistra_2.png");
 	//verso_sinistra3= al_load_bitmap("./images/giocatore/");
@@ -124,4 +127,12 @@ void Giocatore::potere_verde()
   {
     velocita*=3;
   }
+}
+
+void Giocatore::drawPersonaggio()
+{
+  if(fermo)
+    al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+
+
 }

@@ -31,6 +31,10 @@ public:
   //salta
   ALLEGRO_BITMAP *salta;
 
+  //fermo
+  ALLEGRO_BITMAP *fermo_destra;
+  ALLEGRO_BITMAP *fermo_sinistra;
+  
 	//sinistra
 	ALLEGRO_BITMAP *verso_sinistra1;
 	ALLEGRO_BITMAP *verso_sinistra2;
@@ -68,11 +72,7 @@ public:
   void carica_immagini();
   void diminiusci_vita();
   void potere_verde();
-  void drawPersonaggio(){
-
-  
-
-  }
+  void drawPersonaggio();
 
 
 
