@@ -25,6 +25,7 @@ private:
   unsigned cont;
 
   bool fermo;
+  bool fermoAlternato;
   bool andando_destra;
   bool andando_sinistra;
   bool saltando;

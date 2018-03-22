@@ -5,11 +5,12 @@ Giocatore::Giocatore(int w, int h)
   this->h=h;
   x=w/2.0 - 15;
   y=h-30*4 -21*(4);
-  spostamento=4;
+  spostamento=7;
   vite=3;
   cont=0;
 
   fermo=true;
+  fermoAlternato=false;
   potere_v=false;
   andando_destra=false;
   andando_sinistra=false;
@@ -135,7 +136,7 @@ void Giocatore::carica_immagini()
   fermo_sinistra=al_load_bitmap("./images/giocatore/fermo_sx.png");
 
 	verso_sinistra1= al_load_bitmap("./images/giocatore/sinistra_1.png");
-	verso_sinistra2= al_load_bitmap("./images/giocatore/sinistra_2.png");
+	verso_sinistra2= al_load_bitmap("./images/giocatore/sinstra_2.png");
 	//verso_sinistra3= al_load_bitmap("./images/giocatore/");
 
 	verso_destra1= al_load_bitmap("./images/giocatore/destra_dx1.png");
@@ -148,31 +149,59 @@ void Giocatore::carica_immagini()
 
 void Giocatore::drawPersonaggio()
 {
-  if(fermo)
+  if(fermo && fermoAlternato)
     al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+  else if(fermo && !fermoAlternato)
+    al_draw_scaled_bitmap(fermo_sinistra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+
   else if(andando_destra && !passo)
     {
-      al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x-2, y, 30*4, 30*4, 0);
+      al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
       cont++;
 
-      if(cont==3)
+      if(cont==7)
        {
          passo=true;
          cont=0;
        }
+       fermoAlternato=true;
     }
   else if(andando_destra && passo)
     {
       al_draw_scaled_bitmap(verso_destra2, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
       cont++;
 
-      if(cont=3)
+      if(cont==7)
       {
         passo=false;
         cont=0;
       }
-
+      fermoAlternato=true;
     }
+  else if(andando_sinistra && !passo)
+  {
+    al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+    cont++;
+
+    if(cont==7)
+     {
+       passo=true;
+       cont=0;
+     }
+     fermoAlternato=false;
+  }
+  else if(andando_sinistra && passo)
+  {
+    al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+    cont++;
+
+    if(cont==7)
+    {
+      passo=false;
+      cont=0;
+    }
+    fermoAlternato=false;
+  }
 }
 
 //MOVIMENTI
