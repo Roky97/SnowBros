@@ -3,10 +3,11 @@ Giocatore::Giocatore(int w, int h)
 {
   this->w=w;
   this->h=h;
-  x=w/2.0 - 30;
-  y=h-30*4 -21*(4.363636);
+  x=w/2.0 - 15;
+  y=h-30*4 -21*(4);
   spostamento=4;
   vite=3;
+  cont=0;
 
   fermo=true;
   potere_v=false;
@@ -14,6 +15,7 @@ Giocatore::Giocatore(int w, int h)
   andando_sinistra=false;
   saltando=false;
   sparando=false;
+  passo=false;
 
 
   salta= NULL;
@@ -24,6 +26,7 @@ Giocatore::Giocatore(int w, int h)
 
 	verso_destra1= NULL;
 	verso_destra2= NULL;
+
 	//verso_destra3= NULL;
 
   sparando_verso_destra= NULL;
@@ -70,6 +73,16 @@ void Giocatore::setSaltando(bool s)
 void Giocatore::setSparando(bool s)
 {
   sparando=s;
+}
+
+void Giocatore::setFermo(bool s)
+{
+  fermo=s;
+}
+
+void Giocatore::setPasso(bool s)
+{
+  passo=s;
 }
 
 //GETS
@@ -119,13 +132,13 @@ void Giocatore::carica_immagini()
   salta= al_load_bitmap("./images/giocatore/salto.png");
 
   fermo_destra=al_load_bitmap("./images/giocatore/fermo_dx.png");
-  fermo_sinistra=al_load_bitmap("./images/giocatore/sinistra_dx.png");
+  fermo_sinistra=al_load_bitmap("./images/giocatore/fermo_sx.png");
 
 	verso_sinistra1= al_load_bitmap("./images/giocatore/sinistra_1.png");
 	verso_sinistra2= al_load_bitmap("./images/giocatore/sinistra_2.png");
 	//verso_sinistra3= al_load_bitmap("./images/giocatore/");
 
-	verso_destra1= al_load_bitmap("./images/giocatore/destra_1.png");
+	verso_destra1= al_load_bitmap("./images/giocatore/destra_dx1.png");
 	verso_destra2= al_load_bitmap("./images/giocatore/destra_2.png");
 	//verso_destra3= al_load_bitmap("./images/giocatore/");
 
@@ -137,19 +150,40 @@ void Giocatore::drawPersonaggio()
 {
   if(fermo)
     al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+  else if(andando_destra && !passo)
+    {
+      al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x-2, y, 30*4, 30*4, 0);
+      cont++;
 
+      if(cont==3)
+       {
+         passo=true;
+         cont=0;
+       }
+    }
+  else if(andando_destra && passo)
+    {
+      al_draw_scaled_bitmap(verso_destra2, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+      cont++;
+
+      if(cont=3)
+      {
+        passo=false;
+        cont=0;
+      }
+
+    }
 }
 
 //MOVIMENTI
 
 void Giocatore::muovi()
 {
-  if(andando_destra && x<=w-30-spostamento)
+  if(andando_destra && x<=w-30*3-spostamento)
   {
     x+=spostamento;
-
   }
 
-  else if(andando_sinistra && x>=spostamento)
+  else if(andando_sinistra && x>1)
     x-=spostamento;
 }

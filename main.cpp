@@ -20,7 +20,8 @@ int main(int argc, char **argv){
   ALLEGRO_TIMER *timer = NULL;
 
   display=al_create_display(w, h);
-  timer=al_create_timer(1.0/60);
+  timer=al_create_timer(1/60);
+
 
   event_queue = al_create_event_queue();
 
@@ -118,21 +119,23 @@ int main(int argc, char **argv){
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
            //fare i movimenti del giocatore
+           tommy->muovi();
          }
 
          else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
          switch(ev.keyboard.keycode) {
             case ALLEGRO_KEY_UP:
                tommy->setSaltando(true);
-               tommy->setF
                break;
 
             case ALLEGRO_KEY_LEFT:
                tommy->setAndando_sinistra(true);
+               tommy->setFermo(false);
                break;
 
             case ALLEGRO_KEY_RIGHT:
               tommy->setAndando_destra(true);
+              tommy->setFermo(false);
                break;
          }
        }
@@ -142,10 +145,12 @@ int main(int argc, char **argv){
 
             case ALLEGRO_KEY_LEFT:
             tommy->setAndando_sinistra(false);
+            tommy->setFermo(true);
                break;
 
             case ALLEGRO_KEY_RIGHT:
             tommy->setAndando_destra(false);
+            tommy->setFermo(true);
                break;
          }
       }
@@ -153,6 +158,7 @@ int main(int argc, char **argv){
         if( redraw && al_is_event_queue_empty(event_queue))
         {
         mappe[level].drawMappa();
+
         tommy->drawPersonaggio();
         al_flip_display();
         }

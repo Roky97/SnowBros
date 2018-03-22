@@ -22,6 +22,7 @@ private:
   unsigned velocita;
   unsigned vite;
   unsigned spostamento;
+  unsigned cont;
 
   bool fermo;
   bool andando_destra;
@@ -29,7 +30,7 @@ private:
   bool saltando;
   bool sparando;
   bool potere_v;
-
+  bool passo;
 
 public:
   //salta
@@ -64,6 +65,8 @@ public:
   void setAndando_sinistra(bool s);
   void setSaltando(bool s);
   void setSparando(bool s);
+  void setFermo(bool s);
+  void setPasso(bool s);
 
   //get
   unsigned getX();
@@ -81,6 +84,6 @@ public:
 
   //Movimenti
   void muovi();
-  
+
 };
 #endif
