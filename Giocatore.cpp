@@ -149,9 +149,9 @@ void Giocatore::carica_immagini()
 
 void Giocatore::drawPersonaggio()
 {
-  if(fermo && fermoAlternato)
+  if(fermo && fermoAlternato && !andando_destra && !andando_sinistra)
     al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
-  else if(fermo && !fermoAlternato)
+  else if(fermo && !fermoAlternato && !andando_destra && !andando_sinistra)
     al_draw_scaled_bitmap(fermo_sinistra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
 
   else if(andando_destra && !passo)
