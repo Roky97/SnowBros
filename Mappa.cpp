@@ -50,3 +50,8 @@ void Mappa::caricaElementi(const char* image)
 {
   tile= al_load_bitmap(image);
 }
+
+int Mappa::getValore(int a, int b)
+{
+  return map[a][b];
+}

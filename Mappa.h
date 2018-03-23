@@ -19,6 +19,7 @@ public:
   void caricaElementi(const char* image);
   void caricaMappa (const char* nomefile);
   void drawMappa();
+  int getValore(int, int);
 
 
 
