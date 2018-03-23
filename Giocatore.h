@@ -17,12 +17,14 @@ private:
   unsigned w;
   unsigned h;
 
-  unsigned x;
-  unsigned y;
+  float x;
+  float y;
   unsigned velocita;
   unsigned vite;
   unsigned spostamento;
   unsigned cont;
+  unsigned parametroGravita;
+  unsigned saltoDistanza;
 
   bool fermo;
   bool fermoAlternato;
@@ -32,6 +34,7 @@ private:
   bool sparando;
   bool potere_v;
   bool passo;
+  bool cadendo;
 
 public:
   //salta
@@ -68,10 +71,11 @@ public:
   void setSparando(bool s);
   void setFermo(bool s);
   void setPasso(bool s);
+  void setCadendo(bool s);
 
   //get
-  unsigned getX();
-  unsigned getY();
+  float getX();
+  float getY();
   unsigned & getVelocita();
   unsigned & getVite();
   bool getAndando_destra();
@@ -85,6 +89,7 @@ public:
 
   //Movimenti
   void muovi();
+  void gravita();
 
 };
 #endif

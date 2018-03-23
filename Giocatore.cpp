@@ -3,11 +3,15 @@ Giocatore::Giocatore(int w, int h)
 {
   this->w=w;
   this->h=h;
+  // x=w/2.0 - 15;
+  // y=h-30*4 -21*(4);
   x=w/2.0 - 15;
-  y=h-30*4 -21*(4);
+  y=0;
   spostamento=7;
   vite=3;
   cont=0;
+  parametroGravita=10;
+  saltoDistanza=0;
 
   fermo=true;
   fermoAlternato=false;
@@ -17,7 +21,7 @@ Giocatore::Giocatore(int w, int h)
   saltando=false;
   sparando=false;
   passo=false;
-
+  cadendo=false;
 
   salta= NULL;
 
@@ -87,12 +91,12 @@ void Giocatore::setPasso(bool s)
 }
 
 //GETS
-unsigned Giocatore::getX()
+float Giocatore::getX()
 {
   return x;
 }
 
-unsigned Giocatore::getY()
+float Giocatore::getY()
 {
   return y;
 }
@@ -126,6 +130,11 @@ bool Giocatore::getSparando()
   return sparando;
 }
 
+void Giocatore::setCadendo(bool s)
+{
+  cadendo=s;
+}
+
 //IMMAGINI E DISEGNO
 
 void Giocatore::carica_immagini()
@@ -150,13 +159,22 @@ void Giocatore::carica_immagini()
 void Giocatore::drawPersonaggio()
 {
   if(fermo && fermoAlternato && !andando_destra && !andando_sinistra)
-    al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+    al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x, y-25, 30*4, 30*4, 0);
   else if(fermo && !fermoAlternato && !andando_destra && !andando_sinistra)
-    al_draw_scaled_bitmap(fermo_sinistra, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+    al_draw_scaled_bitmap(fermo_sinistra, 0, 0, 30, 30, x, y-25, 30*4, 30*4, 0);
+
+  else if(saltando && !andando_destra && !andando_sinistra)
+  {
+    al_draw_scaled_bitmap(salta, 0, 0, 24, 32, x, y-27, 24*4, 32*4, 0);
+  }
+  else if(cadendo)
+  {
+    al_draw_scaled_bitmap(salta, 0, 0, 24, 32, x, y-27, 24*4, 32*4, 0);
+  }
 
   else if(andando_destra && !passo)
     {
-      al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+      al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x, y-25, 30*4, 30*4, 0);
       cont++;
 
       if(cont==7)
@@ -168,7 +186,7 @@ void Giocatore::drawPersonaggio()
     }
   else if(andando_destra && passo)
     {
-      al_draw_scaled_bitmap(verso_destra2, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+      al_draw_scaled_bitmap(verso_destra2, 0, 0, 30, 30, x, y-25, 30*4, 30*4, 0);
       cont++;
 
       if(cont==7)
@@ -180,7 +198,7 @@ void Giocatore::drawPersonaggio()
     }
   else if(andando_sinistra && !passo)
   {
-    al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+    al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 30, 30, x, y-25, 30*4, 30*4, 0);
     cont++;
 
     if(cont==7)
@@ -192,7 +210,7 @@ void Giocatore::drawPersonaggio()
   }
   else if(andando_sinistra && passo)
   {
-    al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 30, 30, x, y, 30*4, 30*4, 0);
+    al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 30, 30, x, y-25, 30*4, 30*4, 0);
     cont++;
 
     if(cont==7)
@@ -215,4 +233,22 @@ void Giocatore::muovi()
 
   else if(andando_sinistra && x>-25)
     x-=spostamento;
+
+  if(saltando && saltoDistanza<=185 && !cadendo)
+  {
+    y-=15;
+    saltoDistanza+=15;
+    if(saltoDistanza>=185)
+    {
+      saltando=false;
+      fermo=true;
+      saltoDistanza=0;
+    }
+  }
+}
+
+void Giocatore::gravita()
+{
+  y+=parametroGravita;
+
 }
