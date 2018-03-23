@@ -213,6 +213,6 @@ void Giocatore::muovi()
     x+=spostamento;
   }
 
-  else if(andando_sinistra && x>1)
+  else if(andando_sinistra && x>-25)
     x-=spostamento;
 }

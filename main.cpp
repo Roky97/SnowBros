@@ -14,13 +14,13 @@ int main(int argc, char **argv){
   init();
   int w=1105;
   int h=1008;
-
+  Mappa mp;
   ALLEGRO_DISPLAY       *display = NULL;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
 
   display=al_create_display(w, h);
-  timer=al_create_timer(1/60);
+  timer=al_create_timer(1.0/60);
 
 
   event_queue = al_create_event_queue();
@@ -120,6 +120,7 @@ int main(int argc, char **argv){
          {
            //fare i movimenti del giocatore
            tommy->muovi();
+           cout<<tommy->getX()<<" "<<tommy->getY()<<endl;
          }
 
          else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
