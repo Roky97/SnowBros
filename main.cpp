@@ -207,6 +207,10 @@ int main(int argc, char **argv){
             tommy->setFermo(true);
                break;
 
+             case ALLEGRO_KEY_A:
+             tommy->setSparando(false);
+             break;
+
             /*case ALLEGRO_KEY_SPACE:
             tommy->setSaltando(false);
             tommy->setCadendo(true);*/

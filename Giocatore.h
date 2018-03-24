@@ -93,6 +93,7 @@ public:
   bool getAndando_sinistra();
   bool getSaltando();
   bool getSparando();
+  bool getCadendo();
 
   //Immagini e disegno
   void carica_immagini();
@@ -101,6 +102,7 @@ public:
   //Movimenti
   void muovi();
   void gravita();
+
 
 };
 #endif

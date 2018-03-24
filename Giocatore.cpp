@@ -132,6 +132,11 @@ bool Giocatore::getSparando()
   return sparando;
 }
 
+bool Giocatore::getCadendo()
+{
+  return cadendo;
+}
+
 void Giocatore::setCadendo(bool s)
 {
   cadendo=s;
@@ -157,13 +162,13 @@ void Giocatore::carica_immagini()
   colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
   colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
 
-  lancia_sinistra1=al_load_bitmap("./images/giocatore/lancia_sx1");
-  lancia_sinistra2=al_load_bitmap("./images/giocatore/lancia_sx2");
-  lancia_destra1=al_load_bitmap("./images/giocatore/lancia_dx1");
-  lancia_destra2=al_load_bitmap("./images/giocatore/lancia_dx2");
+  lancia_sinistra1=al_load_bitmap("./images/giocatore/lancia_sx2.png");
+  lancia_sinistra2=al_load_bitmap("./images/giocatore/lancia_sx3.png");
+  lancia_destra1=al_load_bitmap("./images/giocatore/lancia_dx2.png");
+  lancia_destra2=al_load_bitmap("./images/giocatore/lancia_dx3.png");
 
-  colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1");
-  colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1");
+  colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
+  colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
 
 }
 
@@ -171,20 +176,75 @@ void Giocatore::drawPersonaggio()
 {
   if(fermo && fermoAlternato && !andando_destra && !andando_sinistra && !cadendo)
   {
+    if(sparando && passo)
+      al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+    else if(sparando && !passo)
+    al_draw_scaled_bitmap(lancia_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
 
-    al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+    else
+      al_draw_scaled_bitmap(fermo_destra, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+    cont++;
+
+    if(cont==7)
+     {
+       if(passo)
+        passo=false;
+        else
+        passo=true;
+       cont=0;
+     }
   }
+
   else if(fermo && !fermoAlternato && !andando_destra && !andando_sinistra && !cadendo)
-    al_draw_scaled_bitmap(fermo_sinistra, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+  {
+    if(sparando && passo)
+      al_draw_scaled_bitmap(lancia_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+    if(sparando & !passo)
+    al_draw_scaled_bitmap(lancia_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+
+    else
+      al_draw_scaled_bitmap(fermo_sinistra, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+
+    cont++;
+
+    if(cont==7)
+     {
+       if(passo)
+        passo=false;
+        else
+        passo=true;
+       cont=0;
+     }
+  }
 
   else if(saltando && !andando_destra && !andando_sinistra && !cadendo)
   {
+    if(sparando)
+      al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+    else
     al_draw_scaled_bitmap(salta, 0, 0, 24, 32, x-60, y-27, 24*4, 32*4, 0);
+    cont++;
+
+    if(cont==7)
+     {
+       passo=true;
+       cont=0;
+     }
+
   }
-   if(cadendo && fermo)
+   if(cadendo)
   {
-    //cout<<"cadooo"<<endl;
-    al_draw_scaled_bitmap(salta, 0, 0, 24, 32, x-60, y-27, 24*4, 32*4, 0);
+    if(sparando)
+      al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+    else
+      al_draw_scaled_bitmap(salta, 0, 0, 24, 32, x-60, y-27, 24*4, 32*4, 0);
+    cont++;
+
+    if(cont==7)
+     {
+       passo=true;
+       cont=0;
+     }
   }
 
   else if(andando_destra && !passo)
@@ -268,7 +328,7 @@ void Giocatore::muovi()
     if(saltoDistanza>=180)
     {
       saltando=false;
-      fermo=true;
+      fermo=false;
       saltoDistanza=0;
       cadendo=true;
     }
