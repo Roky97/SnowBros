@@ -25,6 +25,7 @@ private:
   unsigned cont;
   unsigned parametroGravita;
   unsigned saltoDistanza;
+  unsigned colpoDistanza;
 
   bool fermo;
   bool fermoAlternato;
@@ -48,15 +49,25 @@ public:
 	ALLEGRO_BITMAP *verso_sinistra1;
 	ALLEGRO_BITMAP *verso_sinistra2;
 	//ALLEGRO_BITMAP *verso_sinistra3;
+  ALLEGRO_BITMAP *lancia_sinistra1;
+  ALLEGRO_BITMAP *lancia_sinistra2;
+
 
 	//destra
 	ALLEGRO_BITMAP *verso_destra1;
 	ALLEGRO_BITMAP *verso_destra2;
 	//ALLEGRO_BITMAP *verso_destra3;
+  ALLEGRO_BITMAP *lancia_destra1;
+  ALLEGRO_BITMAP *lancia_destra2;
 
-  //spara
-  ALLEGRO_BITMAP *sparando_verso_destra;
-  ALLEGRO_BITMAP *sparando_verso_sinistra;
+
+
+
+
+  //colpo
+  ALLEGRO_BITMAP *colpo_destra;
+  ALLEGRO_BITMAP *colpo_sinistra;
+
 
   Giocatore(int, int);
 

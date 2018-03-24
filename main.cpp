@@ -126,8 +126,7 @@ int main(int argc, char **argv){
 
            float a=tommy->getX()/92.08;
            int a2=tommy->getX()/92.08;
-           if(a>1000)
-            a=0;
+
 
            float b=(tommy->getY()/91.63)+1;
            int b2=(tommy->getY()/91.63)+1;
@@ -178,6 +177,12 @@ int main(int argc, char **argv){
               tommy->setSaltando(true);
               tommy->setFermo(false);
               break;
+
+            case ALLEGRO_KEY_S:
+              tommy->setSaltando(true);
+              tommy->setFermo(false);
+              break;
+
          }
        }
 
