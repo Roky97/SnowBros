@@ -4,6 +4,9 @@ using namespace std;
 #include "Giocatore.h"
 #include "Mostro.h"
 #include "Mappa.h"
+#include "Colpo.h"
+
+const int ncolpi=7;
 
 
 void init();
@@ -31,6 +34,8 @@ int main(int argc, char **argv){
   al_clear_to_color(al_map_rgb(0,0,0));
   al_flip_display();
 
+
+  Colpo *colpi=new Colpo[ncolpi];
 
   Giocatore * tommy= new Giocatore(w,h);
   tommy->carica_immagini();
@@ -120,6 +125,9 @@ int main(int argc, char **argv){
          {
            //fare i movimenti del giocatore
            tommy->muovi();
+
+           //if(tommy->)
+           //tommy->spara(tommy->getX());
            //if(mappe[level].getValore((tommy->getX()/92.08), tommy->getY()/91.63))
           // cout<<tommy->getX()<<" "<<tommy->getY()<<endl;
 
@@ -185,6 +193,8 @@ int main(int argc, char **argv){
 
             case ALLEGRO_KEY_A:
             tommy->setSparando(true);
+            for(int i=0;i<ncolpi;i++)
+            colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());
             break;
 
             /*case ALLEGRO_KEY_S:
@@ -224,9 +234,14 @@ int main(int argc, char **argv){
 
         if( redraw && al_is_event_queue_empty(event_queue))
         {
-        mappe[level].drawMappa();
 
+
+        mappe[level].drawMappa();
         tommy->drawPersonaggio();
+
+        for(int i=0;i<ncolpi;i++)
+        colpi[i].drawColpo();
+
         al_flip_display();
         }
 

@@ -94,6 +94,8 @@ public:
   bool getSaltando();
   bool getSparando();
   bool getCadendo();
+  bool getFermoalternato();
+  
 
   //Immagini e disegno
   void carica_immagini();
@@ -101,6 +103,7 @@ public:
 
   //Movimenti
   void muovi();
+  void spara(float a);
   void gravita();
 
 

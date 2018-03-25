@@ -137,6 +137,10 @@ bool Giocatore::getCadendo()
   return cadendo;
 }
 
+bool Giocatore::getFermoalternato(){
+return fermoAlternato;
+}
+
 void Giocatore::setCadendo(bool s)
 {
   cadendo=s;
@@ -169,7 +173,6 @@ void Giocatore::carica_immagini()
 
   colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
   colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
-
 }
 
 void Giocatore::drawPersonaggio()
@@ -232,8 +235,9 @@ void Giocatore::drawPersonaggio()
      }
 
   }
+
    if(cadendo)
-  {
+   {
     if(sparando)
       al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
     else
@@ -245,7 +249,7 @@ void Giocatore::drawPersonaggio()
        passo=true;
        cont=0;
      }
-  }
+   }
 
   else if(andando_destra && !passo)
     {
@@ -262,6 +266,7 @@ void Giocatore::drawPersonaggio()
        }
        fermoAlternato=true;
     }
+
   else if(andando_destra && passo)
     {
       if(sparando)
@@ -277,6 +282,7 @@ void Giocatore::drawPersonaggio()
       }
       fermoAlternato=true;
     }
+
   else if(andando_sinistra && !passo)
   {
     if(sparando)
@@ -292,6 +298,7 @@ void Giocatore::drawPersonaggio()
      }
      fermoAlternato=false;
   }
+
   else if(andando_sinistra && passo)
   {
     if(sparando)
@@ -305,6 +312,7 @@ void Giocatore::drawPersonaggio()
       passo=false;
       cont=0;
     }
+
     fermoAlternato=false;
   }
 }
@@ -313,19 +321,19 @@ void Giocatore::drawPersonaggio()
 
 void Giocatore::muovi()
 {
-  if(andando_destra && x<=w-30*3-spostamento)
+  if(andando_destra && x<=w-30-spostamento) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
   {
     x+=spostamento;
   }
 
-  else if(andando_sinistra && x>-25)
+  else if(andando_sinistra && x>-25) //movimento a sx
     x-=spostamento;
 
-  if(saltando && saltoDistanza<=180 && !cadendo) //bisonga dire che deve saltare solo quando di sotto c'è solo un 1 e non anche 0
+  if(saltando && saltoDistanza<=210 && !cadendo) //aggiorna le posizioni per saltare
   {
     y-=15;
     saltoDistanza+=15;
-    if(saltoDistanza>=180)
+    if(saltoDistanza>=210)
     {
       saltando=false;
       fermo=false;
@@ -333,6 +341,18 @@ void Giocatore::muovi()
       cadendo=true;
     }
   }
+}
+
+void Giocatore::spara(float a){
+
+if(andando_destra || fermoAlternato)
+  {
+    for(int i=7; i<=210 ;i+=7)
+    {
+      al_draw_scaled_bitmap(colpo_destra, 0, 0, 30, 30, a+i, y-25, 30*4, 30*4, 0);
+    }
+  }
+//if(andando_sinistra || !fermoAlternato)
 }
 
 void Giocatore::gravita()
