@@ -35,10 +35,6 @@ Giocatore::Giocatore(int w, int h)
 	verso_destra2= NULL;
   lancia_destra1=NULL;
   lancia_destra2=NULL;
-
-  colpo_destra=NULL;
-  colpo_sinistra=NULL;
-
 }
 
 //SETS
@@ -163,16 +159,13 @@ void Giocatore::carica_immagini()
 	verso_destra2= al_load_bitmap("./images/giocatore/destra_2.png");
 	//verso_destra3= al_load_bitmap("./images/giocatore/");
 
-  colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
-  colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
 
   lancia_sinistra1=al_load_bitmap("./images/giocatore/lancia_sx2.png");
   lancia_sinistra2=al_load_bitmap("./images/giocatore/lancia_sx3.png");
   lancia_destra1=al_load_bitmap("./images/giocatore/lancia_dx2.png");
   lancia_destra2=al_load_bitmap("./images/giocatore/lancia_dx3.png");
 
-  colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
-  colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
+
 }
 
 void Giocatore::drawPersonaggio()
@@ -343,17 +336,7 @@ void Giocatore::muovi()
   }
 }
 
-void Giocatore::spara(float a){
 
-if(andando_destra || fermoAlternato)
-  {
-    for(int i=7; i<=210 ;i+=7)
-    {
-      al_draw_scaled_bitmap(colpo_destra, 0, 0, 30, 30, a+i, y-25, 30*4, 30*4, 0);
-    }
-  }
-//if(andando_sinistra || !fermoAlternato)
-}
 
 void Giocatore::gravita()
 {

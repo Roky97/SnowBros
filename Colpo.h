@@ -17,8 +17,11 @@ public:
   Colpo();
   Colpo(int,int,bool);
   void drawColpo();
-  void fireColpo(float,float,bool);
+  bool fireColpo(float,float,bool);
   void updateColpo();
+  //colpo
+  ALLEGRO_BITMAP *colpo_destra;
+  ALLEGRO_BITMAP *colpo_sinistra;
 
 
 };

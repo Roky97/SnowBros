@@ -1,9 +1,11 @@
 #include "Colpo.h"
-
+#include "Giocatore.h"
 Colpo::Colpo(){
   vita=false;
   raggio=200;
   spostamento=10;
+  colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
+  colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
 }
 
 void Colpo::drawColpo(){
@@ -11,30 +13,48 @@ void Colpo::drawColpo(){
   {
     al_draw_scaled_bitmap(colpo_destra, 0, 0, 7, 11, x, y, 7*4, 11*4, 0);
   }
-
-  if(vita&& !direzione)
+  else if(vita&& !direzione)
   {
     al_draw_scaled_bitmap(colpo_sinistra, 0, 0, 7, 11, x, y, 7*4, 11*4, 0);
   }
 }
 
 
-void Colpo::fireColpo(float a, float b, bool d){
+bool Colpo::fireColpo(float a, float b, bool d){
 
+if(!vita)
 direzione=d;
-if(!vita && d)
+if(!vita && direzione)
 {
  x=a+20;
  y=b;
  vita=true;
+ return true;
 }
-else if(!vita && !d)
+else if(!vita && !direzione)
 {
  x=a-20;
  y=b;
  vita=true;
+ return true;
 }
 
+return false;
 }
 
-void Colpo::updateColpo(){}
+void Colpo::updateColpo()
+{
+  if(vita && direzione)
+  {
+    x+=spostamento;
+    if(x>1105)
+      vita=false;
+  }
+
+  if(vita && !direzione)
+  {
+    x-=spostamento;
+    if(x<0)
+      vita=false;
+  }
+}

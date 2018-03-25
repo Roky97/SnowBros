@@ -35,7 +35,7 @@ int main(int argc, char **argv){
   al_flip_display();
 
 
-  Colpo *colpi=new Colpo[ncolpi];
+  Colpo colpi[ncolpi];
 
   Giocatore * tommy= new Giocatore(w,h);
   tommy->carica_immagini();
@@ -162,6 +162,10 @@ int main(int argc, char **argv){
              tommy->setCadendo(false);
              tommy->setFermo(true);
            }
+           for(int i=0; i<ncolpi; i++)
+           {
+             colpi[i].updateColpo();
+           }
 
           // else if(mappe[level].getValore(a, b)==1 && b-b2 >= 0.1 || b-b2 <0.0 && tommy->getSaltando()==true)
           // {
@@ -183,7 +187,7 @@ int main(int argc, char **argv){
               tommy->setFermo(false);
                break;
 
-            case ALLEGRO_KEY_SPACE:
+            case ALLEGRO_KEY_UP:
             if(tommy->getCadendo()==false)
               {
                 tommy->setSaltando(true);
@@ -193,8 +197,10 @@ int main(int argc, char **argv){
 
             case ALLEGRO_KEY_A:
             tommy->setSparando(true);
-            for(int i=0;i<ncolpi;i++)
-            colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());
+            for(int i=0;i<ncolpi && !colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());i++)
+            {
+              // if(colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato()));
+            }
             break;
 
             /*case ALLEGRO_KEY_S:
@@ -234,17 +240,14 @@ int main(int argc, char **argv){
 
         if( redraw && al_is_event_queue_empty(event_queue))
         {
-
-
         mappe[level].drawMappa();
         tommy->drawPersonaggio();
-
         for(int i=0;i<ncolpi;i++)
-        colpi[i].drawColpo();
-
+        {
+          colpi[i].drawColpo();
+        }
         al_flip_display();
         }
-
       }
     }
   }
