@@ -2,7 +2,7 @@
 #include "Giocatore.h"
 Colpo::Colpo(){
   vita=false;
-  raggio=200;
+  raggio=0;
   spostamento=10;
   colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
   colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
@@ -47,14 +47,22 @@ void Colpo::updateColpo()
   if(vita && direzione)
   {
     x+=spostamento;
-    if(x>1105)
-      vita=false;
+    raggio+=spostamento;
+    if(x>1105 || raggio>=200)
+       {
+         vita=false;
+         raggio=0;
+       }
   }
 
   if(vita && !direzione)
   {
     x-=spostamento;
-    if(x<0)
-      vita=false;
+    raggio+=spostamento;
+    if(x<0 || raggio>=200)
+      {
+        vita=false;
+        raggio=0;
+      }
   }
 }
