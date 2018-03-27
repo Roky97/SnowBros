@@ -4,9 +4,9 @@ Giocatore::Giocatore(int w, int h)
   this->w=w;
   this->h=h;
   // x=w/2.0 - 15;
-  // y=h-30*4 -21*(4);
+  y=h-30*4 -21*(4);
   x=w/2.0 - 15;
-  y=0;
+  //y=0;
   spostamento=7;
   vite=3;
   cont=0;
@@ -35,6 +35,23 @@ Giocatore::Giocatore(int w, int h)
 	verso_destra2= NULL;
   lancia_destra1=NULL;
   lancia_destra2=NULL;
+}
+
+Giocatore::~Giocatore()
+{
+  al_destroy_bitmap(salta);
+  al_destroy_bitmap(fermo_destra);
+  al_destroy_bitmap(fermo_sinistra);
+  al_destroy_bitmap(verso_sinistra1);
+  al_destroy_bitmap(verso_sinistra2);
+  al_destroy_bitmap(verso_destra1);
+  al_destroy_bitmap(verso_destra2);
+  al_destroy_bitmap(lancia_sinistra1);
+  al_destroy_bitmap(lancia_sinistra2);
+  al_destroy_bitmap(lancia_destra1);
+  al_destroy_bitmap(lancia_destra2);
+
+
 }
 
 //SETS
@@ -319,7 +336,7 @@ void Giocatore::muovi()
     x+=spostamento;
   }
 
-  else if(andando_sinistra && x>-25) //movimento a sx
+  else if(andando_sinistra && x>35) //movimento a sx
     x-=spostamento;
 
   if(saltando && saltoDistanza<=210 && !cadendo) //aggiorna le posizioni per saltare

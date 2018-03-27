@@ -63,6 +63,7 @@ public:
 
 
   Giocatore(int, int);
+  ~Giocatore();
 
   //sets
   void setX(unsigned sx);
