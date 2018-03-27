@@ -5,8 +5,10 @@ using namespace std;
 #include "Mostro.h"
 #include "Mappa.h"
 #include "Colpo.h"
+#include "Mostro_rosso.h"
 
 const int ncolpi=7;
+const int maxmostri=100;
 
 
 void init();
@@ -17,15 +19,28 @@ int main(int argc, char **argv){
   init();
   int w=1105;
   int h=1008;
-  Mappa mp;
+  unsigned level=0;
+  int nMostri=0;
   ALLEGRO_DISPLAY       *display = NULL;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
+  Colpo colpi[ncolpi];
+  Mappa mappe[2];
+  Mostro *mostri[maxmostri];
+  Giocatore * tommy= new Giocatore(w,h);
+  bool main_screen=true;
+  bool esc=false;
+  bool mostrivivi=true;
+
+
+
+
+
+
+
 
   display=al_create_display(w, h);
   timer=al_create_timer(1.0/60);
-
-
   event_queue = al_create_event_queue();
 
   al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -33,21 +48,34 @@ int main(int argc, char **argv){
   al_register_event_source(event_queue, al_get_keyboard_event_source());
   al_clear_to_color(al_map_rgb(0,0,0));
   al_flip_display();
-
-
-  Colpo colpi[ncolpi];
-
-  Giocatore * tommy= new Giocatore(w,h);
-  tommy->carica_immagini();
   al_start_timer(timer);
 
-  bool main_screen=true; //indica che ho appena aperto il gioco
-  bool esc=false; //indica se chiudo il gioco dalla finestra
+  tommy->carica_immagini();
+  mappe[0].caricaElementi("./images/objects/tile1.png");
+  mappe[0].caricaMappa("./mappe/mappa1.txt");
 
-  //creo le mappe in base ai livelli
-  Mappa mappe[2];
-  mappe[1].caricaElementi("./images/objects/tile1.png");
-  mappe[1].caricaMappa("./mappe/mappa1.txt");
+
+
+  for(int i=0;i<12;i++)
+  {
+    for(int j=0;j<11;j++)
+    {
+      switch (mappe[0].getValore(i,j)) {
+        case 2:
+        mostri[nMostri]=new Mostro_rosso(i*92.08,j*91.63);
+        mostri[nMostri]->carica_immagini();
+        nMostri++;
+        break;
+        // /case 3:
+        // mostri[nMostri]=new Mostro_giallo(i*92.08,j*91.63);
+        // nMostri++;
+        // break;
+      }
+    }
+  }
+
+
+
 
 
 
@@ -109,8 +137,14 @@ int main(int argc, char **argv){
 
     if(!esc)
     {
+
+
+
       bool redraw=true;
-      unsigned level=1;
+
+
+
+    //  cout<<endl<<nMostri<<endl;
       while(!esc)
       {
         al_clear_to_color(al_map_rgb(0,0,0));
@@ -121,10 +155,14 @@ int main(int argc, char **argv){
            esc=true;
            break;
          }
+
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
            //fare i movimenti del giocatore
            tommy->muovi();
+
+           for(int i=0;i<nMostri;i++)
+           mostri[i]->muovi();
 
            //if(tommy->)
            //tommy->spara(tommy->getX());
@@ -132,11 +170,11 @@ int main(int argc, char **argv){
           // cout<<tommy->getX()<<" "<<tommy->getY()<<endl;
 
            float a=tommy->getX()/92.08;
-           int a2=tommy->getX()/92.08;
+          // int a2=tommy->getX()/92.08;
 
 
            float b=(tommy->getY()/91.63)+1;
-           int b2=(tommy->getY()/91.63)+1;
+           //int b2=(tommy->getY()/91.63)+1;
 
            // cout<<a<<" "<<b<<" "<<mappe[level].getValore(a, b)<<" "<<tommy->getSaltando()<<endl;
            // cout<<a2<<" "<<b2<<" "<<b-b2<<endl<<endl; //non ci serve
@@ -167,11 +205,6 @@ int main(int argc, char **argv){
              colpi[i].updateColpo();
            }
 
-          // else if(mappe[level].getValore(a, b)==1 && b-b2 >= 0.1 || b-b2 <0.0 && tommy->getSaltando()==true)
-          // {
-          //   tommy->setCadendo(true);
-          //  tommy->gravita();
-          // }
          }
 
          else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -202,11 +235,6 @@ int main(int argc, char **argv){
               // if(colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato()));
             }
             break;
-
-            /*case ALLEGRO_KEY_S:
-              tommy->setSaltando(true);
-              tommy->setFermo(false);
-              break;*/
          }
        }
 
@@ -226,15 +254,6 @@ int main(int argc, char **argv){
              case ALLEGRO_KEY_A:
              tommy->setSparando(false);
              break;
-
-            /*case ALLEGRO_KEY_SPACE:
-            tommy->setSaltando(false);
-            tommy->setCadendo(true);*/
-            //
-            // case ALLEGRO_KEY_SPACE:
-            //  tommy->setSaltando(false);
-            //  tommy->setFermo(true);
-            //  break;
          }
       }
 
@@ -242,12 +261,18 @@ int main(int argc, char **argv){
         {
         mappe[level].drawMappa();
         tommy->drawPersonaggio();
+
         for(int i=0;i<ncolpi;i++)
         {
           colpi[i].drawColpo();
         }
+
+        for(int i=0;i<nMostri;i++)
+        mostri[i]->drawMostro();
+
         al_flip_display();
         }
+
       }
     }
   }

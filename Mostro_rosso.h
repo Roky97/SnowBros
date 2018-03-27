@@ -1,18 +1,20 @@
 #ifndef MOSTRO_ROSSO
 #define MOSTRO_ROSSO
+#include "Mostro.h"
 
 class Mostro_rosso : public Mostro{
 private:
   bool saltando;
 
 public:
-  ALLEGRO_BITMAP *salto;
-  Mostro_rosso(int, int);
+  Mostro_rosso(float, float);
 
   bool getSaltando();
   void setSaltando(bool);
 
-  void carica_immagini;
+  void carica_immagini();
+  void drawMostro();
+  void muovi();
 
 };
 #endif

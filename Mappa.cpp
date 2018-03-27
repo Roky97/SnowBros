@@ -55,3 +55,16 @@ int Mappa::getValore(int a, int b)
 {
   return map[a][b];
 }
+
+// int Mappa::getNumMostri(){
+//   int cont=0;
+//   for(int i=0; i<mapsizeX; i++)
+//   {
+//     for(int j=0; j<mapsizeY; j++)
+//     {
+//       if(map[i][j] !=0 && map[i][j] !=1)
+//       cont++;
+//     }
+//   }
+//   return cont;
+// }

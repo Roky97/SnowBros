@@ -4,6 +4,7 @@
 #include "Giocatore.h"
 #include <string>
 #include <algorithm>
+#include "Mostro.h"
 
 class Mappa{
 private:
@@ -20,6 +21,7 @@ public:
   void caricaMappa (const char* nomefile);
   void drawMappa();
   int getValore(int, int);
+  // int getNumMostri();
 
 
 

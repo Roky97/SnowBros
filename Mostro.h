@@ -10,13 +10,16 @@
 #include <allegro5/allegro_acodec.h>
 
 class Mostro{
-private:
-  int x;
-  int y;
-  int velocita;
+protected:
+  float x;
+  float y;
+  int spostamento;
+  int cont;
 
   bool andando_destra;
   bool andando_sinistra;
+  bool vita;
+  bool passo;
 
 
 public:
@@ -31,27 +34,28 @@ public:
 	//ALLEGRO_BITMAP *verso_destra3;
 
 
-  Mostro(int, int);
+  Mostro();
+  Mostro(float, float);
   //sets
-  void setX(int sx);
-  void setY(int sy);
-  void setVelocita(int v);
+  void setX(float sx);
+  void setY(float sy);
 
   void setAndando_destra(bool d);
   void setAndando_sinistra(bool s);
+  void setVita(bool v);
 
   //get
-  int getX();
-  int getY();
-  int getVelocita();
+  float getX();
+  float getY();
+  bool getVita();
 
   bool getAndando_destra();
   bool getAndando_sinistra();
 
 
-  virtual void carica_immagini()=0;
-
-
+  virtual void carica_immagini(){}
+  virtual void drawMostro(){}
+  virtual void muovi(){}
 
 };
 #endif
