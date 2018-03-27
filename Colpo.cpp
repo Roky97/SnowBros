@@ -8,6 +8,13 @@ Colpo::Colpo(){
   colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
 }
 
+Colpo::~Colpo()
+{
+  al_destroy_bitmap(colpo_destra);
+  al_destroy_bitmap(colpo_sinistra);
+
+}
+
 void Colpo::drawColpo(){
   if(vita && direzione)
   {

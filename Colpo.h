@@ -15,6 +15,7 @@ private:
 
 public:
   Colpo();
+  ~Colpo();
   Colpo(int,int,bool);
   void drawColpo();
   bool fireColpo(float,float,bool);
