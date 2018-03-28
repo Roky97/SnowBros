@@ -5,6 +5,7 @@ Mostro::Mostro(){
   x=0;
   y=0;
     andando_sinistra=false;
+    andando_destra=true;
   	verso_sinistra1= NULL;
   	verso_sinistra2= NULL;
 
@@ -20,7 +21,6 @@ Mostro::Mostro(float posx, float posy)
   y=posy;
   spostamento=7;
 
-
   andando_sinistra=false;
   passo=false;
   cont=0;
@@ -34,7 +34,6 @@ Mostro::Mostro(float posx, float posy)
 }
 
 //SETS
-
 void Mostro::setX(float sx)
 {
   x=sx;

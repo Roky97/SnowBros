@@ -56,13 +56,15 @@ int main(int argc, char **argv){
 
 
 
-  for(int i=0;i<12;i++)
+  for(int i=0;i<mappe[0].getMapSizeX();i++)
   {
-    for(int j=0;j<11;j++)
+    for(int j=0;j<mappe[0].getMapSizeY();j++)
     {
       switch (mappe[0].getValore(i,j)) {
         case 2:
-        mostri[nMostri]=new Mostro_rosso(i*92.08,j*91.63);
+        mostri[nMostri]=new Mostro_rosso();
+        mostri[nMostri]->setX(i*92.08);
+        mostri[nMostri]->setY(j*91.63);
         mostri[nMostri]->carica_immagini();
         nMostri++;
         break;
@@ -137,14 +139,7 @@ int main(int argc, char **argv){
 
     if(!esc)
     {
-
-
-
       bool redraw=true;
-
-
-
-    //  cout<<endl<<nMostri<<endl;
       while(!esc)
       {
         al_clear_to_color(al_map_rgb(0,0,0));
@@ -162,16 +157,14 @@ int main(int argc, char **argv){
            tommy->muovi();
 
            for(int i=0;i<nMostri;i++)
-           mostri[i]->muovi();
-
-           //if(tommy->)
-           //tommy->spara(tommy->getX());
+           {
+            mostri[i]->muovi();
+            }
            //if(mappe[level].getValore((tommy->getX()/92.08), tommy->getY()/91.63))
           // cout<<tommy->getX()<<" "<<tommy->getY()<<endl;
 
            float a=tommy->getX()/92.08;
           // int a2=tommy->getX()/92.08;
-
 
            float b=(tommy->getY()/91.63)+1;
            //int b2=(tommy->getY()/91.63)+1;
@@ -183,12 +176,6 @@ int main(int argc, char **argv){
             a=0;
            if(b<0)
             b=0;
-
-           // if(b-b2 >= 0.1 || b-b2 <0.0)
-           //  {
-           //    tommy->setCadendo(true);
-           //   tommy->gravita();
-           //  }
 
            if(mappe[level].getValore(a, b)==0 && tommy->getSaltando()==false)
            {

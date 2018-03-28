@@ -1,9 +1,18 @@
 #include "Mostro_rosso.h"
 
-Mostro_rosso::Mostro_rosso(float x, float y)
+Mostro_rosso::Mostro_rosso()
 {
-  Mostro(x,y);
+  Mostro();
+  saltando =false;
+}
+
+Mostro_rosso::Mostro_rosso(float x1, float y2)
+{
+  Mostro(x1,y2);
   saltando=false;
+  cout<<x1<<" "<<y2<<endl;
+  andando_destra=true;
+  andando_sinistra=false;
 }
 
 bool Mostro_rosso::getSaltando()
@@ -29,7 +38,7 @@ void Mostro_rosso::drawMostro(){
 
   if(andando_destra && !passo)
     {
-      al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 12, x, y, 20*4, 12*4, 0);
+      al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x, y, 20*4, 17*4, 0);
       cont++;
 
       if(cont==7)
@@ -79,7 +88,7 @@ void Mostro_rosso::drawMostro(){
 void Mostro_rosso::muovi(){
 
 
-if(x+spostamento>=1105 && andando_destra)
+/*if(x+spostamento>=1105 && andando_destra)
 {
   andando_destra=false;
   andando_sinistra=true;
@@ -97,6 +106,24 @@ if(x-spostamento<=0 && andando_sinistra)
 else if(andando_sinistra)
 {
   x-=spostamento;
+}*/
+
+if(andando_destra && x<1105) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+{
+  x+=spostamento;
 }
+else if(andando_destra && x>=1105)
+{
+  andando_destra=false;
+  andando_sinistra=true;
+}
+
+else if(andando_sinistra && x>=0) //movimento a sx
+  x-=spostamento;
+  else if(andando_sinistra && x<0)
+  {
+    andando_destra=true;
+    andando_sinistra=false;
+  }
 
 }

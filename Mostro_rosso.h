@@ -7,6 +7,7 @@ private:
   bool saltando;
 
 public:
+  Mostro_rosso();
   Mostro_rosso(float, float);
 
   bool getSaltando();
