@@ -38,7 +38,7 @@ void Mostro_rosso::drawMostro(){
 
   if(andando_destra && !passo)
     {
-      al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x, y, 20*4, 17*4, 0);
+      al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x, y, 20*6, 17*6, 0);
       cont++;
 
       if(cont==7)
@@ -50,7 +50,7 @@ void Mostro_rosso::drawMostro(){
 
   else if(andando_destra && passo)
     {
-        al_draw_scaled_bitmap(verso_destra2, 0, 0, 20, 17, x, y, 20*4, 17*4, 0);
+        al_draw_scaled_bitmap(verso_destra2, 0, 0, 20, 17, x, y, 20*6, 17*6, 0);
         cont++;
 
       if(cont==7)
@@ -62,7 +62,7 @@ void Mostro_rosso::drawMostro(){
 
   if(andando_sinistra && !passo)
   {
-    al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x, y, 20*4, 17*4, 0);
+    al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x, y, 20*6, 17*6, 0);
     cont++;
 
     if(cont==7)
@@ -73,7 +73,7 @@ void Mostro_rosso::drawMostro(){
   }
   else if(andando_sinistra && passo)
   {
-   al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 20, 17, x, y, 20*4, 17*4, 0);
+   al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 20, 17, x, y, 20*6, 17*6, 0);
     cont++;
 
     if(cont==7)

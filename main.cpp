@@ -177,7 +177,7 @@ int main(int argc, char **argv){
            if(b<0)
             b=0;
 
-           if(mappe[level].getValore(a, b)==0 && tommy->getSaltando()==false)
+           if(mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false)
            {
              tommy->setCadendo(true);
              tommy->gravita();
