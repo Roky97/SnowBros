@@ -21,7 +21,8 @@ public:
   void caricaMappa (const char* nomefile);
   void drawMappa();
   int getValore(int, int);
-  // int getNumMostri();
+  int getMapSizeX();
+  int getMapSizeY();
 
 
 
