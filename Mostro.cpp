@@ -6,16 +6,30 @@ Mostro::Mostro(){
   y=0;
     andando_sinistra=false;
     andando_destra=true;
+
   	verso_sinistra1= NULL;
   	verso_sinistra2= NULL;
+    colpito_sinistra1=NULL;
+    colpito_sinistra2=NULL;
 
   	verso_destra1= NULL;
   	verso_destra2= NULL;
+    colpito_destra1=NULL;
+    colpito_destra2=NULL;
+
+    innevando1=al_load_bitmap("./images/neve/innevando1.png");
+    innevando2=al_load_bitmap("./images/neve/innevando2.png");
+    innevando3=al_load_bitmap("./images/neve/innevando3.png");
+    palladineve1=al_load_bitmap("./images/neve/palladineve1.png");
+    palladineve2=al_load_bitmap("./images/neve/palladineve2.png");
+
+    congelo=al_create_timer(1/2.0);
+
     salta=NULL;
 
     passo=false;
     cont=0;
-  parametroGravita=10;
+    parametroGravita=10;
 
 }
 Mostro::Mostro(float posx, float posy)
@@ -27,13 +41,23 @@ Mostro::Mostro(float posx, float posy)
   andando_sinistra=false;
   passo=false;
   cont=0;
+
 	verso_sinistra1= NULL;
 	verso_sinistra2= NULL;
-	//verso_sinistra3= NULL;
 
 	verso_destra1= NULL;
 	verso_destra2= NULL;
-	//verso_destra3= NULL;
+}
+
+Mostro::~Mostro()
+{
+  al_destroy_bitmap(innevando1);
+  al_destroy_bitmap(innevando2);
+  al_destroy_bitmap(innevando3);
+  al_destroy_bitmap(palladineve1);
+  al_destroy_bitmap(palladineve2);
+
+
 }
 
 //SETS

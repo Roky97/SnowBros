@@ -7,7 +7,7 @@ using namespace std;
 #include "Colpo.h"
 #include "Mostro_rosso.h"
 
-const int ncolpi=1;
+const int ncolpi=3;
 const int maxmostri=100;
 
 

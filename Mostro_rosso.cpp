@@ -35,9 +35,13 @@ void Mostro_rosso::setSaltando(bool s)
 {
   verso_sinistra1=al_load_bitmap("./images/mostro_rosso/sinistra_1.png");
   verso_sinistra2=al_load_bitmap("./images/mostro_rosso/sinistra_2.png");
+  colpito_sinistra1=al_load_bitmap("./images/mostro_rosso/colpito_sx1.png");
+  colpito_sinistra2=al_load_bitmap("./images/mostro_rosso/colpito_sx2.png");
 
   verso_destra1=al_load_bitmap("./images/mostro_rosso/destra_1.png");
   verso_destra2=al_load_bitmap("./images/mostro_rosso/destra_2.png");
+  colpito_destra1=al_load_bitmap("./images/mostro_rosso/colpito_dx1.png");
+  colpito_destra2=al_load_bitmap("./images/mostro_rosso/colpito_dx2.png");
 
   salta = al_load_bitmap("./images/mostro_rosso/salto.png");
 }
@@ -67,6 +71,28 @@ void Mostro_rosso::drawMostro(){
         cont=0;
       }
     }
+    else if(andando_destra && colpito && !passo)
+    {
+      al_draw_scaled_bitmap(colpito_destra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+      cont++;
+
+    if(cont==7)
+    {
+      passo=true;
+      cont=0;
+    }
+    }
+    else if(andando_destra && colpito && passo)
+    {
+      al_draw_scaled_bitmap(colpito_destra2, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+      cont++;
+
+    if(cont==7)
+    {
+      passo=false;
+      cont=0;
+    }
+    }
 
   if(andando_sinistra && !colpito && !passo)
   {
@@ -90,6 +116,49 @@ void Mostro_rosso::drawMostro(){
       cont=0;
     }
   }
+  else if(andando_sinistra && colpito && !passo)
+  {
+    al_draw_scaled_bitmap(colpito_sinistra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+    cont++;
+
+  if(cont==7)
+  {
+    passo=true;
+    cont=0;
+  }
+  }
+  else if(andando_sinistra && colpito && passo)
+  {
+    al_draw_scaled_bitmap(colpito_sinistra2, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+    cont++;
+
+  if(cont==7)
+  {
+    passo=false;
+    cont=0;
+  }
+  }
+
+  if(colpito && nColpito>=1 && nColpito<3)
+  {
+    al_draw_scaled_bitmap(innevando1, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+  }
+  else if(colpito && nColpito>=3 && nColpito<5)
+    {
+      al_draw_scaled_bitmap(innevando2, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+
+    }
+    else if(colpito && nColpito>=5 && nColpito<7)
+    {
+      al_draw_scaled_bitmap(innevando3, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+
+    }
+    else if(colpito && nColpito>=7)
+    {
+      al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+
+    }
+
 
   if(saltando || cadendo)
   {
@@ -139,6 +208,18 @@ else if(andando_sinistra && !colpito && x>=78) //movimento a sx
     andando_sinistra=false;
   }
 
+  // if(colpito && al_get_timer_count(congelo)%2==0)
+  // {
+  //   cout<<al_get_timer_count(congelo)<<endl;
+  //   cout<<nColpito<<endl<<endl;
+  //   nColpito-=2;
+  //   if(nColpito<=0)
+  //   {
+  //     colpito=false;
+  //     //al_stop_timer(congelo);
+  //   }
+  // }
+
 }
 
 void Mostro_rosso::collisioneProiettile(int a, int b)
@@ -147,9 +228,9 @@ void Mostro_rosso::collisioneProiettile(int a, int b)
   b+=22;
   if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+44))
   {
+    // if(colpito==false)
+      al_start_timer(congelo);
     colpito=true;
     nColpito++;
-    setAndando_destra(false);
-    setAndando_sinistra(false);
   }
 }

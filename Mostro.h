@@ -18,7 +18,7 @@ protected:
   int spostamento;
   int cont;
   unsigned parametroGravita;
-  unsigned nColpito;
+  int nColpito;
   ALLEGRO_TIMER *congelo;
 
 
@@ -36,15 +36,28 @@ public:
 	//sinistra
 	ALLEGRO_BITMAP *verso_sinistra1;
 	ALLEGRO_BITMAP *verso_sinistra2;
+  ALLEGRO_BITMAP *colpito_sinistra1;
+  ALLEGRO_BITMAP *colpito_sinistra2;
+
 
 	//destra
 	ALLEGRO_BITMAP *verso_destra1;
 	ALLEGRO_BITMAP *verso_destra2;
+  ALLEGRO_BITMAP *colpito_destra1;
+  ALLEGRO_BITMAP *colpito_destra2;
+
+  //neve
+  ALLEGRO_BITMAP *innevando1;
+  ALLEGRO_BITMAP *innevando2;
+  ALLEGRO_BITMAP *innevando3;
+  ALLEGRO_BITMAP *palladineve1;
+  ALLEGRO_BITMAP *palladineve2;
 
   ALLEGRO_BITMAP *salta;
 
 
   Mostro();
+  ~Mostro();
   Mostro(float, float);
   //sets
   void setX(float sx);
