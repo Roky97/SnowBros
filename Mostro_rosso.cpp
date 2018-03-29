@@ -207,18 +207,18 @@ else if(andando_sinistra && !colpito && x>=78) //movimento a sx
     andando_destra=true;
     andando_sinistra=false;
   }
-
-  // if(colpito && al_get_timer_count(congelo)%2==0)
-  // {
-  //   cout<<al_get_timer_count(congelo)<<endl;
-  //   cout<<nColpito<<endl<<endl;
-  //   nColpito-=2;
-  //   if(nColpito<=0)
-  //   {
-  //     colpito=false;
-  //     //al_stop_timer(congelo);
-  //   }
-  // }
+//cout<<al_get_timer_count(congelo)<<endl;
+  if(colpito && al_get_timer_count(congelo)%3==0)
+  {
+    cout<<al_get_timer_count(congelo)<<endl;
+    cout<<nColpito<<endl<<endl;
+    nColpito-=1;
+    if(nColpito==0)
+    {
+      colpito=false;
+      //al_stop_timer(congelo);
+    }
+  }
 
 }
 
@@ -228,7 +228,7 @@ void Mostro_rosso::collisioneProiettile(int a, int b)
   b+=22;
   if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+44))
   {
-    // if(colpito==false)
+     if(colpito==false)
       al_start_timer(congelo);
     colpito=true;
     nColpito++;

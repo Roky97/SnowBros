@@ -18,7 +18,7 @@ protected:
   int spostamento;
   int cont;
   unsigned parametroGravita;
-  int nColpito;
+  unsigned nColpito;
   ALLEGRO_TIMER *congelo;
 
 
