@@ -17,6 +17,10 @@ public:
   Colpo();
   ~Colpo();
   Colpo(int,int,bool);
+
+  float getX();
+  float getY();
+
   void drawColpo();
   bool fireColpo(float,float,bool);
   void updateColpo();

@@ -6,6 +6,8 @@ Colpo::Colpo(){
   spostamento=10;
   colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
   colpo_sinistra=al_load_bitmap("./images/giocatore/sparo_sx1.png");
+  x=0;
+  y=0;
 }
 
 Colpo::~Colpo()
@@ -13,6 +15,16 @@ Colpo::~Colpo()
   al_destroy_bitmap(colpo_destra);
   al_destroy_bitmap(colpo_sinistra);
 
+}
+
+float Colpo::getX()
+{
+  return x;
+}
+
+float Colpo::getY()
+{
+  return y;
 }
 
 void Colpo::drawColpo(){
