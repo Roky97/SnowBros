@@ -23,7 +23,7 @@ Mostro::Mostro(){
     palladineve1=al_load_bitmap("./images/neve/palladineve1.png");
     palladineve2=al_load_bitmap("./images/neve/palladineve2.png");
 
-    congelo=al_create_timer(1.0);
+    congelo=al_create_timer(1.0/5);
 
     salta=NULL;
 
