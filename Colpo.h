@@ -21,6 +21,7 @@ public:
   float getX();
   float getY();
   bool getVita();
+  void setVita(bool);
 
   void drawColpo();
   bool fireColpo(float,float,bool);

@@ -222,7 +222,7 @@ else if(andando_sinistra && !colpito && x>=78) //movimento a sx
 
 }
 
-void Mostro_rosso::collisioneProiettile(int a, int b)
+bool Mostro_rosso::collisioneProiettile(int a, int b)
 {
   a+=14;
   b+=22;
@@ -232,5 +232,7 @@ void Mostro_rosso::collisioneProiettile(int a, int b)
       al_start_timer(congelo);
     colpito=true;
     nColpito++;
+    return true;
   }
+  return false;
 }

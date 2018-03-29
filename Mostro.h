@@ -85,7 +85,7 @@ public:
   virtual void carica_immagini(){}
   virtual void drawMostro(){}
   virtual void muovi(){}
-  virtual void collisioneProiettile(int, int){}
+  virtual bool collisioneProiettile(int, int){}
 
   void gravita();
 

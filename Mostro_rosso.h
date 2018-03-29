@@ -17,7 +17,7 @@ public:
   void carica_immagini();
   void drawMostro();
   void muovi();
-  void collisioneProiettile(int, int);
+  bool collisioneProiettile(int, int);
 
 
 };

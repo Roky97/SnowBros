@@ -31,6 +31,10 @@ bool Colpo::getVita(){
   return vita;
 }
 
+void Colpo::setVita(bool s){
+  vita=s;
+}
+
 void Colpo::drawColpo(){
   if(vita && direzione)
   {
