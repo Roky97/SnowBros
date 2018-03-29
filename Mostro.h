@@ -17,23 +17,31 @@ protected:
   float y;
   int spostamento;
   int cont;
+  unsigned parametroGravita;
+  unsigned nColpito;
+  ALLEGRO_TIMER *congelo;
+
 
   bool andando_destra;
   bool andando_sinistra;
   bool vita;
   bool passo;
+  bool cadendo;
+  bool saltando;
+  bool colpito; //non serve
+
 
 
 public:
 	//sinistra
 	ALLEGRO_BITMAP *verso_sinistra1;
 	ALLEGRO_BITMAP *verso_sinistra2;
-	//ALLEGRO_BITMAP *verso_sinistra3;
 
 	//destra
 	ALLEGRO_BITMAP *verso_destra1;
 	ALLEGRO_BITMAP *verso_destra2;
-	//ALLEGRO_BITMAP *verso_destra3;
+
+  ALLEGRO_BITMAP *salta;
 
 
   Mostro();
@@ -45,6 +53,9 @@ public:
   void setAndando_destra(bool d);
   void setAndando_sinistra(bool s);
   void setVita(bool v);
+  void setCadendo(bool c);
+  void setSaltando(bool s);
+  void setColpito(bool c);
 
   //get
   float getX();
@@ -53,11 +64,17 @@ public:
 
   bool getAndando_destra();
   bool getAndando_sinistra();
+  bool getSaltando();
+  bool getCadendo();
+  bool getColpito();
 
 
   virtual void carica_immagini(){}
   virtual void drawMostro(){}
   virtual void muovi(){}
+  virtual void collisioneProiettile(int, int){}
+
+  void gravita();
 
 };
 #endif

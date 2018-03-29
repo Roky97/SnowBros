@@ -7,6 +7,7 @@ private:
   bool saltando;
 
 public:
+
   Mostro_rosso();
   Mostro_rosso(float, float);
 
@@ -16,6 +17,8 @@ public:
   void carica_immagini();
   void drawMostro();
   void muovi();
+  void collisioneProiettile(int, int);
+
 
 };
 #endif

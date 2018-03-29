@@ -1,7 +1,7 @@
 #include "Mostro.h"
 
 Mostro::Mostro(){
-  spostamento=7;
+  spostamento=6;
   x=0;
   y=0;
     andando_sinistra=false;
@@ -11,8 +11,11 @@ Mostro::Mostro(){
 
   	verso_destra1= NULL;
   	verso_destra2= NULL;
+    salta=NULL;
+
     passo=false;
     cont=0;
+  parametroGravita=10;
 
 }
 Mostro::Mostro(float posx, float posy)
@@ -58,6 +61,20 @@ void Mostro::setAndando_sinistra(bool s)
   andando_sinistra=s;
 }
 
+void Mostro::setSaltando(bool s)
+{
+  saltando=s;
+}
+
+void Mostro::setCadendo(bool c)
+{
+  cadendo=c;
+}
+
+void Mostro::setColpito(bool c)
+{
+  colpito=c;
+}
 
 
 //GETS
@@ -81,4 +98,24 @@ bool Mostro::getAndando_sinistra()
 
 bool Mostro::getVita(){
   return vita;
+}
+
+bool Mostro::getSaltando()
+{
+    return saltando;
+}
+bool Mostro::getCadendo()
+{
+  return cadendo;
+}
+
+bool Mostro::getColpito()
+{
+  return colpito;
+}
+
+
+void Mostro::gravita()
+{
+    y+=parametroGravita;
 }
