@@ -226,12 +226,22 @@ bool Mostro_rosso::collisioneProiettile(int a, int b)
   b+=22;
   if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
   {
-     if(colpito==false)
-      al_start_timer(congelo);
     colpito=true;
     if(nColpito<=20)
     nColpito+=2;
     return true;
+  }
+  return false;
+}
+
+bool Mostro_rosso::controllaSeToccato(int a, int b, bool dest, bool sin)
+{
+  if((andando_destra && sin) || (andando_sinistra && dest))
+  {
+    if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+50 >= static_cast<int>(y) && b-50 <= static_cast<int>(y) )
+    {
+      return true;
+    }
   }
   return false;
 }

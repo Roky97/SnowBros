@@ -18,6 +18,8 @@ public:
   void drawMostro();
   void muovi();
   bool collisioneProiettile(int, int);
+  bool controllaSeToccato(int, int, bool, bool);
+
 
 
 };

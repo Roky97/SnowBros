@@ -209,16 +209,49 @@ int main(int argc, char **argv){
 
            }
 
-           for(int i=0; i<nMostri; i++)
+           for(int i=0; i<nMostri; i++) //controllo la collisione tra i colpi e i mostri
            {
              for(int j=0; j<ncolpi; j++)
              {
-               if(colpi[j].getVita())
+              if(colpi[j].getVita())
                if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY()))
                 colpi[j].setVita(false);
-                // cout<<colpi[j].getX()<<" "<<colpi[j].getY()<<endl;
-                // cout<<mostri[i]->getX()<<" "<<mostri[i]->getY()<<endl;
-                //cout<<i<<" "<<mostri[i]->getColpito()<<endl<<endl;
+
+             }
+           }
+
+           for(int i=0; i<nMostri; i++)
+           {
+             for(int j=0; j<nMostri; j++)
+             {
+               // if(i!=j)
+               //cout<<i<<" "<<mostri[i]->getY()<<" - "<<j<<" "<<mostri[j]->getY()<<endl<<endl;
+               if( mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra())) //devo controllare ch ei mostri sono anche vivi
+                {
+                  if(mostri[i]->getAndando_destra())
+                  {
+                    mostri[i]->setAndando_destra(false);
+                    mostri[i]->setAndando_sinistra(true);
+
+                    mostri[j]->setAndando_destra(true);
+                    mostri[j]->setAndando_sinistra(false);
+
+                    mostri[i]->setX(mostri[i]->getX()-10);
+                    mostri[j]->setX(mostri[j]->getX()+10);
+                  }
+                  else if(mostri[j]->getAndando_destra())
+                  {
+                    mostri[i]->setAndando_destra(true);
+                    mostri[i]->setAndando_sinistra(false);
+
+                    mostri[j]->setAndando_destra(false);
+                    mostri[j]->setAndando_sinistra(true);
+
+                    mostri[i]->setX(mostri[i]->getX()+10);
+                    mostri[j]->setX(mostri[j]->getX()-10);
+                  }
+
+                }
 
              }
            }
@@ -247,15 +280,12 @@ int main(int argc, char **argv){
 
             case ALLEGRO_KEY_A:
             tommy->setSparando(true);
-            for(int i=0;i<ncolpi && !colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());i++)
-            {
-              // if(colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato()));
-            }
+            for(int i=0;i<ncolpi && !colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());i++);
             break;
          }
        }
 
-       else if(ev.type == ALLEGRO_EVENT_KEY_UP) {  //
+       else if(ev.type == ALLEGRO_EVENT_KEY_UP) {
          switch(ev.keyboard.keycode) {
 
             case ALLEGRO_KEY_LEFT:
@@ -295,15 +325,10 @@ int main(int argc, char **argv){
   }
 
 
-
-  //al_rest(1);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_destroy_event_queue(event_queue);
   delete tommy;
-
-
-
 
   return 0;
 }

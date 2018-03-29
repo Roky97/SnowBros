@@ -1,7 +1,7 @@
 #include "Mostro.h"
 
 Mostro::Mostro(){
-  spostamento=5;
+  spostamento=4;
   x=0;
   y=0;
     andando_sinistra=false;
@@ -30,6 +30,8 @@ Mostro::Mostro(){
     passo=false;
     cont=0;
     parametroGravita=10;
+    if(colpito==false)
+     al_start_timer(congelo);
 
 }
 Mostro::Mostro(float posx, float posy)

@@ -86,6 +86,7 @@ public:
   virtual void drawMostro(){}
   virtual void muovi(){}
   virtual bool collisioneProiettile(int, int){}
+  virtual bool controllaSeToccato(int, int, bool, bool){}
 
   void gravita();
 
