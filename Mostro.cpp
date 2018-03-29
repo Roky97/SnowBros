@@ -1,7 +1,7 @@
 #include "Mostro.h"
 
 Mostro::Mostro(){
-  spostamento=6;
+  spostamento=5;
   x=0;
   y=0;
     andando_sinistra=false;
