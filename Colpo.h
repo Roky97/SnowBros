@@ -20,10 +20,12 @@ public:
 
   float getX();
   float getY();
+  bool getVita();
 
   void drawColpo();
   bool fireColpo(float,float,bool);
   void updateColpo();
+
   //colpo
   ALLEGRO_BITMAP *colpo_destra;
   ALLEGRO_BITMAP *colpo_sinistra;

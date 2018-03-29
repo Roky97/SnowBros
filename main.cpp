@@ -213,6 +213,7 @@ int main(int argc, char **argv){
            {
              for(int j=0; j<ncolpi; j++)
              {
+               if(colpi[j].getVita())
                mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY());
                 // cout<<colpi[j].getX()<<" "<<colpi[j].getY()<<endl;
                 // cout<<mostri[i]->getX()<<" "<<mostri[i]->getY()<<endl;

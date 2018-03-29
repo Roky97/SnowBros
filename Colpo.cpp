@@ -27,6 +27,10 @@ float Colpo::getY()
   return y;
 }
 
+bool Colpo::getVita(){
+  return vita;
+}
+
 void Colpo::drawColpo(){
   if(vita && direzione)
   {
