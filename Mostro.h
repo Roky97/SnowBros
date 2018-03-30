@@ -21,6 +21,8 @@ protected:
   int cont;
   unsigned parametroGravita;
   unsigned nColpito;
+  unsigned saltoDistanza;
+  unsigned contPrimaDiSaltare;
   ALLEGRO_TIMER *congelo;
 
 
@@ -71,6 +73,7 @@ public:
   void setCadendo(bool c);
   void setSaltando(bool s);
   void setColpito(bool c);
+  void setContPrimaDiSaltare(unsigned c);
 
   //get
   float getX();
@@ -82,6 +85,8 @@ public:
   bool getSaltando();
   bool getCadendo();
   bool getColpito();
+  unsigned getContPrimaDiSaltare();
+
 
 
   virtual void carica_immagini(){}
@@ -89,6 +94,8 @@ public:
   virtual void muovi(){}
   virtual bool collisioneProiettile(int, int){}
   virtual bool controllaSeToccato(int, int, bool, bool){}
+
+  void diminuisciContPrimaDiSaltare();
 
   void gravita();
 

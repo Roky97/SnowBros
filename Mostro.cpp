@@ -4,46 +4,45 @@ Mostro::Mostro(){
   spostamento=4;
   x=0;
   y=0;
-    // andando_sinistra=true;
-    // andando_destra=true;
+  passo=false;
+  cont=0;
+  parametroGravita=10;
+  colpito=false;
+  saltoDistanza=0;
 
-  	verso_sinistra1= NULL;
-  	verso_sinistra2= NULL;
-    colpito_sinistra1=NULL;
-    colpito_sinistra2=NULL;
 
-  	verso_destra1= NULL;
-  	verso_destra2= NULL;
-    colpito_destra1=NULL;
-    colpito_destra2=NULL;
+  verso_sinistra1= NULL;
+  verso_sinistra2= NULL;
+  colpito_sinistra1=NULL;
+  colpito_sinistra2=NULL;
 
-    innevando1=al_load_bitmap("./images/neve/innevando1.png");
-    innevando2=al_load_bitmap("./images/neve/innevando2.png");
-    innevando3=al_load_bitmap("./images/neve/innevando3.png");
-    palladineve1=al_load_bitmap("./images/neve/palladineve1.png");
-    palladineve2=al_load_bitmap("./images/neve/palladineve2.png");
+	verso_destra1= NULL;
+	verso_destra2= NULL;
+  colpito_destra1=NULL;
+  colpito_destra2=NULL;
 
-    congelo=al_create_timer(1.0/5);
+  innevando1=al_load_bitmap("./images/neve/innevando1.png");
+  innevando2=al_load_bitmap("./images/neve/innevando2.png");
+  innevando3=al_load_bitmap("./images/neve/innevando3.png");
+  palladineve1=al_load_bitmap("./images/neve/palladineve1.png");
+  palladineve2=al_load_bitmap("./images/neve/palladineve2.png");
 
-    salta=NULL;
+  congelo=al_create_timer(1.0/5);
 
-    passo=false;
-    cont=0;
-    parametroGravita=10;
-    colpito=false;
-    //al_start_timer(congelo);
+  salta=NULL;
+  //al_start_timer(congelo);
 
-    srand((unsigned)time(NULL));
+  srand((unsigned)time(NULL));
+  contPrimaDiSaltare=rand()%3+2;
+  int a=rand()%1001;
+  cout<<a<<endl;
+  if(a%2==0)
+    andando_sinistra=true;
 
-    int a=rand()%1001;
-    cout<<a<<endl;
-    if(a%2==0)
-      andando_sinistra=true;
-
-    if(andando_sinistra)
-      andando_destra=false;
-    else
-      andando_destra=true;
+  if(andando_sinistra)
+    andando_destra=false;
+  else
+    andando_destra=true;
 
 }
 Mostro::Mostro(float posx, float posy)
@@ -114,6 +113,12 @@ void Mostro::setColpito(bool c)
   colpito=c;
 }
 
+void Mostro::setContPrimaDiSaltare(unsigned c)
+{
+  contPrimaDiSaltare=c;
+}
+
+
 
 //GETS
 float Mostro::getX()
@@ -152,8 +157,19 @@ bool Mostro::getColpito()
   return colpito;
 }
 
+unsigned Mostro::getContPrimaDiSaltare()
+{
+  return contPrimaDiSaltare;
+}
+
 
 void Mostro::gravita()
 {
     y+=parametroGravita;
+}
+
+void Mostro::diminuisciContPrimaDiSaltare()
+{
+  if(contPrimaDiSaltare>0)
+    contPrimaDiSaltare--;
 }

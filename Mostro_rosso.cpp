@@ -161,26 +161,6 @@ void Mostro_rosso::drawMostro(){
 void Mostro_rosso::muovi(){
 
 
-/*if(x+spostamento>=1105 && andando_destra)
-{
-  andando_destra=false;
-  andando_sinistra=true;
-}
-else if(andando_destra)
-{
-  x+=spostamento;
-}
-
-if(x-spostamento<=0 && andando_sinistra)
-{
-  andando_sinistra=false;
-  andando_destra=true;
-}
-else if(andando_sinistra)
-{
-  x-=spostamento;
-}*/
-
 if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
 {
   x+=spostamento;
@@ -189,6 +169,7 @@ else if(andando_destra && !colpito && x+42>=1105)
 {
   andando_destra=false;
   andando_sinistra=true;
+  diminuisciContPrimaDiSaltare();
 }
 
 else if(andando_sinistra && !colpito && x>=78) //movimento a sx
@@ -197,6 +178,7 @@ else if(andando_sinistra && !colpito && x>=78) //movimento a sx
   {
     andando_destra=true;
     andando_sinistra=false;
+    diminuisciContPrimaDiSaltare();
   }
 
   if(colpito && al_get_timer_count(congelo)%25==0)
@@ -206,6 +188,19 @@ else if(andando_sinistra && !colpito && x>=78) //movimento a sx
     {
       colpito=false;
       //al_stop_timer(congelo);
+    }
+  }
+
+  if(saltando && saltoDistanza<=210 && !cadendo) //aggiorna le posizioni per saltare
+  {
+    y-=15;
+    saltoDistanza+=15;
+    if(saltoDistanza>=210)
+    {
+      saltando=false;
+      saltoDistanza=0;
+      contPrimaDiSaltare=rand()%4;
+      cadendo=true;
     }
   }
 
