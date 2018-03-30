@@ -8,8 +8,10 @@ Mostro::Mostro(){
   cont=0;
   parametroGravita=10;
   colpito=false;
+  colpitoInnevato=false;
+  totInnevato=false;
   saltoDistanza=0;
-
+vita=true;
 
   verso_sinistra1= NULL;
   verso_sinistra2= NULL;
@@ -33,7 +35,7 @@ Mostro::Mostro(){
   //al_start_timer(congelo);
 
   srand((unsigned)time(NULL));
-  
+
   contPrimaDiSaltare=rand()%3+2;
 
   int a=rand()%1001;
@@ -120,6 +122,11 @@ void Mostro::setContPrimaDiSaltare(unsigned c)
   contPrimaDiSaltare=c;
 }
 
+void Mostro::setTotInnevato(bool i)
+{
+  totInnevato=i;
+}
+
 
 
 //GETS
@@ -164,6 +171,11 @@ unsigned Mostro::getContPrimaDiSaltare()
   return contPrimaDiSaltare;
 }
 
+bool Mostro::getTotInnevato()
+{
+  return totInnevato;
+}
+
 
 void Mostro::gravita()
 {
@@ -174,4 +186,23 @@ void Mostro::diminuisciContPrimaDiSaltare()
 {
   if(contPrimaDiSaltare>0)
     contPrimaDiSaltare--;
+}
+
+void Mostro::muoviDaTommySeInnevato(bool dest, bool sini, unsigned spost)
+{
+  if(totInnevato)
+  {
+    if(dest)
+    {
+      x+=spost;
+      andando_destra=true;
+      andando_sinistra=false;
+    }
+    else if(sini)
+    {
+      x-=spost;
+      andando_destra=false;
+      andando_sinistra=true;
+    }
+  }
 }

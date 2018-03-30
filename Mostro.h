@@ -33,6 +33,9 @@ protected:
   bool cadendo;
   bool saltando;
   bool colpito; //non serve
+  bool totInnevato;
+  bool colpitoInnevato;
+
 
 
 
@@ -74,6 +77,7 @@ public:
   void setSaltando(bool s);
   void setColpito(bool c);
   void setContPrimaDiSaltare(unsigned c);
+  void setTotInnevato(bool i);
 
   //get
   float getX();
@@ -86,6 +90,7 @@ public:
   bool getCadendo();
   bool getColpito();
   unsigned getContPrimaDiSaltare();
+  bool getTotInnevato();
 
 
 
@@ -96,7 +101,8 @@ public:
   virtual bool controllaSeToccato(int, int, bool, bool){}
 
   void diminuisciContPrimaDiSaltare();
-
+  void muoviDaTommySeInnevato(bool, bool, unsigned);
+  
   void gravita();
 
 };

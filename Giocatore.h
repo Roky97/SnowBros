@@ -37,6 +37,7 @@ private:
   bool passo;
   bool cadendo;
   bool toccato;
+  bool spostaMostro;
 
 public:
   //salta
@@ -49,17 +50,22 @@ public:
 	//sinistra
 	ALLEGRO_BITMAP *verso_sinistra1;
 	ALLEGRO_BITMAP *verso_sinistra2;
-	//ALLEGRO_BITMAP *verso_sinistra3;
   ALLEGRO_BITMAP *lancia_sinistra1;
   ALLEGRO_BITMAP *lancia_sinistra2;
+  ALLEGRO_BITMAP *sposta_verso_sinistra1;
+  ALLEGRO_BITMAP *sposta_verso_sinistra2;
+
+
 
 
 	//destra
 	ALLEGRO_BITMAP *verso_destra1;
 	ALLEGRO_BITMAP *verso_destra2;
-	//ALLEGRO_BITMAP *verso_destra3;
   ALLEGRO_BITMAP *lancia_destra1;
   ALLEGRO_BITMAP *lancia_destra2;
+  ALLEGRO_BITMAP *sposta_verso_destra1;
+  ALLEGRO_BITMAP *sposta_verso_destra2;
+
 
   ALLEGRO_BITMAP *toccato1;
   ALLEGRO_BITMAP *toccato2;
@@ -84,6 +90,7 @@ public:
   void setPasso(bool s);
   void setCadendo(bool s);
   void setToccato(bool s);
+  void setSpostaMostro(bool s);
 
   //get
   float getX();
@@ -98,6 +105,8 @@ public:
   bool getFermoalternato();
   bool getToccato();
   int getCont();
+  bool getSpostaMostro();
+  unsigned getSpostamento();
 
 
   //Immagini e disegno
@@ -107,7 +116,7 @@ public:
   //Movimenti
   void muovi();
   void gravita();
-  void controllaTocco(int a, int b);
+  bool controllaTocco(int a, int b, bool i);
 
 };
 #endif

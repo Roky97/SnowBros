@@ -24,6 +24,8 @@ Giocatore::Giocatore(int w, int h)
   passo=false;
   cadendo=false;
   toccato=false;
+  spostaMostro=false;
+
 
   salta= NULL;
 
@@ -166,9 +168,24 @@ bool Giocatore::getToccato(){
 int Giocatore::getCont(){
   return cont;
 }
+
+unsigned Giocatore::getSpostamento()
+{
+  return spostamento;
+}
+
 void Giocatore::setCadendo(bool s)
 {
   cadendo=s;
+}
+
+void Giocatore::setSpostaMostro(bool s)
+{
+  spostaMostro=s;
+}
+bool Giocatore::getSpostaMostro()
+{
+  return spostaMostro;
 }
 
 
@@ -194,6 +211,11 @@ void Giocatore::carica_immagini()
   lancia_sinistra2=al_load_bitmap("./images/giocatore/lancia_sx3.png");
   lancia_destra1=al_load_bitmap("./images/giocatore/lancia_dx2.png");
   lancia_destra2=al_load_bitmap("./images/giocatore/lancia_dx3.png");
+
+  sposta_verso_sinistra1=al_load_bitmap("./images/giocatore/spinge_sx1.png");
+  sposta_verso_sinistra2=al_load_bitmap("./images/giocatore/spinge_sx2.png");
+  sposta_verso_destra1=al_load_bitmap("./images/giocatore/spinge_dx1.png");
+  sposta_verso_destra2=al_load_bitmap("./images/giocatore/spinge_dx2.png");
 
   toccato1=al_load_bitmap("./images/giocatore/toccato1.png");
   toccato2=al_load_bitmap("./images/giocatore/toccato2.png");
@@ -297,8 +319,12 @@ void Giocatore::drawPersonaggio()
     {
       if(sparando)
         al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
-      else
-        al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+      else if(spostaMostro)
+        {
+          al_draw_scaled_bitmap(sposta_verso_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+        }
+        else
+          al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
       cont++;
 
       if(cont==7)
@@ -313,8 +339,12 @@ void Giocatore::drawPersonaggio()
     {
       if(sparando)
         al_draw_scaled_bitmap(lancia_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
-      else
-        al_draw_scaled_bitmap(verso_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+        else if(spostaMostro)
+          {
+            al_draw_scaled_bitmap(sposta_verso_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+          }
+          else
+            al_draw_scaled_bitmap(verso_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
       cont++;
 
       if(cont==7)
@@ -329,8 +359,12 @@ void Giocatore::drawPersonaggio()
   {
     if(sparando)
       al_draw_scaled_bitmap(lancia_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
-    else
-      al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+      else if(spostaMostro)
+        {
+          al_draw_scaled_bitmap(sposta_verso_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+        }
+        else
+          al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
     cont++;
 
     if(cont==7)
@@ -345,8 +379,12 @@ void Giocatore::drawPersonaggio()
   {
     if(sparando)
       al_draw_scaled_bitmap(lancia_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
-    else
-      al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+      else if(spostaMostro)
+        {
+          al_draw_scaled_bitmap(sposta_verso_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+        }
+        else
+          al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
     cont++;
 
     if(cont==7)
@@ -392,11 +430,20 @@ void Giocatore::gravita()
   y+=parametroGravita;
 }
 
-void Giocatore::controllaTocco(int a,int b){
+bool Giocatore::controllaTocco(int a,int b, bool i){
 
-if(a+7>=x && a-7<=x && b+10>=y && b-10<=y)
-toccato=true;
-vite--;
-  cout<<a<<"  "<<b<<endl;
-  cout<<x<<"  "<<y<<endl<<endl;
+if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+150 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
+{
+if(i)
+    spostaMostro=true;
+    return true;
+}
+
+else
+  spostaMostro=false;
+
+return false;
+//vite--;
+  // cout<<a<<"  "<<b<<endl;
+  // cout<<x<<"  "<<y<<endl<<endl;
 }
