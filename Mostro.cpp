@@ -4,8 +4,8 @@ Mostro::Mostro(){
   spostamento=4;
   x=0;
   y=0;
-    andando_sinistra=false;
-    andando_destra=true;
+    // andando_sinistra=true;
+    // andando_destra=true;
 
   	verso_sinistra1= NULL;
   	verso_sinistra2= NULL;
@@ -30,8 +30,20 @@ Mostro::Mostro(){
     passo=false;
     cont=0;
     parametroGravita=10;
-    if(colpito==false)
-     al_start_timer(congelo);
+    colpito=false;
+    //al_start_timer(congelo);
+
+    srand((unsigned)time(NULL));
+
+    int a=rand()%1001;
+    cout<<a<<endl;
+    if(a%2==0)
+      andando_sinistra=true;
+
+    if(andando_sinistra)
+      andando_destra=false;
+    else
+      andando_destra=true;
 
 }
 Mostro::Mostro(float posx, float posy)

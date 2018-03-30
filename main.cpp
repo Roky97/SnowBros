@@ -236,8 +236,8 @@ int main(int argc, char **argv){
                     mostri[j]->setAndando_destra(true);
                     mostri[j]->setAndando_sinistra(false);
 
-                    mostri[i]->setX(mostri[i]->getX()-10);
-                    mostri[j]->setX(mostri[j]->getX()+10);
+                    mostri[i]->setX(mostri[i]->getX()-7);
+                    mostri[j]->setX(mostri[j]->getX()+7);
                   }
                   else if(mostri[j]->getAndando_destra())
                   {
@@ -247,8 +247,8 @@ int main(int argc, char **argv){
                     mostri[j]->setAndando_destra(false);
                     mostri[j]->setAndando_sinistra(true);
 
-                    mostri[i]->setX(mostri[i]->getX()+10);
-                    mostri[j]->setX(mostri[j]->getX()-10);
+                    mostri[i]->setX(mostri[i]->getX()+7);
+                    mostri[j]->setX(mostri[j]->getX()-7);
                   }
 
                 }

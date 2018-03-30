@@ -4,8 +4,8 @@ Mostro_rosso::Mostro_rosso()
 {
   Mostro();
   saltando =false;
-  andando_destra=true;
-  andando_sinistra=false;
+  // andando_destra=true;
+  // andando_sinistra=false;
   colpito=false;
   nColpito=0;
 }
@@ -21,15 +21,6 @@ Mostro_rosso::Mostro_rosso(float x1, float y2)
 
 }
 
-bool Mostro_rosso::getSaltando()
-{
-  return saltando;
-}
-
-void Mostro_rosso::setSaltando(bool s)
-{
-  saltando=s;
-}
 
  void Mostro_rosso::carica_immagini()
 {
@@ -224,8 +215,10 @@ bool Mostro_rosso::collisioneProiettile(int a, int b)
 {
   a+=14;
   b+=22;
-  if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
+  //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
+    if((a+40>=static_cast<int>(x) && a-40<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y) )
   {
+    al_start_timer(congelo);
     colpito=true;
     if(nColpito<=20)
     nColpito+=2;
@@ -238,7 +231,7 @@ bool Mostro_rosso::controllaSeToccato(int a, int b, bool dest, bool sin)
 {
   if((andando_destra && sin) || (andando_sinistra && dest))
   {
-    if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+50 >= static_cast<int>(y) && b-50 <= static_cast<int>(y) )
+    if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+100 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
     {
       return true;
     }

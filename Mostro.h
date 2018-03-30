@@ -1,5 +1,7 @@
 #ifndef MOSTRO_H
 #define MOSTRO_H
+#include <cstdlib>
+#include <ctime>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
