@@ -13,6 +13,8 @@ private:
   unsigned spostamento;
   bool direzione;
 
+  bool cambiaColore;
+
 public:
   Colpo();
   ~Colpo();
@@ -29,7 +31,11 @@ public:
 
   //colpo
   ALLEGRO_BITMAP *colpo_destra;
+  ALLEGRO_BITMAP *colpo_destra2;
+
   ALLEGRO_BITMAP *colpo_sinistra;
+  ALLEGRO_BITMAP *colpo_sinistra2;
+
 
 
 };
