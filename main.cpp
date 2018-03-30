@@ -166,15 +166,16 @@ int main(int argc, char **argv){
          {
            tommy->muovi(); //aggiorno la posizione del giocatore
 
-           for(int i=0;i<nMostri;i++)
-           {
-             tommy->controllaTocco(mostri[i]->getX(),mostri[i]->getY());
-             if(tommy->getToccato())
-             {
-               //restart=true;
-               break;
-             }
-           }
+           // for(int i=0;i<nMostri;i++)
+           // {
+           //   tommy->controllaTocco(mostri[i]->getX(),mostri[i]->getY());
+           //   if(tommy->getToccato())
+           //   {
+           // tommy->setVite(tommy->getVite()-1);
+           //     //restart=true;
+           //     break;
+           //   }
+           // }
 
 
           for(int i=0; i<ncolpi; i++) //aggiorno la posizione dei colpi
@@ -215,6 +216,9 @@ int main(int argc, char **argv){
               ma=0;
             if(mb<0)
               mb=0;
+
+            if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato()))
+              mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(), tommy->getSpostamento());
 
             if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //gravita' dei mostri
             {
@@ -283,6 +287,8 @@ int main(int argc, char **argv){
                 }
              }
            }
+
+
          }
 
 
@@ -335,16 +341,19 @@ int main(int argc, char **argv){
 
         if( redraw && al_is_event_queue_empty(event_queue))
         {
+
+
         mappe[level].drawMappa();
+
+        for(int i=0;i<nMostri;i++)
+        mostri[i]->drawMostro();
+
         tommy->drawPersonaggio();
 
         for(int i=0;i<ncolpi;i++)
         {
           colpi[i].drawColpo();
         }
-
-        for(int i=0;i<nMostri;i++)
-        mostri[i]->drawMostro();
 
         al_flip_display();
         }
