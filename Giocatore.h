@@ -36,6 +36,7 @@ private:
   bool potere_v;
   bool passo;
   bool cadendo;
+  bool toccato;
 
 public:
   //salta
@@ -60,6 +61,11 @@ public:
   ALLEGRO_BITMAP *lancia_destra1;
   ALLEGRO_BITMAP *lancia_destra2;
 
+  ALLEGRO_BITMAP *toccato1;
+  ALLEGRO_BITMAP *toccato2;
+  ALLEGRO_BITMAP *toccato3;
+
+
 
 
   Giocatore(int, int);
@@ -77,18 +83,21 @@ public:
   void setFermo(bool s);
   void setPasso(bool s);
   void setCadendo(bool s);
+  void setToccato(bool s);
 
   //get
   float getX();
   float getY();
-  unsigned & getVelocita();
-  unsigned & getVite();
+  unsigned getVelocita();
+  unsigned getVite();
   bool getAndando_destra();
   bool getAndando_sinistra();
   bool getSaltando();
   bool getSparando();
   bool getCadendo();
   bool getFermoalternato();
+  bool getToccato();
+  int getCont();
 
 
   //Immagini e disegno
@@ -98,7 +107,7 @@ public:
   //Movimenti
   void muovi();
   void gravita();
-
+  void controllaTocco(int a, int b);
 
 };
 #endif

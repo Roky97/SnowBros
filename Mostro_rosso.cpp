@@ -174,7 +174,7 @@ else if(andando_destra && !colpito && x+42>=1105)
 
 else if(andando_sinistra && !colpito && x>=78) //movimento a sx
   x-=spostamento;
-  else if(andando_sinistra && !colpito && x<78)
+else if(andando_sinistra && !colpito && x<78)
   {
     andando_destra=true;
     andando_sinistra=false;
@@ -212,13 +212,13 @@ bool Mostro_rosso::collisioneProiettile(int a, int b)
   b+=22;
   //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
     if((a+40>=static_cast<int>(x) && a-40<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y) )
-  {
+    {
     al_start_timer(congelo);
     colpito=true;
     if(nColpito<=20)
     nColpito+=2;
     return true;
-  }
+    }
   return false;
 }
 

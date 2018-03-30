@@ -31,6 +31,7 @@ int main(int argc, char **argv){
   bool main_screen=true;
   bool esc=false;
   bool mostrivivi=true;
+  bool restart=false;
 
 
 
@@ -142,6 +143,16 @@ int main(int argc, char **argv){
       bool redraw=true;
       while(!esc)
       {
+         /*if(restart)
+         {
+           tommy->setX(w/2.0 - 15);
+           tommy->setY(h-30*4 -21*(4));
+           tommy->setToccato(false);
+           restart=false;
+         }*/
+
+
+
         al_clear_to_color(al_map_rgb(0,0,0));
         al_wait_for_event(event_queue, &ev);
 
@@ -154,6 +165,16 @@ int main(int argc, char **argv){
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
            tommy->muovi(); //aggiorno la posizione del giocatore
+
+           for(int i=0;i<nMostri;i++)
+           {
+             tommy->controllaTocco(mostri[i]->getX(),mostri[i]->getY());
+             if(tommy->getToccato())
+             {
+               //restart=true;
+               break;
+             }
+           }
 
 
           for(int i=0; i<ncolpi; i++) //aggiorno la posizione dei colpi
@@ -171,6 +192,7 @@ int main(int argc, char **argv){
 
           if(a<0)
             a=0;
+
           if(b<0)
             b=0;
 
@@ -208,7 +230,6 @@ int main(int argc, char **argv){
               mostri[i]->setSaltando(true);
 
               //fare la collisione tra il giocatore e il nemico
-
            }
 
 
@@ -219,9 +240,9 @@ int main(int argc, char **argv){
               if(colpi[j].getVita())
                if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY()))
                 colpi[j].setVita(false);
-
              }
            }
+
 
            for(int i=0; i<nMostri; i++)
            {
@@ -259,12 +280,11 @@ int main(int argc, char **argv){
                     mostri[i]->diminuisciContPrimaDiSaltare();
                     mostri[j]->diminuisciContPrimaDiSaltare();
                   }
-
                 }
-
              }
            }
          }
+
 
          else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
          switch(ev.keyboard.keycode) {

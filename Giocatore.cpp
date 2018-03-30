@@ -23,6 +23,7 @@ Giocatore::Giocatore(int w, int h)
   sparando=false;
   passo=false;
   cadendo=false;
+  toccato=false;
 
   salta= NULL;
 
@@ -105,6 +106,11 @@ void Giocatore::setPasso(bool s)
   passo=s;
 }
 
+void Giocatore::setToccato(bool s)
+{
+  toccato=s;
+}
+
 //GETS
 float Giocatore::getX()
 {
@@ -116,11 +122,11 @@ float Giocatore::getY()
   return y;
 }
 
-unsigned & Giocatore::getVelocita()
+unsigned Giocatore::getVelocita()
 {
   return velocita;
 }
-unsigned & Giocatore::getVite()
+unsigned  Giocatore::getVite()
 {
   return vite;
 }
@@ -153,11 +159,18 @@ bool Giocatore::getCadendo()
 bool Giocatore::getFermoalternato(){
 return fermoAlternato;
 }
+bool Giocatore::getToccato(){
+  return toccato;
+}
 
+int Giocatore::getCont(){
+  return cont;
+}
 void Giocatore::setCadendo(bool s)
 {
   cadendo=s;
 }
+
 
 //IMMAGINI E DISEGNO
 
@@ -182,12 +195,31 @@ void Giocatore::carica_immagini()
   lancia_destra1=al_load_bitmap("./images/giocatore/lancia_dx2.png");
   lancia_destra2=al_load_bitmap("./images/giocatore/lancia_dx3.png");
 
-
+  toccato1=al_load_bitmap("./images/giocatore/toccato1.png");
+  toccato2=al_load_bitmap("./images/giocatore/toccato2.png");
+  toccato3=al_load_bitmap("./images/giocatore/toccato3.png");
 }
 
 void Giocatore::drawPersonaggio()
 {
-  if(fermo && fermoAlternato && !andando_destra && !andando_sinistra && !cadendo)
+  if(toccato)
+ {
+   if(cont<=20)
+    {
+      al_draw_scaled_bitmap(toccato1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+      cont++;
+    }
+   else if(cont >20 && cont<=40)
+   {
+     al_draw_scaled_bitmap(toccato2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+   }
+   else if(cont >40 && cont<=60)
+   {
+     al_draw_scaled_bitmap(toccato3, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+   }
+ }
+
+  else if(fermo && fermoAlternato && !andando_destra && !andando_sinistra && !cadendo && !toccato)
   {
     if(sparando && passo)
       al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -208,7 +240,7 @@ void Giocatore::drawPersonaggio()
      }
   }
 
-  else if(fermo && !fermoAlternato && !andando_destra && !andando_sinistra && !cadendo)
+  else if(fermo && !fermoAlternato && !andando_destra && !andando_sinistra && !cadendo && !toccato)
   {
     if(sparando && passo)
       al_draw_scaled_bitmap(lancia_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -230,7 +262,7 @@ void Giocatore::drawPersonaggio()
      }
   }
 
-  else if(saltando && !andando_destra && !andando_sinistra && !cadendo)
+  else if(saltando && !andando_destra && !andando_sinistra && !cadendo && !toccato)
   {
     if(sparando)
       al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -246,7 +278,7 @@ void Giocatore::drawPersonaggio()
 
   }
 
-   if(cadendo)
+   if(cadendo && !toccato)
    {
     if(sparando)
       al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -261,7 +293,7 @@ void Giocatore::drawPersonaggio()
      }
    }
 
-  else if(andando_destra && !passo)
+  else if(andando_destra && !passo && !toccato)
     {
       if(sparando)
         al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -277,7 +309,7 @@ void Giocatore::drawPersonaggio()
        fermoAlternato=true;
     }
 
-  else if(andando_destra && passo)
+  else if(andando_destra && passo && !toccato )
     {
       if(sparando)
         al_draw_scaled_bitmap(lancia_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -293,7 +325,7 @@ void Giocatore::drawPersonaggio()
       fermoAlternato=true;
     }
 
-  else if(andando_sinistra && !passo)
+  else if(andando_sinistra && !passo && !toccato)
   {
     if(sparando)
       al_draw_scaled_bitmap(lancia_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -309,7 +341,7 @@ void Giocatore::drawPersonaggio()
      fermoAlternato=false;
   }
 
-  else if(andando_sinistra && passo)
+  else if(andando_sinistra && passo &&!toccato)
   {
     if(sparando)
       al_draw_scaled_bitmap(lancia_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -336,7 +368,7 @@ void Giocatore::muovi()
     x+=spostamento;
   }
 
-  else if(andando_sinistra && x>35) //movimento a sx
+  else if(andando_sinistra && x>35 && !toccato) //movimento a sx
     x-=spostamento;
 
   if(saltando && saltoDistanza<=210 && !cadendo) //aggiorna le posizioni per saltare
@@ -358,5 +390,13 @@ void Giocatore::muovi()
 void Giocatore::gravita()
 {
   y+=parametroGravita;
+}
 
+void Giocatore::controllaTocco(int a,int b){
+
+if(a+7>=x && a-7<=x && b+10>=y && b-10<=y)
+toccato=true;
+vite--;
+  cout<<a<<"  "<<b<<endl;
+  cout<<x<<"  "<<y<<endl<<endl;
 }
