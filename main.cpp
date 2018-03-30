@@ -166,10 +166,9 @@ int main(int argc, char **argv){
             mostri[i]->muovi();
           }
 
-          // cout<<tommy->getX()<<" "<<tommy->getY()<<endl;
           float a=tommy->getX()/92.08;
           float b=(tommy->getY()/91.63)+1;
-          // cout<<a<<" "<<b<<" "<<mappe[level].getValore(a, b)<<" "<<tommy->getSaltando()<<endl;
+
           if(a<0)
             a=0;
           if(b<0)
@@ -205,9 +204,13 @@ int main(int argc, char **argv){
               mostri[i]->setCadendo(false);
             }
 
+            if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //salto dei mostri
+              mostri[i]->setSaltando(true);
+
               //fare la collisione tra il giocatore e il nemico
 
            }
+
 
            for(int i=0; i<nMostri; i++) //controllo la collisione tra i colpi e i mostri
            {
@@ -238,6 +241,9 @@ int main(int argc, char **argv){
 
                     mostri[i]->setX(mostri[i]->getX()-7);
                     mostri[j]->setX(mostri[j]->getX()+7);
+
+                    mostri[i]->diminuisciContPrimaDiSaltare();
+                    mostri[j]->diminuisciContPrimaDiSaltare();
                   }
                   else if(mostri[j]->getAndando_destra())
                   {
@@ -249,6 +255,9 @@ int main(int argc, char **argv){
 
                     mostri[i]->setX(mostri[i]->getX()+7);
                     mostri[j]->setX(mostri[j]->getX()-7);
+
+                    mostri[i]->diminuisciContPrimaDiSaltare();
+                    mostri[j]->diminuisciContPrimaDiSaltare();
                   }
 
                 }
