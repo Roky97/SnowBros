@@ -226,7 +226,7 @@ bool Mostro_rosso::controllaSeToccato(int a, int b, bool dest, bool sin)
 {
   if((andando_destra && sin) || (andando_sinistra && dest))
   {
-    if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+100 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
+    if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+150 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
     {
       return true;
     }

@@ -33,9 +33,11 @@ Mostro::Mostro(){
   //al_start_timer(congelo);
 
   srand((unsigned)time(NULL));
+  
   contPrimaDiSaltare=rand()%3+2;
+
   int a=rand()%1001;
-  cout<<a<<endl;
+
   if(a%2==0)
     andando_sinistra=true;
 
