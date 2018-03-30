@@ -39,6 +39,12 @@ Mostro_rosso::Mostro_rosso(float x1, float y2)
 
 void Mostro_rosso::drawMostro(){
 
+if(!colpitoInnevato)
+{
+  if(saltando || cadendo)
+  {
+    al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+  }
   if(andando_destra && !colpito && !passo)
     {
       al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
@@ -149,18 +155,34 @@ void Mostro_rosso::drawMostro(){
       al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
 
     }
-
-
-  if(saltando || cadendo)
-  {
-    al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
   }
 
+  else
+  {
+    al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+
+  }
 }
 
 void Mostro_rosso::muovi(){
-
-
+if(colpitoInnevato)
+{
+  al_stop_timer(congelo);
+  if(andando_destra)
+  {
+    if(x+42>=1105)
+      vita=false; //qua caso mai facciamo una animazione
+    x+=spostamento+10;
+  }
+  else if(andando_sinistra)
+  {
+    if(x<150)
+      vita=false;
+    x-=spostamento+10;
+  }
+}
+else
+{
 if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
 {
   x+=spostamento;
@@ -189,6 +211,10 @@ else if(andando_sinistra && !colpito && x<78)
       colpito=false;
       //al_stop_timer(congelo);
     }
+    if(nColpito<7)
+    {
+      totInnevato=false;
+    }
   }
 
   if(saltando && saltoDistanza<=210 && !cadendo) //aggiorna le posizioni per saltare
@@ -203,6 +229,7 @@ else if(andando_sinistra && !colpito && x<78)
       cadendo=true;
     }
   }
+}
 
 }
 
@@ -215,8 +242,12 @@ bool Mostro_rosso::collisioneProiettile(int a, int b)
     {
     al_start_timer(congelo);
     colpito=true;
+    if(totInnevato)
+      colpitoInnevato=true;
     if(nColpito<=20)
-    nColpito+=2;
+      nColpito+=2;
+    if(nColpito>=7)
+      totInnevato=true;
     return true;
     }
   return false;
