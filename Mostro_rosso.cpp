@@ -165,6 +165,7 @@ if(!colpitoInnevato)
 }
 
 void Mostro_rosso::muovi(){
+
 if(colpitoInnevato)
 {
   al_stop_timer(congelo);
@@ -176,7 +177,7 @@ if(colpitoInnevato)
   }
   else if(andando_sinistra)
   {
-    if(x<150)
+    if(x<50)
       vita=false;
     x-=spostamento+10;
   }

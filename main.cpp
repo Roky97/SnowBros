@@ -185,7 +185,8 @@ int main(int argc, char **argv){
 
           for(int i=0;i<nMostri;i++) //aggiorno la posizione dei mostri
           {
-            mostri[i]->muovi();
+            if(mostri[i]->getVita())
+              mostri[i]->muovi();
           }
 
           float a=tommy->getX()/92.08;
@@ -210,6 +211,8 @@ int main(int argc, char **argv){
 
           for(int i=0; i<nMostri; i++)
           {
+            if(mostri[i]->getVita())
+            {
             float ma=mostri[i]->getX()/92.08;
             float mb=(mostri[i]->getY()/91.63)+1;
             if(ma<0)
@@ -217,75 +220,86 @@ int main(int argc, char **argv){
             if(mb<0)
               mb=0;
 
-            if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato()))
+              if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato()))
               mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(), tommy->getSpostamento());
 
-            if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //gravita' dei mostri
-            {
-              mostri[i]->setCadendo(true);
-              mostri[i]->gravita();
-            }
-            else
-            {
-              mostri[i]->setCadendo(false);
-            }
+              if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //gravita' dei mostri
+              {
+                mostri[i]->setCadendo(true);
+                mostri[i]->gravita();
+              }
+              else
+              {
+                mostri[i]->setCadendo(false);
+              }
 
-            if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //salto dei mostri
-              mostri[i]->setSaltando(true);
+              if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //salto dei mostri
+                mostri[i]->setSaltando(true);
+              }
 
               //fare la collisione tra il giocatore e il nemico
-           }
+            }
 
 
            for(int i=0; i<nMostri; i++) //controllo la collisione tra i colpi e i mostri
            {
-             for(int j=0; j<ncolpi; j++)
+             if(mostri[i]->getVita())
              {
-              if(colpi[j].getVita())
-               if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY()))
-                colpi[j].setVita(false);
-             }
+               for(int j=0; j<ncolpi; j++)
+               {
+                 if(colpi[j].getVita())
+                  if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY()))
+                    colpi[j].setVita(false);
+                }
+            }
            }
 
 
            for(int i=0; i<nMostri; i++)
            {
-             for(int j=0; j<nMostri; j++)
+             if(mostri[i]->getVita())
              {
-               // if(i!=j)
-               //cout<<i<<" "<<mostri[i]->getY()<<" - "<<j<<" "<<mostri[j]->getY()<<endl<<endl;
-               if( mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra())) //devo controllare ch ei mostri sono anche vivi
-                {
-                  if(mostri[i]->getAndando_destra())
-                  {
-                    mostri[i]->setAndando_destra(false);
-                    mostri[i]->setAndando_sinistra(true);
+               for(int j=0; j<nMostri; j++)
+               {
+                 if(mostri[j]->getVita())
+                 {
 
-                    mostri[j]->setAndando_destra(true);
-                    mostri[j]->setAndando_sinistra(false);
+                   // if(i!=j)
+                   //cout<<i<<" "<<mostri[i]->getY()<<" - "<<j<<" "<<mostri[j]->getY()<<endl<<endl;
+                   if( mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra())) //devo controllare ch ei mostri sono anche vivi
+                   {
+                     if(mostri[i]->getAndando_destra())
+                     {
+                       mostri[i]->setAndando_destra(false);
+                       mostri[i]->setAndando_sinistra(true);
 
-                    mostri[i]->setX(mostri[i]->getX()-7);
-                    mostri[j]->setX(mostri[j]->getX()+7);
+                       mostri[j]->setAndando_destra(true);
+                       mostri[j]->setAndando_sinistra(false);
 
-                    mostri[i]->diminuisciContPrimaDiSaltare();
-                    mostri[j]->diminuisciContPrimaDiSaltare();
-                  }
-                  else if(mostri[j]->getAndando_destra())
-                  {
-                    mostri[i]->setAndando_destra(true);
-                    mostri[i]->setAndando_sinistra(false);
+                       mostri[i]->setX(mostri[i]->getX()-7);
+                       mostri[j]->setX(mostri[j]->getX()+7);
 
-                    mostri[j]->setAndando_destra(false);
-                    mostri[j]->setAndando_sinistra(true);
+                       mostri[i]->diminuisciContPrimaDiSaltare();
+                       mostri[j]->diminuisciContPrimaDiSaltare();
+                     }
+                     else if(mostri[j]->getAndando_destra())
+                     {
+                       mostri[i]->setAndando_destra(true);
+                       mostri[i]->setAndando_sinistra(false);
 
-                    mostri[i]->setX(mostri[i]->getX()+7);
-                    mostri[j]->setX(mostri[j]->getX()-7);
+                       mostri[j]->setAndando_destra(false);
+                       mostri[j]->setAndando_sinistra(true);
 
-                    mostri[i]->diminuisciContPrimaDiSaltare();
-                    mostri[j]->diminuisciContPrimaDiSaltare();
+                       mostri[i]->setX(mostri[i]->getX()+7);
+                       mostri[j]->setX(mostri[j]->getX()-7);
+
+                      mostri[i]->diminuisciContPrimaDiSaltare();
+                      mostri[j]->diminuisciContPrimaDiSaltare();
+                    }
                   }
                 }
-             }
+              }
+              }
            }
 
 
@@ -346,7 +360,10 @@ int main(int argc, char **argv){
         mappe[level].drawMappa();
 
         for(int i=0;i<nMostri;i++)
-        mostri[i]->drawMostro();
+          if(mostri[i]->getVita())
+          {
+            mostri[i]->drawMostro();
+          }
 
         tommy->drawPersonaggio();
 
