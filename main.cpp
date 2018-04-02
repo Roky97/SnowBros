@@ -7,7 +7,7 @@ using namespace std;
 #include "Colpo.h"
 #include "Mostro_rosso.h"
 
-const int ncolpi=5;
+const int ncolpi=10;
 const int maxmostri=100;
 
 
@@ -220,8 +220,8 @@ int main(int argc, char **argv){
             if(mb<0)
               mb=0;
 
-              if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato()))
-              mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(), tommy->getSpostamento());
+              if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato())) //tommy sposta i mostri solo se sono totalmente innevati
+                mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
 
               if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //gravita' dei mostri
               {
@@ -276,8 +276,8 @@ int main(int argc, char **argv){
                        mostri[j]->setAndando_destra(true);
                        mostri[j]->setAndando_sinistra(false);
 
-                       mostri[i]->setX(mostri[i]->getX()-7);
-                       mostri[j]->setX(mostri[j]->getX()+7);
+                       mostri[i]->setX(mostri[i]->getX()-35);
+                       mostri[j]->setX(mostri[j]->getX()+35);
 
                        mostri[i]->diminuisciContPrimaDiSaltare();
                        mostri[j]->diminuisciContPrimaDiSaltare();
@@ -290,11 +290,20 @@ int main(int argc, char **argv){
                        mostri[j]->setAndando_destra(false);
                        mostri[j]->setAndando_sinistra(true);
 
-                       mostri[i]->setX(mostri[i]->getX()+7);
-                       mostri[j]->setX(mostri[j]->getX()-7);
+                       mostri[i]->setX(mostri[i]->getX()+35);
+                       mostri[j]->setX(mostri[j]->getX()-35);
 
                       mostri[i]->diminuisciContPrimaDiSaltare();
                       mostri[j]->diminuisciContPrimaDiSaltare();
+                    }
+
+                    if(mostri[j]->getTotInnevato() || mostri[i]->getTotInnevato()) //quando un mostro sta per morire e colpisce uno non innevato, quest'ultimo morira' pure
+                    {
+                      mostri[i]->setTotInnevato(true);
+                      mostri[i]->setcolpitoInnevato(true);
+
+                      mostri[j]->setTotInnevato(true);
+                      mostri[j]->setcolpitoInnevato(true);
                     }
                   }
                 }

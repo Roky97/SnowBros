@@ -3,7 +3,7 @@
 Colpo::Colpo(){
   vita=false;
   raggio=0;
-  spostamento=10;
+  spostamento=15;
   cambiaColore=false;
   colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
   colpo_destra2=al_load_bitmap("./images/giocatore/sparo_dx2.png");
