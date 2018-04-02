@@ -127,6 +127,11 @@ void Mostro::setTotInnevato(bool i)
   totInnevato=i;
 }
 
+void Mostro::setcolpitoInnevato(bool i)
+{
+  colpitoInnevato=true;
+}
+
 
 
 //GETS
