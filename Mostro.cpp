@@ -132,6 +132,11 @@ void Mostro::setcolpitoInnevato(bool i)
   colpitoInnevato=true;
 }
 
+void Mostro::setnColpito(unsigned c){
+
+nColpito=c;
+}
+
 
 
 //GETS
@@ -179,6 +184,10 @@ unsigned Mostro::getContPrimaDiSaltare()
 bool Mostro::getTotInnevato()
 {
   return totInnevato;
+}
+
+unsigned Mostro::getnColpito(){
+  return nColpito;
 }
 
 

@@ -79,6 +79,7 @@ public:
   void setContPrimaDiSaltare(unsigned c);
   void setTotInnevato(bool i);
   void setcolpitoInnevato(bool i);
+  void setnColpito(unsigned c);
 
   //get
   float getX();
@@ -92,13 +93,14 @@ public:
   bool getColpito();
   unsigned getContPrimaDiSaltare();
   bool getTotInnevato();
+  unsigned getnColpito();
 
 
 
   virtual void carica_immagini(){}
   virtual void drawMostro(){}
   virtual void muovi(){}
-  virtual bool collisioneProiettile(int, int){}
+  virtual bool collisioneProiettile(int, int, bool){}
   virtual bool controllaSeToccato(int, int, bool, bool){}
 
   void diminuisciContPrimaDiSaltare();

@@ -120,7 +120,7 @@ public:
   //Movimenti
   void muovi();
   void gravita();
-  bool controllaTocco(int a, int b, bool i);
+  bool controllaTocco(int a, int b, bool i,bool c);
 
 };
 #endif

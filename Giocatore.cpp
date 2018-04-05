@@ -162,6 +162,7 @@ bool Giocatore::getCadendo()
 bool Giocatore::getFermoalternato(){
 return fermoAlternato;
 }
+
 bool Giocatore::getToccato(){
   return toccato;
 }
@@ -445,7 +446,7 @@ void Giocatore::gravita()
   y+=parametroGravita;
 }
 
-bool Giocatore::controllaTocco(int a,int b, bool i){
+bool Giocatore::controllaTocco(int a,int b, bool i,bool c){
 
 if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+150 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
 {
@@ -454,7 +455,7 @@ if(i)
     spostaMostro=true;
     return true;
 }
-else
+else if(!c)
 {
   toccato=true;
   spostaMostro=false;

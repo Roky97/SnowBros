@@ -162,7 +162,6 @@ if(!colpitoInnevato)
   else
   {
     al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
-
   }
 }
 
@@ -170,18 +169,31 @@ void Mostro_rosso::muovi(){
 
 if(colpitoInnevato)
 {
-  al_stop_timer(congelo);
+  //al_stop_timer(congelo);
   parametroGravita=20;
   if(andando_destra)
   {
     if(x+42>=1105)
-      vita=false; //qua caso mai facciamo una animazione
+      {
+        vita=false;
+        totInnevato=false;
+        colpito=false;
+        nColpito=0;
+        colpitoInnevato=false;
+      } //qua caso mai facciamo una animazione
     x+=spostamento+20;
   }
   else if(andando_sinistra)
   {
     if(x<50)
-      vita=false;
+      {
+        vita=false;
+        vita=false;
+        totInnevato=false;
+        colpito=false;
+        nColpito=0;
+        colpitoInnevato=false;
+      }
     x-=spostamento+20;
   }
 }
@@ -207,7 +219,7 @@ else if(andando_sinistra && !colpito && x<78)
     diminuisciContPrimaDiSaltare();
   }
 
-  if(colpito && al_get_timer_count(congelo)%25==0)
+if(colpito && al_get_timer_count(congelo)%25==0 )
   {
     nColpito-=1;
     if(nColpito==0)
@@ -237,7 +249,7 @@ else if(andando_sinistra && !colpito && x<78)
 
 }
 
-bool Mostro_rosso::collisioneProiettile(int a, int b)
+bool Mostro_rosso::collisioneProiettile(int a, int b, bool dir)
 {
   a+=14;
   b+=22;
@@ -247,7 +259,19 @@ bool Mostro_rosso::collisioneProiettile(int a, int b)
     //al_start_timer(congelo);
     colpito=true;
     if(totInnevato)
-      colpitoInnevato=true;
+      {
+        colpitoInnevato=true;
+        if(dir)
+        {
+          andando_destra=true;
+          andando_sinistra=false;
+        }
+        else
+        {
+          andando_destra=false;
+          andando_sinistra=true;
+        }
+      }
     if(nColpito<=20)
       nColpito+=2;
     if(nColpito>=7)
