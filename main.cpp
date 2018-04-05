@@ -179,6 +179,32 @@ int main(int argc, char **argv){
            tommy->setCont1(0);
            restart=false;
            cout<<"succhaimelo"<<endl;
+
+           for(int i=0;i<nMostri;i++)
+           delete mostri[i];
+
+           nMostri=0;
+
+             for(int i=0;i<mappe[0].getMapSizeX();i++)
+             {
+               for(int j=0;j<mappe[0].getMapSizeY();j++)
+               {
+                 switch (mappe[0].getValore(i,j)) {
+                   case 2:
+                   mostri[nMostri]=new Mostro_rosso();
+                   mostri[nMostri]->setX(i*92.08);
+                   mostri[nMostri]->setY(j*91.63);
+                   mostri[nMostri]->carica_immagini();
+                   nMostri++;
+                   break;
+                   // /case 3:
+                   // mostri[nMostri]=new Mostro_giallo(i*92.08,j*91.63);
+                   // nMostri++;
+                   // break;
+                 }
+               }
+             }
+
          }
 
 
@@ -239,12 +265,10 @@ int main(int argc, char **argv){
             if(mb<0)
               mb=0;
 
-            if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato())) //tommy sposta i
+            if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato(),mostri[i]->getColpito())) //tommy sposta i
               //mostri solo se sono totalmente innevati
                 {
                   mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
-
-
                 }
 
             if(!mostri[i]->getColpito())
@@ -286,7 +310,7 @@ int main(int argc, char **argv){
                for(int j=0; j<ncolpi; j++)
                {
                  if(colpi[j].getVita())
-                  if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY()))
+                  if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
                     colpi[j].setVita(false);
                 }
             }
