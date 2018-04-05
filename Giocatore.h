@@ -26,6 +26,7 @@ private:
   unsigned parametroGravita;
   unsigned saltoDistanza;
   unsigned colpoDistanza;
+  unsigned cont1;
 
   bool fermo;
   bool fermoAlternato;
@@ -91,6 +92,7 @@ public:
   void setCadendo(bool s);
   void setToccato(bool s);
   void setSpostaMostro(bool s);
+  void setCont1(unsigned c);
 
   //get
   float getX();
@@ -107,6 +109,8 @@ public:
   int getCont();
   bool getSpostaMostro();
   unsigned getSpostamento();
+  unsigned getCont1();
+
 
 
   //Immagini e disegno

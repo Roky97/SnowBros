@@ -17,11 +17,39 @@ void draw(string);
 int main(int argc, char **argv){
 
   init();
+
+
   int w=1105;
   int h=1008;
+
+  ALLEGRO_DISPLAY       *display = NULL;
+  /*
+
+  ALLEGRO_TRANSFORM t;
+	ALLEGRO_MONITOR_INFO data;
+
+	al_get_monitor_info(0, &data);
+
+	int monitor_w = data.x2 - data.x1;
+	int monitor_h = data.y2 - data.y1;
+
+	float resize_x = monitor_w / static_cast<float>(w);
+	float resize_y = monitor_h / static_cast<float>(h);
+
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+
+	display = al_create_display(monitor_w, monitor_h);
+
+	al_identity_transform(&t);
+
+	al_scale_transform(&t, resize_x, resize_y);
+
+	al_use_transform(&t);
+
+
+  */
   unsigned level=0;
   int nMostri=0;
-  ALLEGRO_DISPLAY       *display = NULL;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
   Colpo colpi[ncolpi];
@@ -143,13 +171,15 @@ int main(int argc, char **argv){
       bool redraw=true;
       while(!esc)
       {
-         /*if(restart)
+         if(restart && tommy->getCont1()>60)
          {
            tommy->setX(w/2.0 - 15);
            tommy->setY(h-30*4 -21*(4));
            tommy->setToccato(false);
+           tommy->setCont1(0);
            restart=false;
-         }*/
+           cout<<"succhaimelo"<<endl;
+         }
 
 
 
@@ -165,17 +195,6 @@ int main(int argc, char **argv){
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
            tommy->muovi(); //aggiorno la posizione del giocatore
-
-           // for(int i=0;i<nMostri;i++)
-           // {
-           //   tommy->controllaTocco(mostri[i]->getX(),mostri[i]->getY());
-           //   if(tommy->getToccato())
-           //   {
-           // tommy->setVite(tommy->getVite()-1);
-           //     //restart=true;
-           //     break;
-           //   }
-           // }
 
 
           for(int i=0; i<ncolpi; i++) //aggiorno la posizione dei colpi
@@ -220,8 +239,27 @@ int main(int argc, char **argv){
             if(mb<0)
               mb=0;
 
-              if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato())) //tommy sposta i mostri solo se sono totalmente innevati
-                mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
+            if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato())) //tommy sposta i
+              //mostri solo se sono totalmente innevati
+                {
+                  mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
+
+
+                }
+
+            if(!mostri[i]->getColpito())
+            {
+
+              if(tommy->getToccato())
+              {
+                //tommy->setVite(tommy->getVite()-1);
+                cout<<"toccato"<<endl;
+                restart=true;
+                break;
+              }
+            }
+
+
 
               if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //gravita' dei mostri
               {

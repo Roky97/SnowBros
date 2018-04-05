@@ -13,6 +13,7 @@ Giocatore::Giocatore(int w, int h)
   parametroGravita=10;
   saltoDistanza=0;
   colpoDistanza=0;
+  cont1=0;
 
   fermo=true;
   fermoAlternato=false;
@@ -174,6 +175,10 @@ unsigned Giocatore::getSpostamento()
   return spostamento;
 }
 
+unsigned Giocatore::getCont1(){
+  return cont1;
+}
+
 void Giocatore::setCadendo(bool s)
 {
   cadendo=s;
@@ -187,6 +192,12 @@ bool Giocatore::getSpostaMostro()
 {
   return spostaMostro;
 }
+
+void Giocatore::setCont1(unsigned c)
+{
+  cont1=c;
+}
+
 
 
 //IMMAGINI E DISEGNO
@@ -226,22 +237,25 @@ void Giocatore::drawPersonaggio()
 {
   if(toccato)
  {
-   if(cont<=20)
+   if(cont1<=20)
     {
       al_draw_scaled_bitmap(toccato1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
-      cont++;
+      cont1++;
     }
-   else if(cont >20 && cont<=40)
+   else if(cont1 >20 && cont1<=40)
    {
      al_draw_scaled_bitmap(toccato2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+     cont1++;
    }
-   else if(cont >40 && cont<=60)
+   else if(cont1 >40 && cont1<=60)
    {
      al_draw_scaled_bitmap(toccato3, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+     cont1++;
    }
  }
-
-  else if(fermo && fermoAlternato && !andando_destra && !andando_sinistra && !cadendo && !toccato)
+else
+{
+ if(fermo && fermoAlternato && !andando_destra && !andando_sinistra && !cadendo && !toccato)
   {
     if(sparando && passo)
       al_draw_scaled_bitmap(lancia_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
@@ -396,20 +410,21 @@ void Giocatore::drawPersonaggio()
     fermoAlternato=false;
   }
 }
+}
 
 //MOVIMENTI
 
 void Giocatore::muovi()
 {
-  if(andando_destra && x<=w-30-spostamento) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+  if(andando_destra && x<=w-30-spostamento && !toccato) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
   {
     x+=spostamento;
   }
 
-  else if(andando_sinistra && x>35 && !toccato) //movimento a sx
+  else if(andando_sinistra && x>35 && !toccato && !toccato) //movimento a sx
     x-=spostamento;
 
-  if(saltando && saltoDistanza<=210 && !cadendo) //aggiorna le posizioni per saltare
+  if(saltando && saltoDistanza<=210 && !cadendo && !toccato) //aggiorna le posizioni per saltare
   {
     y-=15;
     saltoDistanza+=15;
@@ -435,10 +450,16 @@ bool Giocatore::controllaTocco(int a,int b, bool i){
 if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+150 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
 {
 if(i)
+{
     spostaMostro=true;
     return true;
 }
-
+else
+{
+  toccato=true;
+  spostaMostro=false;
+}
+}
 else
   spostaMostro=false;
 
