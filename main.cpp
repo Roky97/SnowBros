@@ -178,7 +178,6 @@ int main(int argc, char **argv){
            tommy->setToccato(false);
            tommy->setCont1(0);
            restart=false;
-           cout<<"succhaimelo"<<endl;
 
            for(int i=0;i<nMostri;i++)
            delete mostri[i];
@@ -220,7 +219,7 @@ int main(int argc, char **argv){
 
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
-           tommy->muovi(); //aggiorno la posizione del giocatore
+           //aggiorno la posizione del giocatore
 
 
           for(int i=0; i<ncolpi; i++) //aggiorno la posizione dei colpi
@@ -235,7 +234,7 @@ int main(int argc, char **argv){
           }
 
           float a=tommy->getX()/92.08;
-          float b=(tommy->getY()/91.63)+1;
+          float b=((tommy->getY()+90)/91.63);
 
           if(a<0)
             a=0;
@@ -243,10 +242,41 @@ int main(int argc, char **argv){
           if(b<0)
             b=0;
 
-          if(mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false) //gravita'
+          tommy->muovi();
+
+
+          /*if(mappe[level].getValore(a+1,b-1)==1 && tommy->getAndando_destra())//&& tommy->getSaltando())
+          {
+            tommy->setAndando_destra(false);
+          }
+          if(mappe[level].getValore(a-1,b-1)==1 && tommy->getAndando_sinistra())
+          {
+            tommy->setAndando_sinistra(false);
+          }*/
+
+
+          if(tommy->getSaltando()==false)
+          {
+            if(tommy->getY()>400)
+            {
+              if((((int)tommy->getY()+35)/100)%2!=0)
+              {
+                tommy->setCadendo(true);
+                tommy->gravita();
+              }
+            }
+            else if((((int)tommy->getY()+5)/100)%2!=0)
+            {
+              tommy->setCadendo(true);
+              tommy->gravita();
+            }
+          }
+
+          if((mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false)) //gravita'
           {
             tommy->setCadendo(true);
             tommy->gravita();
+            cout<<tommy->getX()<<"   "<<tommy->getY()<<"   "<<((int)tommy->getY()+5)/100<<endl<<endl;
           }
           else
           {
@@ -277,7 +307,6 @@ int main(int argc, char **argv){
               if(tommy->getToccato())
               {
                 //tommy->setVite(tommy->getVite()-1);
-                cout<<"toccato"<<endl;
                 restart=true;
                 break;
               }
