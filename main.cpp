@@ -48,18 +48,20 @@ int main(int argc, char **argv){
 
 
   */
-  unsigned level=0;
-  int nMostri=0;
+  unsigned level=0; //INDICE DELLA MAPPA PER CAMBIARE LIVELLO
+  int nMostri=0; //NUMERO MOSTRI NELLA MAPPA
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
-  Colpo colpi[ncolpi];
-  Mappa mappe[2];
-  Mostro *mostri[maxmostri];
-  Giocatore * tommy= new Giocatore(w,h);
-  bool main_screen=true;
-  bool esc=false;
+  Colpo colpi[ncolpi]; //ARRAY DI COLPI
+  Mappa mappe[2]; //ARRAY DI MAPPE
+  Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
+  Giocatore * tommy= new Giocatore(w,h); //DICHIARAZIONE GIOCATORE
+  bool main_screen=true;  //BOOLEANA CHE CONTROLLA LA PAGINA PRINCIPALE DEL GIOCO
+  bool esc=false;       //BOOLEANA CHE CONTROLLA SE CLICCIAMO SULLA X
   bool mostrivivi=true;
-  bool restart=false;
+  bool restart=false;  //BOOLEANA CHE SI ATTIVA QUANDO IL MOSTRO VIENE toccato
+  bool gameover=false; //
+
 
 
 
@@ -85,7 +87,7 @@ int main(int argc, char **argv){
 
 
 
-  for(int i=0;i<mappe[0].getMapSizeX();i++)
+  for(int i=0;i<mappe[0].getMapSizeX();i++)  //CREIAMO UN ARRAY DI MOSTRI
   {
     for(int j=0;j<mappe[0].getMapSizeY();j++)
     {
@@ -117,14 +119,16 @@ int main(int argc, char **argv){
     ALLEGRO_EVENT ev;
     al_wait_for_event(event_queue, &ev);
 
-    if(main_screen)
+    if(main_screen) //SE MAIN SCREEN È TRUE SIAMO NELLA SCHERMATA PRINCIPALE
     {
       bool screen=0;
       bool redraw=true;
-      ALLEGRO_BITMAP* schermata1= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_1.png");
-      ALLEGRO_BITMAP* schermata2= al_load_bitmap("./images/schermata_iniziale/schermata_iniziale_2.png");
+      ALLEGRO_BITMAP* schermata1= al_load_bitmap("./images/schermate/schermata_iniziale_1.png");
+      ALLEGRO_BITMAP* schermata2= al_load_bitmap("./images/schermate/schermata_iniziale_2.png");
 
-      while(main_screen)
+
+
+      while(main_screen) //WHILE UTILIZZATO PER ALTERNARE LE SCHERMATE PRINCIPALI
       {
         al_wait_for_event(event_queue, &ev);
         if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -164,20 +168,80 @@ int main(int argc, char **argv){
       }
     }
 
+    if(gameover) //SE PERDIAMO TUTTE E 3 LE VITE
+    {
+      bool screen=0;
+      bool redraw=true;
+      ALLEGRO_BITMAP* gameover1= al_load_bitmap("./images/schermate/game_over1.png");
+      ALLEGRO_BITMAP* gameover2= al_load_bitmap("./images/schermate/game_over2.png");
+      while(gameover)   //WHILE UTILIZZATO PER ALTERNARE LA SCHERMATA DI GAMEOVER
+      {
+
+        al_wait_for_event(event_queue, &ev);
+        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+         {
+           esc=true;
+           al_destroy_bitmap(gameover1);
+           al_destroy_bitmap(gameover2);
+           break;
+         }
+        else if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
+          switch (ev.keyboard.keycode) {
+            case ALLEGRO_KEY_ENTER:
+            gameover=false;
+            redraw=false;
+            tommy->setVite(3);
+            al_destroy_bitmap(gameover1);
+            al_destroy_bitmap(gameover2);
+            break;
+
+            // case ALLEGRO_KEY_C:
+            // esc=true;
+            // al_destroy_bitmap(gameover1);
+            // al_destroy_bitmap(gameover2);
+            //
+            // break;
+          }
+        if(!screen && redraw && al_is_event_queue_empty(event_queue))
+        {
+          al_clear_to_color(al_map_rgb(0,0,0));
+          al_draw_scaled_bitmap(gameover1, 0, 0, 256, 224, 0,0,w,h,0);
+          al_flip_display();
+          al_rest(0.5);
+          screen=true;
+
+        }
+        else if(screen && redraw && al_is_event_queue_empty(event_queue))
+        {
+          al_clear_to_color(al_map_rgb(0,0,0));
+          al_draw_scaled_bitmap(gameover2, 0, 0, 256, 224, 0,0,w,h,0);
+          al_flip_display();
+          al_rest(0.5);
+          screen=false;
+        }
+      }
+
+    }
 
 
-    if(!esc)
+    if(!esc && !gameover) //
     {
       bool redraw=true;
-      while(!esc)
+      while(!esc && !gameover)
       {
-         if(restart && tommy->getCont1()>60)
+         if(restart && tommy->getCont1()>60) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
+                                             //SE CONT1 SUPERA 60 VUOL DIRE CHE È STATA DISEGNATA L'INTERA ANIMAZIONE
          {
-           tommy->setX(w/2.0 - 15);
+           tommy->setX(w/2.0 - 15);         //SETTIAMO LE POS DEL GIOCATORE A QUELLE INIZIALI
            tommy->setY(h-30*4 -21*(4));
            tommy->setToccato(false);
-           tommy->setCont1(0);
+           tommy->setCont1(0);              //SETTIAMO IL CONT1 A 0
            restart=false;
+           if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0
+           {
+            gameover=true;
+            break;
+           }
 
            for(int i=0;i<nMostri;i++)
            delete mostri[i];
@@ -200,11 +264,12 @@ int main(int argc, char **argv){
                    // mostri[nMostri]=new Mostro_giallo(i*92.08,j*91.63);
                    // nMostri++;
                    // break;
-                 }
-               }
-             }
+                    }
+                  }
+                }
 
-         }
+            }
+
 
 
 
@@ -241,7 +306,7 @@ int main(int argc, char **argv){
 
           if(b<0)
             b=0;
-
+          if(tommy->getToccato()==false)
           tommy->muovi();
 
 
@@ -255,11 +320,11 @@ int main(int argc, char **argv){
           }*/
 
 
-          if(tommy->getSaltando()==false)
+          if(tommy->getSaltando()==false)  //CONTROLLIAMO CHE IL PERSONAGGIO NON VADA DENTRO I MURETTI
           {
             if(tommy->getY()>400)
             {
-              if((((int)tommy->getY()+35)/100)%2!=0)
+              if((((int)tommy->getY()+30)/100)%2!=0)
               {
                 tommy->setCadendo(true);
                 tommy->gravita();
@@ -272,17 +337,36 @@ int main(int argc, char **argv){
             }
           }
 
-          if((mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false)) //gravita'
+          if((mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false)) //GESTIAMO LA GRAVITA' DEL PERSONAGGIO
           {
             tommy->setCadendo(true);
             tommy->gravita();
-            cout<<tommy->getX()<<"   "<<tommy->getY()<<"   "<<((int)tommy->getY()+5)/100<<endl<<endl;
+            //cout<<tommy->getX()<<"   "<<tommy->getY()<<"   "<<((int)tommy->getY()+5)/100<<endl<<endl;
           }
           else
           {
             tommy->setCadendo(false);
             tommy->setFermo(true);
           }
+
+
+
+
+
+
+          for(int i=0; i<nMostri; i++)
+          {
+            if(!mostri[i]->getColpito() && !tommy->getToccato())
+              {
+                tommy->controllaseToccato(mostri[i]->getX(), mostri[i]->getY());
+                if(tommy->getToccato())
+                {
+                  restart=true;
+                  break;
+                }
+              }
+          }
+
 
           for(int i=0; i<nMostri; i++)
           {
@@ -301,17 +385,27 @@ int main(int argc, char **argv){
                   mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
                 }
 
-            if(!mostri[i]->getColpito())
-            {
 
-              if(tommy->getToccato())
-              {
-                //tommy->setVite(tommy->getVite()-1);
-                restart=true;
-                break;
-              }
-            }
 
+
+
+
+                if(mostri[i]->getSaltando()==false)
+                {
+                  if(mostri[i]->getY()>400)
+                  {
+                    if((((int)mostri[i]->getY()+30)/100)%2!=0)
+                    {
+                      mostri[i]->setCadendo(true);
+                      mostri[i]->gravita();
+                    }
+                  }
+                  else if((((int)mostri[i]->getY())/100)%2!=0)
+                  {
+                    mostri[i]->setCadendo(true);
+                    mostri[i]->gravita();
+                  }
+                }
 
 
               if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //gravita' dei mostri
@@ -326,7 +420,7 @@ int main(int argc, char **argv){
 
               if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //salto dei mostri
                 mostri[i]->setSaltando(true);
-              }
+            }
 
               //fare la collisione tra il giocatore e il nemico
             }
@@ -406,12 +500,13 @@ int main(int argc, char **argv){
          }
 
 
-         else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+      else if(ev.type == ALLEGRO_EVENT_KEY_DOWN && !restart) {
          switch(ev.keyboard.keycode) {
 
             case ALLEGRO_KEY_LEFT:
                tommy->setAndando_sinistra(true);
                tommy->setFermo(false);
+
                break;
 
             case ALLEGRO_KEY_RIGHT:
@@ -434,7 +529,7 @@ int main(int argc, char **argv){
          }
        }
 
-       else if(ev.type == ALLEGRO_EVENT_KEY_UP) {
+        if(ev.type == ALLEGRO_EVENT_KEY_UP || restart) {
          switch(ev.keyboard.keycode) {
 
             case ALLEGRO_KEY_LEFT:

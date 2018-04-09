@@ -47,7 +47,7 @@ if(!colpitoInnevato)
   {
     al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
   }
-  if(andando_destra && !colpito && !passo)
+ else if(andando_destra && !colpito && !passo)
     {
       al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
       cont++;
@@ -70,7 +70,7 @@ if(!colpitoInnevato)
         cont=0;
       }
     }
-    else if(andando_destra && colpito && !passo)
+  else if(andando_destra && colpito && !passo)
     {
       al_draw_scaled_bitmap(colpito_destra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
       cont++;
@@ -81,7 +81,7 @@ if(!colpitoInnevato)
       cont=0;
     }
     }
-    else if(andando_destra && colpito && passo)
+  else if(andando_destra && colpito && passo)
     {
       al_draw_scaled_bitmap(colpito_destra2, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
       cont++;
@@ -93,7 +93,7 @@ if(!colpitoInnevato)
     }
     }
 
-  if(andando_sinistra && !colpito && !passo)
+  else if(andando_sinistra && !colpito && !passo)
   {
     al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
     cont++;
@@ -159,9 +159,28 @@ if(!colpitoInnevato)
     }
   }
 
-  else
+  else         //PALLA DI NEVE CHE ROTOLA
   {
-    al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+    if(!passo)
+    {
+      al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+      cont++;
+      if(cont==7)
+       {
+         passo=true;
+         cont=0;
+       }
+    }
+    if(passo)
+    {
+      al_draw_scaled_bitmap(palladineve2, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+      cont++;
+      if(cont==7)
+       {
+         passo=false;
+         cont=0;
+       }
+    }
   }
 }
 
@@ -233,11 +252,11 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
     }
   }
 
-  if(saltando && saltoDistanza<=210 && !cadendo) //aggiorna le posizioni per saltare
+  if(saltando && saltoDistanza<=225 && !cadendo) //aggiorna le posizioni per saltare
   {
     y-=15;
     saltoDistanza+=15;
-    if(saltoDistanza>=210)
+    if(saltoDistanza>=225)
     {
       saltando=false;
       saltoDistanza=0;

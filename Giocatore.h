@@ -121,6 +121,7 @@ public:
   void muovi();
   void gravita();
   bool controllaTocco(int a, int b, bool i,bool c);
+  void controllaseToccato(int a,int b);
 
 };
 #endif
