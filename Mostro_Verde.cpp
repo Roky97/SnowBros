@@ -1,0 +1,312 @@
+#include "Mostro_Verde.h"
+
+Mostro_Verde::Mostro_Verde()
+{
+  Mostro();
+  saltando =false;
+  // andando_destra=true;
+  // andando_sinistra=false;
+  colpito=false;
+  nColpito=0;
+  al_start_timer(congelo);
+
+}
+
+Mostro_Verde::Mostro_Verde(float x1, float y2)
+{
+  Mostro(x1,y2);
+  saltando=false;
+  andando_destra=true;
+  andando_sinistra=false;
+  colpito=false;
+  nColpito=0;
+}
+
+
+ void Mostro_Verde::carica_immagini()
+{
+  verso_sinistra1=al_load_bitmap("./images/mostro_verde/sinistra1.png");
+  verso_sinistra2=al_load_bitmap("./images/mostro_verde/sinistra2.png");
+  colpito_sinistra1=al_load_bitmap("./images/mostro_verde/colpito1_sx.png");
+  colpito_sinistra2=al_load_bitmap("./images/mostro_verde/colpito2_sx.png");
+
+  verso_destra1=al_load_bitmap("./images/mostro_verde/destra1.png");
+  verso_destra2=al_load_bitmap("./images/mostro_verde/destra2.png");
+  colpito_destra1=al_load_bitmap("./images/mostro_verde/colpito1_dx.png");
+  colpito_destra2=al_load_bitmap("./images/mostro_verde/colpito2_dx.png");
+
+  salta = al_load_bitmap("./images/mostro_verde/salto.png");
+}
+
+void Mostro_Verde::drawMostro(){
+
+if(!colpitoInnevato)
+{
+  if(saltando || cadendo)
+  {
+    al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+  }
+ else if(andando_destra && !colpito && !passo)
+    {
+      al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+      cont++;
+
+      if(cont==7)
+       {
+         passo=true;
+         cont=0;
+       }
+    }
+
+  else if(andando_destra && !colpito && passo)
+    {
+        al_draw_scaled_bitmap(verso_destra2, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+        cont++;
+
+      if(cont==7)
+      {
+        passo=false;
+        cont=0;
+      }
+    }
+  else if(andando_destra && colpito && !passo)
+    {
+      al_draw_scaled_bitmap(colpito_destra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+      cont++;
+
+    if(cont==7)
+    {
+      passo=true;
+      cont=0;
+    }
+    }
+  else if(andando_destra && colpito && passo)
+    {
+      al_draw_scaled_bitmap(colpito_destra2, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+      cont++;
+
+    if(cont==7)
+    {
+      passo=false;
+      cont=0;
+    }
+    }
+
+  else if(andando_sinistra && !colpito && !passo)
+  {
+    al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+    cont++;
+
+    if(cont==7)
+     {
+       passo=true;
+       cont=0;
+     }
+  }
+  else if(andando_sinistra && !colpito && passo)
+  {
+   al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+    cont++;
+
+    if(cont==7)
+    {
+      passo=false;
+      cont=0;
+    }
+  }
+  else if(andando_sinistra && colpito && !passo)
+  {
+    al_draw_scaled_bitmap(colpito_sinistra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+    cont++;
+
+  if(cont==7)
+  {
+    passo=true;
+    cont=0;
+  }
+  }
+  else if(andando_sinistra && colpito && passo)
+  {
+    al_draw_scaled_bitmap(colpito_sinistra2, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+    cont++;
+
+  if(cont==7)
+  {
+    passo=false;
+    cont=0;
+  }
+  }
+
+  if(colpito && nColpito>=1 && nColpito<3)
+  {
+    al_draw_scaled_bitmap(innevando1, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+  }
+  else if(colpito && nColpito>=3 && nColpito<5)
+    {
+      al_draw_scaled_bitmap(innevando2, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+
+    }
+    else if(colpito && nColpito>=5 && nColpito<7)
+    {
+      al_draw_scaled_bitmap(innevando3, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+
+    }
+    else if(colpito && nColpito>=7)
+    {
+      al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+
+    }
+  }
+
+  else         //PALLA DI NEVE CHE ROTOLA
+  {
+    if(!passo)
+    {
+      al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+      cont++;
+      if(cont==7)
+       {
+         passo=true;
+         cont=0;
+       }
+    }
+    if(passo)
+    {
+      al_draw_scaled_bitmap(palladineve2, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+      cont++;
+      if(cont==7)
+       {
+         passo=false;
+         cont=0;
+       }
+    }
+  }
+}
+
+void Mostro_Verde::muovi(){
+
+if(colpitoInnevato)
+{
+  //al_stop_timer(congelo);
+  parametroGravita=20;
+  if(andando_destra)
+  {
+    if(x+42>=1105)
+      {
+        vita=false;
+        totInnevato=false;
+        colpito=false;
+        nColpito=0;
+        colpitoInnevato=false;
+      } //qua caso mai facciamo una animazione
+    x+=spostamento+20;
+  }
+  else if(andando_sinistra)
+  {
+    if(x<50)
+      {
+        vita=false;
+        vita=false;
+        totInnevato=false;
+        colpito=false;
+        nColpito=0;
+        colpitoInnevato=false;
+      }
+    x-=spostamento+20;
+  }
+}
+else
+{
+if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+{
+  x+=spostamento;
+}
+else if(andando_destra && !colpito && x+42>=1105)
+{
+  andando_destra=false;
+  andando_sinistra=true;
+  diminuisciContPrimaDiSaltare();
+}
+
+else if(andando_sinistra && !colpito && x>=78) //movimento a sx
+  x-=spostamento;
+else if(andando_sinistra && !colpito && x<78)
+  {
+    andando_destra=true;
+    andando_sinistra=false;
+    diminuisciContPrimaDiSaltare();
+  }
+
+if(colpito && al_get_timer_count(congelo)%25==0 )
+  {
+    nColpito-=1;
+    if(nColpito==0)
+    {
+      colpito=false;
+      //al_stop_timer(congelo);
+    }
+    if(nColpito<7)
+    {
+      totInnevato=false;
+    }
+  }
+
+  if(saltando && saltoDistanza<=225 && !cadendo) //aggiorna le posizioni per saltare
+  {
+    y-=15;
+    saltoDistanza+=15;
+    if(saltoDistanza>=225)
+    {
+      saltando=false;
+      saltoDistanza=0;
+      contPrimaDiSaltare=rand()%4;
+      cadendo=true;
+    }
+  }
+}
+
+}
+
+bool Mostro_Verde::collisioneProiettile(int a, int b, bool dir)
+{
+  a+=14;
+  b+=22;
+  //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
+    if((a+40>=static_cast<int>(x) && a-40<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y) )
+    {
+    //al_start_timer(congelo);
+    colpito=true;
+    if(totInnevato)
+      {
+        colpitoInnevato=true;
+        if(dir)
+        {
+          andando_destra=true;
+          andando_sinistra=false;
+        }
+        else
+        {
+          andando_destra=false;
+          andando_sinistra=true;
+        }
+      }
+    if(nColpito<=20)
+      nColpito+=2;
+    if(nColpito>=7)
+      totInnevato=true;
+    return true;
+    }
+  return false;
+}
+
+bool Mostro_Verde::controllaSeToccato(int a, int b, bool dest, bool sin)
+{
+  if((andando_destra && sin) || (andando_sinistra && dest))
+  {
+    if((a+30>=static_cast<int>(x) && a-30<=static_cast<int>(x)) && b+100 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
+    {
+      return true;
+    }
+  }
+  return false;
+}
