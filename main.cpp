@@ -6,6 +6,7 @@ using namespace std;
 #include "Mappa.h"
 #include "Colpo.h"
 #include "Mostro_rosso.h"
+#include "Mostro_Verde.h"
 
 const int ncolpi=10;
 const int maxmostri=100;
@@ -99,10 +100,13 @@ int main(int argc, char **argv){
         mostri[nMostri]->carica_immagini();
         nMostri++;
         break;
-        // /case 3:
-        // mostri[nMostri]=new Mostro_giallo(i*92.08,j*91.63);
-        // nMostri++;
-        // break;
+        case 3:
+        mostri[nMostri]=new Mostro_Verde();
+        mostri[nMostri]->setX(i*92.08);
+        mostri[nMostri]->setY(j*91.63);
+        mostri[nMostri]->carica_immagini();
+        nMostri++;
+        break;
       }
     }
   }
@@ -237,13 +241,12 @@ int main(int argc, char **argv){
            tommy->setToccato(false);
            tommy->setCont1(0);              //SETTIAMO IL CONT1 A 0
            restart=false;
-           if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0
+           if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0 ALTRIMENTI GAMEOVER
            {
             gameover=true;
-            break;
            }
 
-           for(int i=0;i<nMostri;i++)
+           for(int i=0;i<nMostri;i++)       //ELIMINIAMO I MOSTRI E CREIAMO NUOVI
            delete mostri[i];
 
            nMostri=0;
@@ -260,13 +263,18 @@ int main(int argc, char **argv){
                    mostri[nMostri]->carica_immagini();
                    nMostri++;
                    break;
-                   // /case 3:
-                   // mostri[nMostri]=new Mostro_giallo(i*92.08,j*91.63);
-                   // nMostri++;
-                   // break;
+
+                   case 3:
+                   mostri[nMostri]=new Mostro_Verde();
+                   mostri[nMostri]->setX(i*92.08);
+                   mostri[nMostri]->setY(j*91.63);
+                   mostri[nMostri]->carica_immagini();
+                   nMostri++;
+                   break;
                     }
                   }
                 }
+                break;
 
             }
 
@@ -284,21 +292,20 @@ int main(int argc, char **argv){
 
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
-           //aggiorno la posizione del giocatore
 
 
-          for(int i=0; i<ncolpi; i++) //aggiorno la posizione dei colpi
+          for(int i=0; i<ncolpi; i++) //AGGIORNIAMO LA POSIZIONE DEI COLPI
           {
             colpi[i].updateColpo();
           }
 
-          for(int i=0;i<nMostri;i++) //aggiorno la posizione dei mostri
+          for(int i=0;i<nMostri;i++) //FACCIAMO MUOVERE I MOSTRI
           {
             if(mostri[i]->getVita())
               mostri[i]->muovi();
           }
 
-          float a=tommy->getX()/92.08;
+          float a=tommy->getX()/92.08;   //VARIABILI UTILIZZATE PER INTERAGIRE CON LA MAPPA
           float b=((tommy->getY()+90)/91.63);
 
           if(a<0)
@@ -306,7 +313,8 @@ int main(int argc, char **argv){
 
           if(b<0)
             b=0;
-          if(tommy->getToccato()==false)
+
+          if(tommy->getToccato()==false) //SE IL MOSTRO NON E' STATO TOCCATO GLI PERMETTIAMO DI MUOVERSI
           tommy->muovi();
 
 
@@ -354,14 +362,14 @@ int main(int argc, char **argv){
 
 
 
-          for(int i=0; i<nMostri; i++)
+          for(int i=0; i<nMostri; i++) //CONTROLLIAMO SE QUALCHE MOSTRO TOCCA IL PERSONAGGIO
           {
-            if(!mostri[i]->getColpito() && !tommy->getToccato())
+            if(!mostri[i]->getColpito() && !tommy->getToccato() && mostri[i]->getVita() && !mostri[i]->getcolpitoInnevato())
               {
                 tommy->controllaseToccato(mostri[i]->getX(), mostri[i]->getY());
                 if(tommy->getToccato())
                 {
-                  restart=true;
+                  restart=true;  //SE IL PERSONAGGIO VIENE TOCCATO SI ATTIVA IL RESTART E RICOMINCIA LA PARTITA
                   break;
                 }
               }
@@ -372,15 +380,15 @@ int main(int argc, char **argv){
           {
             if(mostri[i]->getVita())
             {
-            float ma=mostri[i]->getX()/92.08;
+            float ma=mostri[i]->getX()/92.08; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
             float mb=(mostri[i]->getY()/91.63)+1;
             if(ma<0)
               ma=0;
             if(mb<0)
               mb=0;
 
-            if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato(),mostri[i]->getColpito())) //tommy sposta i
-              //mostri solo se sono totalmente innevati
+            if(mostri[i]->getTotInnevato())
+            if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato(),mostri[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
                 {
                   mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
                 }
@@ -390,7 +398,7 @@ int main(int argc, char **argv){
 
 
 
-                if(mostri[i]->getSaltando()==false)
+                if(mostri[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
                 {
                   if(mostri[i]->getY()>400)
                   {
@@ -408,7 +416,7 @@ int main(int argc, char **argv){
                 }
 
 
-              if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //gravita' dei mostri
+              if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //GRAVITA' DEI MOSTRI
               {
                 mostri[i]->setCadendo(true);
                 mostri[i]->gravita();
@@ -418,15 +426,14 @@ int main(int argc, char **argv){
                 mostri[i]->setCadendo(false);
               }
 
-              if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //salto dei mostri
+              if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //ROCCHINO?
                 mostri[i]->setSaltando(true);
             }
 
-              //fare la collisione tra il giocatore e il nemico
-            }
+          }
 
 
-           for(int i=0; i<nMostri; i++) //controllo la collisione tra i colpi e i mostri
+           for(int i=0; i<nMostri; i++) //CONTROLLIAMO LA COLLISIONE TRA COLPI E MOSTRI
            {
              if(mostri[i]->getVita())
              {
@@ -442,7 +449,7 @@ int main(int argc, char **argv){
 
            for(int i=0; i<nMostri; i++)
            {
-             if(mostri[i]->getVita())
+             if(mostri[i]->getVita() && !mostri[i]->getTotInnevato())
              {
                for(int j=0; j<nMostri; j++)
                {
@@ -451,7 +458,7 @@ int main(int argc, char **argv){
 
                    // if(i!=j)
                    //cout<<i<<" "<<mostri[i]->getY()<<" - "<<j<<" "<<mostri[j]->getY()<<endl<<endl;
-                   if( mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra())) //devo controllare ch ei mostri sono anche vivi
+                   if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra() && i!=j) ) //devo controllare che i mostri sono anche vivi
                    {
                      if(mostri[i]->getAndando_destra())
                      {
@@ -482,19 +489,32 @@ int main(int argc, char **argv){
                       mostri[j]->diminuisciContPrimaDiSaltare();
                     }
 
-                    if(mostri[j]->getTotInnevato() || mostri[i]->getTotInnevato()) //quando un mostro sta per morire e colpisce uno non innevato, quest'ultimo morira' pure
+                    if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //quando un mostro sta per morire e colpisce uno non innevato, quest'ultimo morira' pure
                     {
                       mostri[i]->setTotInnevato(true);
                       mostri[i]->setcolpitoInnevato(true);
-
                       mostri[j]->setTotInnevato(true);
                       mostri[j]->setcolpitoInnevato(true);
                     }
+                    //cout<<"cazzoooo"<<mostri[i]->getTotInnevato()<<" "<<mostri[j]->getTotInnevato()<<endl;
                   }
                 }
               }
-              }
+            }
            }
+
+
+           // for(int i=0; i<nMostri; i++)
+           //
+           //  if(mostri[i]->getTotInnevato() && mostri[i]->getVita())
+           //
+           //    for(int j=0; j<nMostri; j++)
+           //
+           //      if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra()) && mostri[j]->getVita() && i!=j)
+           //        {
+           //        mostri[j]->setTotInnevato(true);
+           //        mostri[j]->setcolpitoInnevato(true);
+           //        }
 
 
          }
