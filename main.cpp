@@ -54,7 +54,7 @@ int main(int argc, char **argv){
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
   Colpo colpi[ncolpi]; //ARRAY DI COLPI
-  Mappa mappe[2]; //ARRAY DI MAPPE
+  Mappa mappe[3]; //ARRAY DI MAPPE
   Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
   Giocatore * tommy= new Giocatore(w,h); //DICHIARAZIONE GIOCATORE
   bool main_screen=true;  //BOOLEANA CHE CONTROLLA LA PAGINA PRINCIPALE DEL GIOCO
@@ -85,6 +85,8 @@ int main(int argc, char **argv){
   tommy->carica_immagini();
   mappe[0].caricaElementi("./images/objects/tile1.png");
   mappe[0].caricaMappa("./mappe/mappa1.txt");
+  mappe[1].caricaElementi("./images/objects/tile3.png");
+  mappe[1].caricaMappa("./mappe/mappa2.txt");
 
 
 
@@ -126,7 +128,7 @@ int main(int argc, char **argv){
     //******************************************************//
     //WHILE UTILIZZATO PER ALTERNARE LE SCHERMATE PRINCIPALI//
     //******************************************************//
-    
+
     if(main_screen) //SE MAIN SCREEN È TRUE SIAMO NELLA SCHERMATA PRINCIPALE
     {
       bool screen=0;
@@ -182,6 +184,8 @@ int main(int argc, char **argv){
 
     if(gameover) //SE PERDIAMO TUTTE E 3 LE VITE
     {
+      level=0;
+
       bool screen=0;
       bool redraw=true;
       ALLEGRO_BITMAP* gameover1= al_load_bitmap("./images/schermate/game_over1.png");
@@ -237,10 +241,11 @@ int main(int argc, char **argv){
 
     if(!esc && !gameover) //
     {
+
       bool redraw=true;
       while(!esc && !gameover)
       {
-         if(restart && tommy->getCont1()>60) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
+         if(restart ||(tommy->getToccato() && tommy->getCont1()>60)) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
                                              //SE CONT1 SUPERA 60 VUOL DIRE CHE È STATA DISEGNATA L'INTERA ANIMAZIONE
          {
            tommy->setX(w/2.0 - 15);         //SETTIAMO LE POS DEL GIOCATORE A QUELLE INIZIALI
@@ -259,11 +264,11 @@ int main(int argc, char **argv){
 
            nMostri=0;
 
-             for(int i=0;i<mappe[0].getMapSizeX();i++)
+             for(int i=0;i<mappe[level].getMapSizeX();i++)
              {
-               for(int j=0;j<mappe[0].getMapSizeY();j++)
+               for(int j=0;j<mappe[level].getMapSizeY();j++)
                {
-                 switch (mappe[0].getValore(i,j)) {
+                 switch (mappe[level].getValore(i,j)) {
                    case 2:
                    mostri[nMostri]=new Mostro_rosso();
                    mostri[nMostri]->setX(i*92.08);
@@ -381,7 +386,7 @@ int main(int argc, char **argv){
 
                 if(tommy->getToccato())
                 {
-                  restart=true; //SE IL PERSONAGGIO VIENE TOCCATO SI ATTIVA IL RESTART E RICOMINCIA LA PARTITA
+                  //restart=true; //SE IL PERSONAGGIO VIENE TOCCATO SI ATTIVA IL RESTART E RICOMINCIA LA PARTITA
                   break;
                 }
               }
@@ -404,11 +409,6 @@ int main(int argc, char **argv){
                 {
                   mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
                 }
-
-
-
-
-
 
                 if(mostri[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
                 {
@@ -514,6 +514,23 @@ int main(int argc, char **argv){
               }
              }
            }
+           mostrivivi=false;
+           for(int i=0; i<nMostri; i++) //CONTROLLA SE TUTTI I MOSTRI SONO ANCORA VIVI PER PASSARE DI LIVELLO
+           {
+             if(mostri[i]->getVita())
+              mostrivivi=true;
+           }
+
+           if(!mostrivivi)
+           {
+             level++;
+             restart=true;
+             if(level>=2)
+              gameover=true;
+
+           }
+
+
 
 
          }
