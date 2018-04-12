@@ -340,7 +340,7 @@ else
         {
           al_draw_scaled_bitmap(sposta_verso_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
         }
-      else
+      else if(!spostaMostro)
           al_draw_scaled_bitmap(verso_destra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
       cont++;
 
@@ -360,7 +360,7 @@ else
           {
             al_draw_scaled_bitmap(sposta_verso_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
           }
-          else
+          else if(!spostaMostro)
             al_draw_scaled_bitmap(verso_destra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
       cont++;
 
@@ -380,7 +380,7 @@ else
         {
           al_draw_scaled_bitmap(sposta_verso_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
         }
-        else
+        else if(!spostaMostro)
           al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
     cont++;
 
@@ -400,7 +400,7 @@ else
         {
           al_draw_scaled_bitmap(sposta_verso_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
         }
-        else
+        else if(!spostaMostro)
           al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
     cont++;
 
@@ -453,25 +453,16 @@ bool Giocatore::controllaTocco(int a,int b, bool i,bool c){
 
 if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+150 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
 {
-  if(i)
-{
+
     spostaMostro=true;
-    cout<<"SPOSTA"<<endl;
     return true;
-}
-else
-  {
-    spostaMostro=false;
-  }
 }
 else
 {
   spostaMostro=false;
+  return false;
 }
-return false;
-//vite--;
-  // cout<<a<<"  "<<b<<endl;
-  // cout<<x<<"  "<<y<<endl<<endl;
+
 }
 
 void Giocatore::controllaseToccato(int a,int b)

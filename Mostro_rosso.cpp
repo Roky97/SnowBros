@@ -22,6 +22,28 @@ Mostro_rosso::Mostro_rosso(float x1, float y2)
   nColpito=0;
 
 }
+Mostro_rosso::~Mostro_rosso()
+{
+al_destroy_bitmap(innevando1);
+al_destroy_bitmap(innevando2);
+al_destroy_bitmap(innevando3);
+al_destroy_bitmap(palladineve1);
+al_destroy_bitmap(palladineve2);
+
+al_destroy_bitmap(verso_sinistra1);
+al_destroy_bitmap(verso_sinistra2);
+al_destroy_bitmap(colpito_sinistra1);
+al_destroy_bitmap(colpito_sinistra2);
+al_destroy_bitmap(verso_destra1);
+al_destroy_bitmap(verso_destra2);
+al_destroy_bitmap(colpito_destra1);
+al_destroy_bitmap(colpito_destra2);
+al_destroy_bitmap(salta);
+
+
+
+}
+
 
 
  void Mostro_rosso::carica_immagini()
@@ -207,7 +229,6 @@ if(colpitoInnevato)
     if(x<50)
       {
         vita=false;
-        vita=false;
         totInnevato=false;
         colpito=false;
         nColpito=0;
@@ -266,48 +287,4 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
   }
 }
 
-}
-
-bool Mostro_rosso::collisioneProiettile(int a, int b, bool dir)
-{
-  a+=14;
-  b+=22;
-  //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
-    if((a+40>=static_cast<int>(x) && a-40<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y) )
-    {
-    //al_start_timer(congelo);
-    colpito=true;
-    if(totInnevato)
-      {
-        colpitoInnevato=true;
-        if(dir)
-        {
-          andando_destra=true;
-          andando_sinistra=false;
-        }
-        else
-        {
-          andando_destra=false;
-          andando_sinistra=true;
-        }
-      }
-    if(nColpito<=20)
-      nColpito+=2;
-    if(nColpito>=7)
-      totInnevato=true;
-    return true;
-    }
-  return false;
-}
-
-bool Mostro_rosso::controllaSeToccato(int a, int b, bool dest, bool sin)
-{
-  if((andando_destra && sin) || (andando_sinistra && dest))
-  {
-    if((a+30>=static_cast<int>(x) && a-30<=static_cast<int>(x)) && b+100 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
-    {
-      return true;
-    }
-  }
-  return false;
 }

@@ -8,14 +8,15 @@ public:
 
   Mostro_rosso();
   Mostro_rosso(float, float);
+  ~Mostro_rosso();
 
   void setSaltando(bool);
 
   void carica_immagini();
   void drawMostro();
   void muovi();
-  bool collisioneProiettile(int, int,bool);
-  bool controllaSeToccato(int, int, bool, bool);
+  // bool collisioneProiettile(int, int,bool);
+  // bool controllaSeToccato(int, int, bool, bool);
 
 
 
