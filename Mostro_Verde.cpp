@@ -323,6 +323,8 @@ else
       if(lunghezzaFuoco<=0)
       {
         sparaFuoco=false;
+        xFuoco=-100;
+        yFuoco=-100;
         lunghezzaFuoco=300;
         srand(time(0));
         contPrimaDiSparare=rand()%300+ 500;
@@ -337,6 +339,8 @@ else
       if(lunghezzaFuoco<=0)
       {
         sparaFuoco=false;
+        xFuoco=-100;
+        yFuoco=-100;
         lunghezzaFuoco=300;
         srand(time(0));
         contPrimaDiSparare=rand()%300+ 500;
