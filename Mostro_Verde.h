@@ -7,7 +7,6 @@ private:
   bool sparaFuoco;
   int contPrimaDiSparare;
   int lunghezzaFuoco;
-  int xFuoco, yFuoco;
   bool fuocoDir;
 
 public:

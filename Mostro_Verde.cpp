@@ -13,6 +13,7 @@ Mostro_Verde::Mostro_Verde()
   lunghezzaFuoco=300;
   xFuoco=0;
   yFuoco=0;
+  tipo=1;
 
 }
 
@@ -33,15 +34,13 @@ al_destroy_bitmap(verso_destra2);
 al_destroy_bitmap(colpito_destra1);
 al_destroy_bitmap(colpito_destra2);
 al_destroy_bitmap(salta);
-
-
-
 }
 
 void Mostro_Verde::setSparaFuoco(bool l)
 {
   sparaFuoco=l;
 }
+
 bool Mostro_Verde::getSparaFuoco()
 {
   return sparaFuoco;
@@ -55,6 +54,7 @@ Mostro_Verde::Mostro_Verde(float x1, float y2)
   andando_sinistra=false;
   colpito=false;
   nColpito=0;
+  tipo=1;
 }
 
 
@@ -200,7 +200,7 @@ if(!colpitoInnevato)
 
     if(sparaFuoco)
     {
-      if(andando_destra)
+      if(fuocoDir)
       {
         al_draw_scaled_bitmap(sputa_fuoco_dx, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
         if(passo)
@@ -226,7 +226,7 @@ if(!colpitoInnevato)
           }
         }
       }
-      else if(andando_sinistra)
+      else if(!fuocoDir)
       {
         al_draw_scaled_bitmap(sputa_fuoco_sx, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
         if(passo)
@@ -349,11 +349,11 @@ if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che c
 {
   x+=spostamento;
   contPrimaDiSparare-=spostamento;
-  if(contPrimaDiSparare<=0 && !saltando)
+  if(contPrimaDiSparare<=0 && !saltando && !cadendo)
   {
     fuocoDir=true;
     sparaFuoco=true;
-    xFuoco=x+20;
+    xFuoco=x;
     yFuoco=y;
     srand((unsigned)time(NULL));
     contPrimaDiSparare=rand()%300+ 500;
@@ -370,11 +370,11 @@ else if(andando_sinistra && !colpito && x>=78)
 {//movimento a sx
   x-=spostamento;
   contPrimaDiSparare-=spostamento;
-  if(contPrimaDiSparare<=0 && !saltando)
+  if(contPrimaDiSparare<=0 && !saltando && !cadendo)
   {
     fuocoDir=false;
     sparaFuoco=true;
-    xFuoco=x-20;
+    xFuoco=x-200;
     yFuoco=y;
     srand((unsigned)time(NULL));
     contPrimaDiSparare=rand()%300+ 500;
@@ -411,12 +411,11 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
     {
       saltando=false;
       saltoDistanza=0;
-      contPrimaDiSaltare=rand()%4;
+      contPrimaDiSaltare=rand()%7;
       cadendo=true;
     }
   }
 }
-
 
 }
 

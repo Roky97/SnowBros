@@ -189,8 +189,23 @@ bool Mostro::getTotInnevato()
 unsigned Mostro::getnColpito(){
   return nColpito;
 }
+
 bool Mostro::getcolpitoInnevato(){
   return colpitoInnevato;
+}
+
+int Mostro::getTipo()
+{
+  return tipo;
+}
+int Mostro::getxFuoco()
+{
+  return xFuoco;
+}
+
+int Mostro::getyFuoco()
+{
+  return yFuoco;
 }
 
 void Mostro::gravita()

@@ -467,7 +467,7 @@ else
 
 void Giocatore::controllaseToccato(int a,int b)
 {
-  if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+150 >= static_cast<int>(y) && b-100 <= static_cast<int>(y))
+  if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y))
   {
     toccato=true;
     fermo=false;

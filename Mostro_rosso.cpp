@@ -9,6 +9,7 @@ Mostro_rosso::Mostro_rosso()
   colpito=false;
   nColpito=0;
   al_start_timer(congelo);
+  tipo=0;
 
 }
 
@@ -20,7 +21,7 @@ Mostro_rosso::Mostro_rosso(float x1, float y2)
   andando_sinistra=false;
   colpito=false;
   nColpito=0;
-
+  tipo=0;
 }
 Mostro_rosso::~Mostro_rosso()
 {
@@ -39,9 +40,6 @@ al_destroy_bitmap(verso_destra2);
 al_destroy_bitmap(colpito_destra1);
 al_destroy_bitmap(colpito_destra2);
 al_destroy_bitmap(salta);
-
-
-
 }
 
 
@@ -281,7 +279,7 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
     {
       saltando=false;
       saltoDistanza=0;
-      contPrimaDiSaltare=rand()%4;
+      contPrimaDiSaltare=rand()%6;
       cadendo=true;
     }
   }

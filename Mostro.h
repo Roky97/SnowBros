@@ -19,6 +19,8 @@ protected:
   float y;
   int spostamento;
   int cont;
+  int tipo;
+  int xFuoco, yFuoco;
   unsigned parametroGravita;
   unsigned nColpito;
   unsigned saltoDistanza;
@@ -95,6 +97,9 @@ public:
   bool getTotInnevato();
   unsigned getnColpito();
   bool getcolpitoInnevato();
+  int getTipo();
+  int getxFuoco();
+  int getyFuoco();
 
 
 

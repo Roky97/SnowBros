@@ -123,6 +123,10 @@ int main(int argc, char **argv){
     ALLEGRO_EVENT ev;
     al_wait_for_event(event_queue, &ev);
 
+    //******************************************************//
+    //WHILE UTILIZZATO PER ALTERNARE LE SCHERMATE PRINCIPALI//
+    //******************************************************//
+    
     if(main_screen) //SE MAIN SCREEN È TRUE SIAMO NELLA SCHERMATA PRINCIPALE
     {
       bool screen=0;
@@ -132,7 +136,7 @@ int main(int argc, char **argv){
 
 
 
-      while(main_screen) //WHILE UTILIZZATO PER ALTERNARE LE SCHERMATE PRINCIPALI
+      while(main_screen)
       {
         al_wait_for_event(event_queue, &ev);
         if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -172,6 +176,10 @@ int main(int argc, char **argv){
       }
     }
 
+    //*********//
+    //GAME OVER//
+    //*********//
+
     if(gameover) //SE PERDIAMO TUTTE E 3 LE VITE
     {
       bool screen=0;
@@ -199,12 +207,12 @@ int main(int argc, char **argv){
             al_destroy_bitmap(gameover2);
             break;
 
-            // case ALLEGRO_KEY_C:
-            // esc=true;
-            // al_destroy_bitmap(gameover1);
-            // al_destroy_bitmap(gameover2);
-            //
-            // break;
+           case ALLEGRO_KEY_ESCAPE:
+           esc=true;
+           al_destroy_bitmap(gameover1);
+           al_destroy_bitmap(gameover2);
+
+           break;
           }
         if(!screen && redraw && al_is_event_queue_empty(event_queue))
         {
@@ -224,7 +232,6 @@ int main(int argc, char **argv){
           screen=false;
         }
       }
-
     }
 
 
@@ -240,6 +247,7 @@ int main(int argc, char **argv){
            tommy->setY(h-30*4 -21*(4));
            tommy->setToccato(false);
            tommy->setCont1(0);              //SETTIAMO IL CONT1 A 0
+           tommy->setSpostaMostro(false);
            restart=false;
            if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0 ALTRIMENTI GAMEOVER
            {
@@ -362,14 +370,18 @@ int main(int argc, char **argv){
 
 
 
-          for(int i=0; i<nMostri; i++) //CONTROLLIAMO SE QUALCHE MOSTRO TOCCA IL PERSONAGGIO
+          for(int i=0; i<nMostri; i++) //CONTROLLIAMO SE QUALCHE MOSTRO O SE QUALCHE COLPO TOCCA IL PERSONAGGIO
           {
             if(!mostri[i]->getColpito() && !tommy->getToccato() && mostri[i]->getVita() && !mostri[i]->getcolpitoInnevato())
               {
                 tommy->controllaseToccato(mostri[i]->getX(), mostri[i]->getY());
+
+                if(mostri[i]->getTipo()==1)
+                tommy->controllaseToccato(mostri[i]->getxFuoco(), mostri[i]->getyFuoco());
+
                 if(tommy->getToccato())
                 {
-                  restart=true;  //SE IL PERSONAGGIO VIENE TOCCATO SI ATTIVA IL RESTART E RICOMINCIA LA PARTITA
+                  restart=true; //SE IL PERSONAGGIO VIENE TOCCATO SI ATTIVA IL RESTART E RICOMINCIA LA PARTITA
                   break;
                 }
               }
@@ -426,7 +438,7 @@ int main(int argc, char **argv){
                 mostri[i]->setCadendo(false);
               }
 
-              if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //ROCCHINO?
+              if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //FA SALTARE I MOSTRI IN BASE AD UN NUMERO RANDOM
                 mostri[i]->setSaltando(true);
             }
 
@@ -458,7 +470,7 @@ int main(int argc, char **argv){
 
                    // if(i!=j)
                    //cout<<i<<" "<<mostri[i]->getY()<<" - "<<j<<" "<<mostri[j]->getY()<<endl<<endl;
-                   if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra() && i!=j) ) //devo controllare che i mostri sono anche vivi
+                   if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra() && i!=j) ) //CONTROLLA LA COLLISIONE TRA MOSTRI
                    {
                      if(mostri[i]->getAndando_destra())
                      {
@@ -489,7 +501,7 @@ int main(int argc, char **argv){
                       mostri[j]->diminuisciContPrimaDiSaltare();
                     }
 
-                    if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //quando un mostro sta per morire e colpisce uno non innevato, quest'ultimo morira' pure
+                    if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO
                     {
                       mostri[i]->setTotInnevato(true);
                       mostri[i]->setcolpitoInnevato(true);
@@ -500,21 +512,8 @@ int main(int argc, char **argv){
                   }
                 }
               }
-            }
+             }
            }
-
-
-           // for(int i=0; i<nMostri; i++)
-           //
-           //  if(mostri[i]->getTotInnevato() && mostri[i]->getVita())
-           //
-           //    for(int j=0; j<nMostri; j++)
-           //
-           //      if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra()) && mostri[j]->getVita() && i!=j)
-           //        {
-           //        mostri[j]->setTotInnevato(true);
-           //        mostri[j]->setcolpitoInnevato(true);
-           //        }
 
 
          }
