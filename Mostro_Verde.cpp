@@ -9,7 +9,10 @@ Mostro_Verde::Mostro_Verde()
   colpito=false;
   nColpito=0;
   al_start_timer(congelo);
-  contFuoco=200;
+  contPrimaDiSparare=200;
+  lunghezzaFuoco=300;
+  xFuoco=0;
+  yFuoco=0;
 
 }
 
@@ -35,13 +38,13 @@ al_destroy_bitmap(salta);
 
 }
 
-void Mostro_Verde::setLanciaFuoco(bool l)
+void Mostro_Verde::setSparaFuoco(bool l)
 {
-  lanciaFuoco=l;
+  sparaFuoco=l;
 }
-bool Mostro_Verde::getLanciaFuoco()
+bool Mostro_Verde::getSparaFuoco()
 {
-  return lanciaFuoco;
+  return sparaFuoco;
 }
 
 Mostro_Verde::Mostro_Verde(float x1, float y2)
@@ -68,6 +71,12 @@ Mostro_Verde::Mostro_Verde(float x1, float y2)
   colpito_destra2=al_load_bitmap("./images/mostro_verde/colpito2_dx.png");
 
   salta = al_load_bitmap("./images/mostro_verde/salto.png");
+  sputa_fuoco_dx = al_load_bitmap("./images/mostro_verde/sputa_fuoco_dx.png");
+  sputa_fuoco_sx = al_load_bitmap("./images/mostro_verde/sputa_fuoco_sx.png");
+  fuoco1_dx = al_load_bitmap("./images/mostro_verde/fuoco1_dx.png");
+  fuoco2_dx = al_load_bitmap("./images/mostro_verde/fuoco2_dx.png");
+  fuoco1_sx = al_load_bitmap("./images/mostro_verde/fuoco1_sx.png");
+  fuoco2_sx = al_load_bitmap("./images/mostro_verde/fuoco2_sx.png");
 }
 
 void Mostro_Verde::drawMostro(){
@@ -78,7 +87,7 @@ if(!colpitoInnevato)
   {
     al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
   }
- else if(andando_destra && !colpito && !passo)
+ else if(andando_destra && !colpito && !passo && !sparaFuoco)
     {
       al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
       cont++;
@@ -90,7 +99,7 @@ if(!colpitoInnevato)
        }
     }
 
-  else if(andando_destra && !colpito && passo)
+  else if(andando_destra && !colpito && passo && !sparaFuoco)
     {
         al_draw_scaled_bitmap(verso_destra2, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
         cont++;
@@ -124,7 +133,7 @@ if(!colpitoInnevato)
     }
     }
 
-  else if(andando_sinistra && !colpito && !passo)
+  else if(andando_sinistra && !colpito && !passo && !sparaFuoco)
   {
     al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
     cont++;
@@ -135,7 +144,7 @@ if(!colpitoInnevato)
        cont=0;
      }
   }
-  else if(andando_sinistra && !colpito && passo)
+  else if(andando_sinistra && !colpito && passo && !sparaFuoco)
   {
    al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
     cont++;
@@ -188,6 +197,63 @@ if(!colpitoInnevato)
       al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
 
     }
+
+    if(sparaFuoco)
+    {
+      if(andando_destra)
+      {
+        al_draw_scaled_bitmap(sputa_fuoco_dx, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+        if(passo)
+        {
+          al_draw_scaled_bitmap(fuoco1_dx, 0, 0, 19, 10, xFuoco, yFuoco, 19*6, 10*6, 0);
+          cont++;
+
+          if(cont==7)
+          {
+            passo=false;
+            cont=0;
+          }
+        }
+        else
+        {
+          al_draw_scaled_bitmap(fuoco2_dx, 0, 0, 19, 10, xFuoco, yFuoco, 19*6, 10*6, 0);
+          cont++;
+
+          if(cont==7)
+          {
+            passo=true;
+            cont=0;
+          }
+        }
+      }
+      else if(andando_sinistra)
+      {
+        al_draw_scaled_bitmap(sputa_fuoco_sx, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+        if(passo)
+        {
+          al_draw_scaled_bitmap(fuoco1_sx, 0, 0, 19, 10, xFuoco, yFuoco, 19*6, 10*6, 0);
+          cont++;
+
+          if(cont==7)
+          {
+            passo=false;
+            cont=0;
+          }
+        }
+        else
+        {
+          al_draw_scaled_bitmap(fuoco2_sx, 0, 0, 19, 10, xFuoco, yFuoco, 19*6, 10*6, 0);
+          cont++;
+
+          if(cont==7)
+          {
+            passo=true;
+            cont=0;
+          }
+        }
+
+      }
+    }
   }
 
   else         //PALLA DI NEVE CHE ROTOLA
@@ -216,7 +282,6 @@ if(!colpitoInnevato)
 }
 
 void Mostro_Verde::muovi(){
-
 if(colpitoInnevato)
 {
   //al_stop_timer(congelo);
@@ -249,12 +314,50 @@ if(colpitoInnevato)
 }
 else
 {
+  if(sparaFuoco)
+  {
+    if(fuocoDir)
+    {
+      xFuoco+=10;
+      lunghezzaFuoco-=10;
+      if(lunghezzaFuoco<=0)
+      {
+        sparaFuoco=false;
+        lunghezzaFuoco=300;
+        srand(time(0));
+        contPrimaDiSparare=rand()%300+ 500;
+
+      }
+
+    }
+    else if(!fuocoDir)
+    {
+      xFuoco-=10;
+      lunghezzaFuoco-=10;
+      if(lunghezzaFuoco<=0)
+      {
+        sparaFuoco=false;
+        lunghezzaFuoco=300;
+        srand(time(0));
+        contPrimaDiSparare=rand()%300+ 500;
+      }
+    }
+  }
+  else
+  {
 if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
 {
   x+=spostamento;
-  contFuoco-=spostamento;
-  if(contFuoco<=0)
-    lanciaFuoco=true;
+  contPrimaDiSparare-=spostamento;
+  if(contPrimaDiSparare<=0 && !saltando)
+  {
+    fuocoDir=true;
+    sparaFuoco=true;
+    xFuoco=x+20;
+    yFuoco=y;
+    srand((unsigned)time(NULL));
+    contPrimaDiSparare=rand()%300+ 500;
+  }
 }
 else if(andando_destra && !colpito && x+42>=1105)
 {
@@ -263,14 +366,28 @@ else if(andando_destra && !colpito && x+42>=1105)
   diminuisciContPrimaDiSaltare();
 }
 
-else if(andando_sinistra && !colpito && x>=78) //movimento a sx
+else if(andando_sinistra && !colpito && x>=78)
+{//movimento a sx
   x-=spostamento;
+  contPrimaDiSparare-=spostamento;
+  if(contPrimaDiSparare<=0 && !saltando)
+  {
+    fuocoDir=false;
+    sparaFuoco=true;
+    xFuoco=x-20;
+    yFuoco=y;
+    srand((unsigned)time(NULL));
+    contPrimaDiSparare=rand()%300+ 500;
+  }
+}
 else if(andando_sinistra && !colpito && x<78)
   {
     andando_destra=true;
     andando_sinistra=false;
     diminuisciContPrimaDiSaltare();
   }
+
+
 
 if(colpito && al_get_timer_count(congelo)%25==0 )
   {
@@ -298,6 +415,9 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
       cadendo=true;
     }
   }
+}
+
+
 }
 
 }

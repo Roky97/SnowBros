@@ -4,19 +4,32 @@
 
 class Mostro_Verde : public Mostro{
 private:
-  bool lanciaFuoco;
-  int contFuoco;
+  bool sparaFuoco;
+  int contPrimaDiSparare;
+  int lunghezzaFuoco;
+  int xFuoco, yFuoco;
+  bool fuocoDir;
 
 public:
+
+  ALLEGRO_BITMAP *sputa_fuoco_dx;
+  ALLEGRO_BITMAP *sputa_fuoco_sx;
+  ALLEGRO_BITMAP *fuoco1_dx;
+  ALLEGRO_BITMAP *fuoco2_dx;
+  ALLEGRO_BITMAP *fuoco1_sx;
+  ALLEGRO_BITMAP *fuoco2_sx;
+
+
+
 
   Mostro_Verde();
   Mostro_Verde(float, float);
   ~Mostro_Verde();
 
   void setSaltando(bool);
-  void setLanciaFuoco(bool);
+  void setSparaFuoco(bool);
 
-  bool getLanciaFuoco();
+  bool getSparaFuoco();
 
   void carica_immagini();
   void drawMostro();
