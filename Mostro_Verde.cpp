@@ -9,7 +9,39 @@ Mostro_Verde::Mostro_Verde()
   colpito=false;
   nColpito=0;
   al_start_timer(congelo);
+  contFuoco=200;
 
+}
+
+Mostro_Verde::~Mostro_Verde()
+{
+al_destroy_bitmap(innevando1);
+al_destroy_bitmap(innevando2);
+al_destroy_bitmap(innevando3);
+al_destroy_bitmap(palladineve1);
+al_destroy_bitmap(palladineve2);
+
+al_destroy_bitmap(verso_sinistra1);
+al_destroy_bitmap(verso_sinistra2);
+al_destroy_bitmap(colpito_sinistra1);
+al_destroy_bitmap(colpito_sinistra2);
+al_destroy_bitmap(verso_destra1);
+al_destroy_bitmap(verso_destra2);
+al_destroy_bitmap(colpito_destra1);
+al_destroy_bitmap(colpito_destra2);
+al_destroy_bitmap(salta);
+
+
+
+}
+
+void Mostro_Verde::setLanciaFuoco(bool l)
+{
+  lanciaFuoco=l;
+}
+bool Mostro_Verde::getLanciaFuoco()
+{
+  return lanciaFuoco;
 }
 
 Mostro_Verde::Mostro_Verde(float x1, float y2)
@@ -220,6 +252,9 @@ else
 if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
 {
   x+=spostamento;
+  contFuoco-=spostamento;
+  if(contFuoco<=0)
+    lanciaFuoco=true;
 }
 else if(andando_destra && !colpito && x+42>=1105)
 {
@@ -265,48 +300,4 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
   }
 }
 
-}
-
-bool Mostro_Verde::collisioneProiettile(int a, int b, bool dir)
-{
-  a+=14;
-  b+=22;
-  //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
-    if((a+40>=static_cast<int>(x) && a-40<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y) )
-    {
-    //al_start_timer(congelo);
-    colpito=true;
-    if(totInnevato)
-      {
-        colpitoInnevato=true;
-        if(dir)
-        {
-          andando_destra=true;
-          andando_sinistra=false;
-        }
-        else
-        {
-          andando_destra=false;
-          andando_sinistra=true;
-        }
-      }
-    if(nColpito<=20)
-      nColpito+=2;
-    if(nColpito>=7)
-      totInnevato=true;
-    return true;
-    }
-  return false;
-}
-
-bool Mostro_Verde::controllaSeToccato(int a, int b, bool dest, bool sin)
-{
-  if((andando_destra && sin) || (andando_sinistra && dest))
-  {
-    if((a+30>=static_cast<int>(x) && a-30<=static_cast<int>(x)) && b+100 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
-    {
-      return true;
-    }
-  }
-  return false;
 }
