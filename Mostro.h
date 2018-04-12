@@ -94,15 +94,16 @@ public:
   unsigned getContPrimaDiSaltare();
   bool getTotInnevato();
   unsigned getnColpito();
+  bool getcolpitoInnevato();
 
 
 
   virtual void carica_immagini(){}
   virtual void drawMostro(){}
   virtual void muovi(){}
-  virtual bool collisioneProiettile(int, int, bool){}
-  virtual bool controllaSeToccato(int, int, bool, bool){}
+  bool collisioneProiettile(int, int, bool); //non virtual?
 
+  bool controllaSeToccato(int, int, bool, bool);
   void diminuisciContPrimaDiSaltare();
   void muoviDaTommySeInnevato(bool, bool, unsigned);
 
