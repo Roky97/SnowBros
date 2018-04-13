@@ -48,40 +48,67 @@ void Zucca::setVita(bool v)
   vita=v;
 }
 
+void Zucca::setX(float posx)
+{
+  x=posx;
+}
+
+void Zucca::setY(float posy)
+{
+  y=posy;
+}
+
 bool Zucca::getVita()
 {
   return vita;
 }
 
+float Zucca::getX()
+{
+  return x;
+}
+
+float Zucca::getY()
+{
+  return y;
+}
+
 void Zucca::muoviZucca(float posX, float posY) //PASSIAMO LE POSIZIONI DEL PERSONAGGIO IN MODO DA RAGGIUNGERLO OVUNQUE ESSO SIA
 {
-    if(posX>=x)
+
+
+
+
+    if(posX>x && posY>y)
     {
       x+=spostamento;
-      andando_destra=true;
-      andando_sinistra=false;
-    }
-
-    if(posY>=y)
-    {
       y+=spostamento;
       andando_destra=true;
       andando_sinistra=false;
     }
-
-    if(posX<x)
+    else if(posX>x && posY<y)
+    {
+      x+=spostamento;
+      y-=spostamento;
+      andando_destra=true;
+      andando_sinistra=false;
+    }
+    else if(posX<x && posY>y)
     {
       x-=spostamento;
+      y+=spostamento;
+      andando_sinistra=true;
+      andando_destra=false;
+    }
+
+    if(posX<x && posY<y)
+    {
+      x-=spostamento;
+      y-=spostamento;
      andando_sinistra=true;
      andando_destra=false;
     }
 
-    if(posY<y)
-    {
-      y-=spostamento;
-      andando_sinistra=true;
-      andando_destra=false;
-    }
 
 }
 void Zucca::drawZucca()

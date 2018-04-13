@@ -40,8 +40,14 @@ public:
 
   void drawZucca();
   void muoviZucca(float,float);
-  bool getVita();
+
   void setVita(bool );
+  void setX(float );
+  void setY(float );
+
+  bool getVita();
+  float getX();
+  float getY();
 
 
 };

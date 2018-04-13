@@ -7,6 +7,7 @@ using namespace std;
 #include "Colpo.h"
 #include "Mostro_rosso.h"
 #include "Mostro_Verde.h"
+#include "Zucca.h"
 
 const int ncolpi=10;
 const int maxmostri=100;
@@ -53,10 +54,12 @@ int main(int argc, char **argv){
   int nMostri=0; //NUMERO MOSTRI NELLA MAPPA
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
+  ALLEGRO_TIMER *fantasma = NULL;
   Colpo colpi[ncolpi]; //ARRAY DI COLPI
   Mappa mappe[3]; //ARRAY DI MAPPE
   Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
   Giocatore * tommy= new Giocatore(w,h); //DICHIARAZIONE GIOCATORE
+  Zucca *zucca=new Zucca(0,0);
   bool main_screen=true;  //BOOLEANA CHE CONTROLLA LA PAGINA PRINCIPALE DEL GIOCO
   bool esc=false;       //BOOLEANA CHE CONTROLLA SE CLICCIAMO SULLA X
   bool mostrivivi=true;
@@ -73,6 +76,7 @@ int main(int argc, char **argv){
 
   display=al_create_display(w, h);
   timer=al_create_timer(1.0/60);
+  fantasma=al_create_timer(1.0);
   event_queue = al_create_event_queue();
 
   al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -85,7 +89,7 @@ int main(int argc, char **argv){
   tommy->carica_immagini();
   mappe[0].caricaElementi("./images/objects/tile1.png");
   mappe[0].caricaMappa("./mappe/mappa1.txt");
-  mappe[1].caricaElementi("./images/objects/tile3.png");
+  mappe[1].caricaElementi("./images/objects/tile4.png");
   mappe[1].caricaMappa("./mappe/mappa2.txt");
 
 
@@ -242,21 +246,35 @@ int main(int argc, char **argv){
     if(!esc && !gameover) //
     {
 
+
       bool redraw=true;
       while(!esc && !gameover)
       {
-         if(restart ||(tommy->getToccato() && tommy->getCont1()>60)) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
-                                             //SE CONT1 SUPERA 60 VUOL DIRE CHE È STATA DISEGNATA L'INTERA ANIMAZIONE
+         al_start_timer(fantasma);
+         if(al_get_timer_count(fantasma)>10)
          {
+          zucca->muoviZucca(tommy->getX(),tommy->getY());
+         }
+         if(restart ||(tommy->getToccato() && tommy->getCont1()>60)) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
+                                                                     //SE CONT1 SUPERA 60 VUOL DIRE CHE È STATA DISEGNATA L'INTERA ANIMAZIONE
+         {
+           al_set_timer_count(fantasma,0.0);
            tommy->setX(w/2.0 - 15);         //SETTIAMO LE POS DEL GIOCATORE A QUELLE INIZIALI
            tommy->setY(h-30*4 -21*(4));
            tommy->setToccato(false);
            tommy->setCont1(0);              //SETTIAMO IL CONT1 A 0
            tommy->setSpostaMostro(false);
+           tommy->setSparando(false);
+           tommy->setAndando_destra(false);
+           tommy->setAndando_sinistra(false);
+           zucca->setX(0.0);
+           zucca->setY(0.0);
            restart=false;
            if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0 ALTRIMENTI GAMEOVER
            {
             gameover=true;
+            al_set_timer_count(fantasma,0.0);
+            level=0;
            }
 
            for(int i=0;i<nMostri;i++)       //ELIMINIAMO I MOSTRI E CREIAMO NUOVI
@@ -305,8 +323,6 @@ int main(int argc, char **argv){
 
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
-
-
           for(int i=0; i<ncolpi; i++) //AGGIORNIAMO LA POSIZIONE DEI COLPI
           {
             colpi[i].updateColpo();
@@ -351,7 +367,7 @@ int main(int argc, char **argv){
                 tommy->gravita();
               }
             }
-            else if((((int)tommy->getY()+5)/100)%2!=0)
+            else if((((int)tommy->getY())/100)%2!=0)
             {
               tommy->setCadendo(true);
               tommy->gravita();
@@ -391,6 +407,9 @@ int main(int argc, char **argv){
                 }
               }
           }
+
+         if(!tommy->getToccato())
+         tommy->controllaseToccato(zucca->getX(),zucca->getY());
 
 
           for(int i=0; i<nMostri; i++)
@@ -530,9 +549,6 @@ int main(int argc, char **argv){
 
            }
 
-
-
-
          }
 
 
@@ -595,7 +611,8 @@ int main(int argc, char **argv){
           {
             mostri[i]->drawMostro();
           }
-
+        if(al_get_timer_count(fantasma)>10)
+        zucca->drawZucca();
         tommy->drawPersonaggio();
 
         for(int i=0;i<ncolpi;i++)
