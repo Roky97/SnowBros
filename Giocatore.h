@@ -32,6 +32,9 @@ private:
   bool fermoAlternato;
   bool andando_destra;
   bool andando_sinistra;
+  bool andando_sotto;
+  bool andando_sopra;
+
   bool saltando;
   bool sparando;
   bool potere_v;
@@ -39,6 +42,7 @@ private:
   bool cadendo;
   bool toccato;
   bool spostaMostro;
+  ALLEGRO_TIMER *trasformazione;
 
 public:
   //salta
@@ -72,6 +76,27 @@ public:
   ALLEGRO_BITMAP *toccato2;
   ALLEGRO_BITMAP *toccato3;
 
+  ALLEGRO_BITMAP *lanterna;
+
+ALLEGRO_BITMAP *trasformazione1dx;
+ALLEGRO_BITMAP *trasformazione2dx;
+ALLEGRO_BITMAP *trasformazione3dx;
+ALLEGRO_BITMAP *trasformazione1sx;
+ALLEGRO_BITMAP *trasformazione2sx;
+ALLEGRO_BITMAP *trasformazione3sx;
+
+ALLEGRO_BITMAP *grande_fermo1;
+ALLEGRO_BITMAP *grande_fermo2;
+ALLEGRO_BITMAP *grande_destra1;
+ALLEGRO_BITMAP *grande_destra2;
+ALLEGRO_BITMAP *grande_sinistra1;
+ALLEGRO_BITMAP *grande_sinistra2;
+
+
+
+
+
+
 
 
 
@@ -85,6 +110,8 @@ public:
   void setVite(unsigned v);
   void setAndando_destra(bool d);
   void setAndando_sinistra(bool s);
+  void setAndando_sopra(bool s);
+  void setAndando_sotto(bool s);
   void setSaltando(bool s);
   void setSparando(bool s);
   void setFermo(bool s);
@@ -94,6 +121,7 @@ public:
   void setSpostaMostro(bool s);
   void setCont1(unsigned c);
 
+
   //get
   float getX();
   float getY();
@@ -101,6 +129,8 @@ public:
   unsigned getVite();
   bool getAndando_destra();
   bool getAndando_sinistra();
+  bool getAndando_sopra();
+  bool getAndando_sotto();
   bool getSaltando();
   bool getSparando();
   bool getCadendo();
@@ -110,6 +140,7 @@ public:
   bool getSpostaMostro();
   unsigned getSpostamento();
   unsigned getCont1();
+  bool getPotere();
 
 
 
@@ -123,6 +154,8 @@ public:
   void gravita();
   bool controllaTocco(int a, int b, bool i,bool c);
   void controllaseToccato(int a,int b);
+  bool controllaseToccatoSushi(int a, int b);
+  void presaLanterna(int a,int b);
 
 };
 #endif

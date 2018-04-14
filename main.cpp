@@ -61,6 +61,7 @@ int main(int argc, char **argv){
   ALLEGRO_TIMER *timer = NULL;
   ALLEGRO_TIMER *fantasma = NULL;
   ALLEGRO_TIMER *mostraliv=NULL;
+  ALLEGRO_TIMER *passalivello=NULL;
   Colpo colpi[ncolpi]; //ARRAY DI COLPI
   Mappa mappe[levMax]; //ARRAY DI MAPPE
   Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
@@ -72,6 +73,7 @@ int main(int argc, char **argv){
   bool restart=false;  //BOOLEANA CHE SI ATTIVA QUANDO IL MOSTRO VIENE toccato
   bool gameover=false; //
   bool mostralivello=true;
+  bool finitiSushi=false;
   ALLEGRO_BITMAP *schermate_livello[levMax];
   schermate_livello[0]=al_load_bitmap("./images/schermate/level1.png");
   schermate_livello[1]=al_load_bitmap("./images/schermate/level2.png");
@@ -91,6 +93,7 @@ int main(int argc, char **argv){
   timer=al_create_timer(1.0/60);
   fantasma=al_create_timer(1.0);
   mostraliv=al_create_timer(1.0);
+  passalivello=al_create_timer(1.0);
   event_queue = al_create_event_queue();
 
   al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -268,23 +271,17 @@ int main(int argc, char **argv){
          if(al_get_timer_count(mostraliv)>1)
          mostralivello=false;
 
-         if(mostralivello)
-         {
-           al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
-                al_flip_display();
-         }
-
-
-         if(al_get_timer_count(fantasma)>10)
+         if(al_get_timer_count(fantasma)>10 && mostrivivi)
          {
           zucca->muoviZucca(tommy->getX(),tommy->getY());
          }
 
-         if(contMostriColpiti>=3 && !tommy->getToccato() && !mostri[indiceLanterna]->getVita())
-         {
-           tommy->drawLanterna(mostri[indiceLanterna]->getX(), mostri[indiceLanterna]->getY());
-           contMostriColpiti=0;
-         }
+         if(contMostriColpiti>=3)
+           {
+             tommy->presaLanterna(mostri[indiceLanterna]->getX(),mostri[indiceLanterna]->getY());
+           }
+
+
 
 
          if(restart ||(tommy->getToccato() && tommy->getCont1()>60)) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
@@ -303,6 +300,7 @@ int main(int argc, char **argv){
            tommy->setAndando_sinistra(false);
            zucca->setX(0.0);
            zucca->setY(0.0);
+           contMostriColpiti=0;
            restart=false;
            if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0 ALTRIMENTI GAMEOVER
            {
@@ -447,7 +445,7 @@ int main(int argc, char **argv){
 
           for(int i=0; i<nMostri; i++) //CONTROLLIAMO SE QUALCHE MOSTRO O SE QUALCHE COLPO TOCCA IL PERSONAGGIO
           {
-            if(!mostri[i]->getColpito() && !tommy->getToccato() && mostri[i]->getVita() && !mostri[i]->getcolpitoInnevato())
+            if((!mostri[i]->getColpito() && !tommy->getToccato() && mostri[i]->getVita() && !mostri[i]->getcolpitoInnevato()))
               {
                 tommy->controllaseToccato(mostri[i]->getX(), mostri[i]->getY());
 
@@ -462,7 +460,13 @@ int main(int argc, char **argv){
               }
           }
 
-         if(!tommy->getToccato())
+         for(int i=0;i<nMostri;i++)
+         {
+           if(mostri[i]->getSushi() && tommy->controllaseToccatoSushi(mostri[i]->getX(),mostri[i]->getY()))
+           mostri[i]->setSushi(false);
+         }
+
+         if(!tommy->getToccato() && mostrivivi)
          tommy->controllaseToccato(zucca->getX(),zucca->getY());
 
 
@@ -581,7 +585,8 @@ int main(int argc, char **argv){
                       mostri[j]->setTotInnevato(true);
                       mostri[j]->setcolpitoInnevato(true);
                       contMostriColpiti++;
-                      if(contMostriColpiti==3)
+                      cout<<"Cazzo nel culoo"<<endl<<endl;
+                      if(contMostriColpiti==4)
                       {
                           indiceLanterna=i;
                           //contMostriColpiti=0;
@@ -599,14 +604,35 @@ int main(int argc, char **argv){
              if(mostri[i]->getVita())
               mostrivivi=true;
            }
-
+           cout<<tommy->getPotere()<<endl;
            if(!mostrivivi)
            {
-             level++;
-             restart=true;
-             if(level>=2)
-              gameover=true;
 
+             al_start_timer(passalivello);
+             finitiSushi=true;
+             for(int i=0; i<nMostri; i++)
+             {
+               if(mostri[i]->getSushi())
+                finitiSushi=false;
+             }
+             if(finitiSushi)
+             {
+               level++;
+               restart=true;
+               al_set_timer_count(passalivello,0.0);
+               al_stop_timer(passalivello);
+               if(level>=2)
+               gameover=true;
+             }
+             else if(al_get_timer_count(passalivello)>4 && !finitiSushi)
+             {
+               level++;
+               restart=true;
+               al_set_timer_count(passalivello,0.0);
+               al_stop_timer(passalivello);
+               if(level>=2)
+               gameover=true;
+             }
            }
          }
 
@@ -627,17 +653,22 @@ int main(int argc, char **argv){
                break;
 
             case ALLEGRO_KEY_UP:
-            if(tommy->getCadendo()==false)
-              {
-                tommy->setSaltando(true);
-                tommy->setFermo(false);
-              }
+              if(tommy->getCadendo()==false)
+                {
+                  tommy->setSaltando(true);
+                  tommy->setFermo(false);
+                }
+              tommy->setAndando_sopra(true);
+              break;
+
+            case ALLEGRO_KEY_DOWN:
+              tommy->setAndando_sotto(true);
               break;
 
             case ALLEGRO_KEY_A:
-            tommy->setSparando(true);
-            for(int i=0;i<ncolpi && !colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());i++);
-            break;
+              tommy->setSparando(true);
+              for(int i=0;i<ncolpi && !colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());i++);
+              break;
          }
        }
 
@@ -671,12 +702,25 @@ int main(int argc, char **argv){
         }
 
         for(int i=0;i<nMostri;i++)
-          if(mostri[i]->getVita())
+          if(mostri[i]->getVita()|| mostri[i]->getSushi())
           {
             mostri[i]->drawMostro();
           }
-        if(al_get_timer_count(fantasma)>10)
-        zucca->drawZucca();
+
+
+        if(al_get_timer_count(fantasma)>10 && mostrivivi)
+          zucca->drawZucca();
+
+
+        if(contMostriColpiti>=3 && !tommy->getToccato() && !mostri[indiceLanterna]->getVita() && !tommy->getPotere())
+        {
+          tommy->drawLanterna(mostri[indiceLanterna]->getX(), mostri[indiceLanterna]->getY());
+        }
+
+
+
+
+
         tommy->drawPersonaggio();
 
         for(int i=0;i<ncolpi;i++)

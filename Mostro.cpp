@@ -29,11 +29,11 @@ Mostro::Mostro(){
   innevando3=al_load_bitmap("./images/neve/innevando3.png");
   palladineve1=al_load_bitmap("./images/neve/palladineve1.png");
   palladineve2=al_load_bitmap("./images/neve/palladineve2.png");
-  im_sushi[0]=al_load_bitmap("./images/objects/sushi1.png");
-  im_sushi[1]=al_load_bitmap("./images/objects/sushi2.png");
-  im_sushi[2]=al_load_bitmap("./images/objects/sushi3.png");
-  im_sushi[3]=al_load_bitmap("./images/objects/sushi4.png");
-  im_sushi[4]=al_load_bitmap("./images/objects/sushi5.png");
+  im_sushi[0]=al_load_bitmap("./images/objects/sushi/sushi1.png");
+  im_sushi[1]=al_load_bitmap("./images/objects/sushi/sushi2.png");
+  im_sushi[2]=al_load_bitmap("./images/objects/sushi/sushi3.png");
+  im_sushi[3]=al_load_bitmap("./images/objects/sushi/sushi4.png");
+  im_sushi[4]=al_load_bitmap("./images/objects/sushi/sushi5.png");
 
 
   congelo=al_create_timer(1.0/5);
@@ -72,6 +72,11 @@ Mostro::Mostro(float posx, float posy)
 
 	verso_destra1= NULL;
 	verso_destra2= NULL;
+  im_sushi[0]=al_load_bitmap("./images/objects/sushi/sushi1.png");
+  im_sushi[1]=al_load_bitmap("./images/objects/sushi/sushi2.png");
+  im_sushi[2]=al_load_bitmap("./images/objects/sushi/sushi3.png");
+  im_sushi[3]=al_load_bitmap("./images/objects/sushi/sushi4.png");
+  im_sushi[4]=al_load_bitmap("./images/objects/sushi/sushi5.png");
 }
 
 Mostro::~Mostro()
@@ -147,7 +152,7 @@ nColpito=c;
 
 void Mostro::setSushi(bool s)
 {
-  sushi=true;
+  sushi=s;
 }
 
 
@@ -304,8 +309,11 @@ void Mostro::drawSushi()
   if(sushi)
   {
     srand(time(0));
-    int i=rand()%5;
-    al_draw_scaled_bitmap(im_sushi[i], 0, 0, 11, 10, x-30, y, 11*6, 10*6, 0);
+
+    if(andando_destra)
+      al_draw_scaled_bitmap(im_sushi[iSushi], 0, 0, 11, 10, x-70, y+35, 11*6, 10*6, 0);
+    else
+      al_draw_scaled_bitmap(im_sushi[iSushi], 0, 0, 11, 10, x, y+35, 11*6, 10*6, 0);
 
   }
 }
@@ -318,6 +326,8 @@ void Mostro::colpitoEdInnevato()
     if(x+42>=1105)
       {
         vita=false;
+        srand(time(0));
+        iSushi=rand()%4;
         sushi=true;
         totInnevato=false;
         colpito=false;
@@ -331,6 +341,8 @@ void Mostro::colpitoEdInnevato()
     if(x<50)
       {
         vita=false;
+        sushi=true;
+        iSushi=rand()%4;
         sushi=true;
         totInnevato=false;
         colpito=false;

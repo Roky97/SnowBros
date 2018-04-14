@@ -21,6 +21,7 @@ protected:
   int cont;
   int tipo;
   int xFuoco, yFuoco;
+  int iSushi;
   unsigned parametroGravita;
   unsigned nColpito;
   unsigned saltoDistanza;
