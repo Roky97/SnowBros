@@ -55,9 +55,12 @@ int main(int argc, char **argv){
   */
   unsigned level=0; //INDICE DELLA MAPPA PER CAMBIARE LIVELLO
   int nMostri=0; //NUMERO MOSTRI NELLA MAPPA
+  int contMostriColpiti=0;
+  int indiceLanterna=0;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL;
   ALLEGRO_TIMER *fantasma = NULL;
+  ALLEGRO_TIMER *mostraliv=NULL;
   Colpo colpi[ncolpi]; //ARRAY DI COLPI
   Mappa mappe[levMax]; //ARRAY DI MAPPE
   Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
@@ -68,6 +71,7 @@ int main(int argc, char **argv){
   bool mostrivivi=true;
   bool restart=false;  //BOOLEANA CHE SI ATTIVA QUANDO IL MOSTRO VIENE toccato
   bool gameover=false; //
+  bool mostralivello=true;
   ALLEGRO_BITMAP *schermate_livello[levMax];
   schermate_livello[0]=al_load_bitmap("./images/schermate/level1.png");
   schermate_livello[1]=al_load_bitmap("./images/schermate/level2.png");
@@ -86,6 +90,7 @@ int main(int argc, char **argv){
   display=al_create_display(w, h);
   timer=al_create_timer(1.0/60);
   fantasma=al_create_timer(1.0);
+  mostraliv=al_create_timer(1.0);
   event_queue = al_create_event_queue();
 
   al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -258,14 +263,36 @@ int main(int argc, char **argv){
       while(!esc && !gameover)
       {
          al_start_timer(fantasma);
+         al_start_timer(mostraliv);
+
+         if(al_get_timer_count(mostraliv)>1)
+         mostralivello=false;
+
+         if(mostralivello)
+         {
+           al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
+                al_flip_display();
+         }
+
+
          if(al_get_timer_count(fantasma)>10)
          {
           zucca->muoviZucca(tommy->getX(),tommy->getY());
          }
+
+         if(contMostriColpiti>=3 && !tommy->getToccato() && !mostri[indiceLanterna]->getVita())
+         {
+           tommy->drawLanterna(mostri[indiceLanterna]->getX(), mostri[indiceLanterna]->getY());
+           contMostriColpiti=0;
+         }
+
+
          if(restart ||(tommy->getToccato() && tommy->getCont1()>60)) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
-                                                                     //SE CONT1 SUPERA 60 VUOL DIRE CHE È STATA DISEGNATA L'INTERA ANIMAZIONE
+                                                                    //SE CONT1 SUPERA 60 VUOL DIRE CHE È STATA DISEGNATA L'INTERA ANIMAZIONE
          {
            al_set_timer_count(fantasma,0.0);
+           al_set_timer_count(mostraliv,0.0);
+           mostralivello=true;
            tommy->setX(w/2.0 - 15);         //SETTIAMO LE POS DEL GIOCATORE A QUELLE INIZIALI
            tommy->setY(h-30*4 -21*(4));
            tommy->setToccato(false);
@@ -281,6 +308,7 @@ int main(int argc, char **argv){
            {
             gameover=true;
             al_set_timer_count(fantasma,0.0);
+            al_set_timer_count(mostraliv,0.0);
             level=0;
            }
 
@@ -333,7 +361,6 @@ int main(int argc, char **argv){
                 // al_destroy_timer(temp);
 
                 break;
-
             }
 
 
@@ -357,7 +384,7 @@ int main(int argc, char **argv){
 
           for(int i=0;i<nMostri;i++) //FACCIAMO MUOVERE I MOSTRI
           {
-            if(mostri[i]->getVita())
+            if(mostri[i]->getVita() && !mostralivello)
               mostri[i]->muovi();
           }
 
@@ -370,7 +397,7 @@ int main(int argc, char **argv){
           if(b<0)
             b=0;
 
-          if(tommy->getToccato()==false) //SE IL MOSTRO NON E' STATO TOCCATO GLI PERMETTIAMO DI MUOVERSI
+          if(tommy->getToccato()==false && !mostralivello)//SE IL MOSTRO NON E' STATO TOCCATO GLI PERMETTIAMO DI MUOVERSI
           tommy->muovi();
 
 
@@ -500,8 +527,8 @@ int main(int argc, char **argv){
                  if(colpi[j].getVita())
                   if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
                     colpi[j].setVita(false);
-                }
-            }
+               }
+             }
            }
 
 
@@ -553,6 +580,12 @@ int main(int argc, char **argv){
                       mostri[i]->setcolpitoInnevato(true);
                       mostri[j]->setTotInnevato(true);
                       mostri[j]->setcolpitoInnevato(true);
+                      contMostriColpiti++;
+                      if(contMostriColpiti==3)
+                      {
+                          indiceLanterna=i;
+                          //contMostriColpiti=0;
+                      }
                     }
                     //cout<<"cazzoooo"<<mostri[i]->getTotInnevato()<<" "<<mostri[j]->getTotInnevato()<<endl;
                   }
@@ -575,11 +608,10 @@ int main(int argc, char **argv){
               gameover=true;
 
            }
-
          }
 
 
-      else if(ev.type == ALLEGRO_EVENT_KEY_DOWN && !restart) {
+      else if(ev.type == ALLEGRO_EVENT_KEY_DOWN && !restart && !mostralivello && !tommy->getToccato()) {
          switch(ev.keyboard.keycode) {
 
             case ALLEGRO_KEY_LEFT:
@@ -591,6 +623,7 @@ int main(int argc, char **argv){
             case ALLEGRO_KEY_RIGHT:
               tommy->setAndando_destra(true);
               tommy->setFermo(false);
+
                break;
 
             case ALLEGRO_KEY_UP:
@@ -632,6 +665,10 @@ int main(int argc, char **argv){
 
 
         mappe[level].drawMappa();
+        if(mostralivello)
+        {
+          al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
+        }
 
         for(int i=0;i<nMostri;i++)
           if(mostri[i]->getVita())
@@ -689,7 +726,5 @@ void init()
 //     al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
 //     al_flip_display();
 //   }
-//
 //   al_destroy_timer(temp);
-//
 // }

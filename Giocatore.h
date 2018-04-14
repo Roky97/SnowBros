@@ -116,6 +116,7 @@ public:
   //Immagini e disegno
   void carica_immagini();
   void drawPersonaggio();
+  void drawLanterna(float ,float);
 
   //Movimenti
   void muovi();

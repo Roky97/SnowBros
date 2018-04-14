@@ -79,29 +79,28 @@ void Zucca::muoviZucca(float posX, float posY) //PASSIAMO LE POSIZIONI DEL PERSO
 
 
 
-    if(posX>x && posY>y)
+    if(posX>=x && posY>=y)
     {
       x+=spostamento;
       y+=spostamento;
       andando_destra=true;
       andando_sinistra=false;
     }
-    else if(posX>x && posY<y)
+    else if(posX>=x && posY<=y)
     {
       x+=spostamento;
       y-=spostamento;
       andando_destra=true;
       andando_sinistra=false;
     }
-    else if(posX<x && posY>y)
+    else if(posX<=x && posY>=y)
     {
       x-=spostamento;
       y+=spostamento;
       andando_sinistra=true;
       andando_destra=false;
     }
-
-    if(posX<x && posY<y)
+   else if(posX<=x && posY<=y)
     {
       x-=spostamento;
       y-=spostamento;

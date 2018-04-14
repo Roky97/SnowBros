@@ -415,6 +415,12 @@ else
 }
 }
 
+void Giocatore::drawLanterna(float posX, float posY)
+{
+  //al_draw_scaled_bitmap
+  return;
+}
+
 //MOVIMENTI
 
 void Giocatore::muovi()
