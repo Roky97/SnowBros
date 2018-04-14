@@ -8,13 +8,16 @@ using namespace std;
 #include "Mostro_rosso.h"
 #include "Mostro_Verde.h"
 #include "Zucca.h"
+#include <unistd.h>
 
 const int ncolpi=10;
 const int maxmostri=100;
-
+const int levMax=10;
 
 void init();
 void draw(string);
+//void mostraLivello(ALLEGRO_BITMAP*[],Mappa[],int&, int&);
+
 
 int main(int argc, char **argv){
 
@@ -56,7 +59,7 @@ int main(int argc, char **argv){
   ALLEGRO_TIMER *timer = NULL;
   ALLEGRO_TIMER *fantasma = NULL;
   Colpo colpi[ncolpi]; //ARRAY DI COLPI
-  Mappa mappe[3]; //ARRAY DI MAPPE
+  Mappa mappe[levMax]; //ARRAY DI MAPPE
   Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
   Giocatore * tommy= new Giocatore(w,h); //DICHIARAZIONE GIOCATORE
   Zucca *zucca=new Zucca(0,0);
@@ -65,6 +68,12 @@ int main(int argc, char **argv){
   bool mostrivivi=true;
   bool restart=false;  //BOOLEANA CHE SI ATTIVA QUANDO IL MOSTRO VIENE toccato
   bool gameover=false; //
+  ALLEGRO_BITMAP *schermate_livello[levMax];
+  schermate_livello[0]=al_load_bitmap("./images/schermate/level1.png");
+  schermate_livello[1]=al_load_bitmap("./images/schermate/level2.png");
+  schermate_livello[2]=al_load_bitmap("./images/schermate/final_level.png");
+
+
 
 
 
@@ -245,8 +254,6 @@ int main(int argc, char **argv){
 
     if(!esc && !gameover) //
     {
-
-
       bool redraw=true;
       while(!esc && !gameover)
       {
@@ -305,6 +312,26 @@ int main(int argc, char **argv){
                     }
                   }
                 }
+
+                // ALLEGRO_TIMER *temp;
+                // temp=al_create_timer(1.0);
+                // al_start_timer(temp);
+                //
+                // while(al_get_timer_count(temp)!=1)
+                // {
+                //   al_clear_to_color(al_map_rgb(0,0,0));
+                //  mappe[level].drawMappa();
+                //   for(int i=0;i<nMostri;i++)
+                //     if(mostri[i]->getVita())
+                //     {
+                //       mostri[i]->drawMostro();
+                //     }
+                //   al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
+                //   al_flip_display();
+                // }
+                //
+                // al_destroy_timer(temp);
+
                 break;
 
             }
@@ -643,3 +670,26 @@ void init()
   al_init_primitives_addon();
   al_install_keyboard();
 }
+
+// void mostraLivello(ALLEGRO_BITMAP* schermate_livello[levMax],Mappa &mappe[levMax],int& level, int& nMostri)
+// {
+//   ALLEGRO_TIMER *temp;
+//   temp=al_create_timer(1.0);
+//   al_start_timer(temp);
+//
+//   while(al_get_timer_count(temp)!=1)
+//   {
+//     al_clear_to_color(al_map_rgb(0,0,0));
+//    mappe[level].drawMappa();
+//     for(int i=0;i<nMostri;i++)
+//       if(mostri[i]->getVita())
+//       {
+//         mostri[i]->drawMostro();
+//       }
+//     al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
+//     al_flip_display();
+//   }
+//
+//   al_destroy_timer(temp);
+//
+// }

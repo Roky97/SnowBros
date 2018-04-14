@@ -87,7 +87,7 @@ if(!colpitoInnevato)
   {
     al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
   }
- else if(andando_destra && !colpito && !passo && !sparaFuoco)
+ if(andando_destra && !colpito && !passo && !sparaFuoco)
     {
       al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
       cont++;
@@ -133,7 +133,7 @@ if(!colpitoInnevato)
     }
     }
 
-  else if(andando_sinistra && !colpito && !passo && !sparaFuoco)
+  if(andando_sinistra && !colpito && !passo && !sparaFuoco)
   {
     al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
     cont++;
@@ -155,7 +155,7 @@ if(!colpitoInnevato)
       cont=0;
     }
   }
-  else if(andando_sinistra && colpito && !passo)
+  if(andando_sinistra && colpito && !passo)
   {
     al_draw_scaled_bitmap(colpito_sinistra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
     cont++;
@@ -198,7 +198,7 @@ if(!colpitoInnevato)
 
     }
 
-    if(sparaFuoco)
+    if(sparaFuoco && nColpito==0)
     {
       if(fuocoDir)
       {
@@ -353,7 +353,7 @@ if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che c
 {
   x+=spostamento;
   contPrimaDiSparare-=spostamento;
-  if(contPrimaDiSparare<=0 && !saltando && !cadendo)
+  if(contPrimaDiSparare<=0 && !saltando && !cadendo && nColpito==0)
   {
     fuocoDir=true;
     sparaFuoco=true;
@@ -374,7 +374,7 @@ else if(andando_sinistra && !colpito && x>=78)
 {//movimento a sx
   x-=spostamento;
   contPrimaDiSparare-=spostamento;
-  if(contPrimaDiSparare<=0 && !saltando && !cadendo)
+  if(contPrimaDiSparare<=0 && !saltando && !cadendo && nColpito==0)
   {
     fuocoDir=false;
     sparaFuoco=true;
@@ -419,6 +419,8 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
       cadendo=true;
     }
   }
+
+
 }
 
 }
