@@ -37,6 +37,7 @@ protected:
   bool colpito;
   bool totInnevato;
   bool colpitoInnevato;
+  bool sushi;
 
 
 
@@ -64,6 +65,8 @@ public:
 
   ALLEGRO_BITMAP *salta;
 
+  ALLEGRO_BITMAP *im_sushi[5];
+
 
   Mostro();
   ~Mostro();
@@ -82,6 +85,7 @@ public:
   void setTotInnevato(bool i);
   void setcolpitoInnevato(bool i);
   void setnColpito(unsigned c);
+  void setSushi(bool s);
 
   //get
   float getX();
@@ -100,6 +104,7 @@ public:
   int getTipo();
   int getxFuoco();
   int getyFuoco();
+  bool getSushi();
 
 
 
@@ -111,6 +116,8 @@ public:
   bool controllaSeToccato(int, int, bool, bool);
   void diminuisciContPrimaDiSaltare();
   void muoviDaTommySeInnevato(bool, bool, unsigned);
+  void drawSushi();
+  void colpitoEdInnevato();
 
   void gravita();
 

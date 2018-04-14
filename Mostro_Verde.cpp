@@ -10,6 +10,7 @@ Mostro_Verde::Mostro_Verde()
   nColpito=0;
   al_start_timer(congelo);
   contPrimaDiSparare=200;
+  sparaFuoco=false;
   lunghezzaFuoco=300;
   xFuoco=0;
   yFuoco=0;
@@ -55,6 +56,8 @@ Mostro_Verde::Mostro_Verde(float x1, float y2)
   colpito=false;
   nColpito=0;
   tipo=1;
+  sparaFuoco=false;
+
 }
 
 
@@ -81,13 +84,20 @@ Mostro_Verde::Mostro_Verde(float x1, float y2)
 
 void Mostro_Verde::drawMostro(){
 
+if(vita==false)
+  {
+    drawSushi();
+  }
+else
+{
+
 if(!colpitoInnevato)
 {
-  if(saltando || cadendo)
+  if((saltando || cadendo) && !sparaFuoco)
   {
     al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
   }
- if(andando_destra && !colpito && !passo && !sparaFuoco)
+ else if(andando_destra && !colpito && !passo && !sparaFuoco)
     {
       al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
       cont++;
@@ -133,7 +143,7 @@ if(!colpitoInnevato)
     }
     }
 
-  if(andando_sinistra && !colpito && !passo && !sparaFuoco)
+  else if(andando_sinistra && !colpito && !passo && !sparaFuoco)
   {
     al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
     cont++;
@@ -280,37 +290,13 @@ if(!colpitoInnevato)
     }
   }
 }
+}
 
 void Mostro_Verde::muovi(){
 if(colpitoInnevato)
 {
   //al_stop_timer(congelo);
-  parametroGravita=20;
-  if(andando_destra)
-  {
-    if(x+42>=1105)
-      {
-        vita=false;
-        totInnevato=false;
-        colpito=false;
-        nColpito=0;
-        colpitoInnevato=false;
-      } //qua caso mai facciamo una animazione
-    x+=spostamento+20;
-  }
-  else if(andando_sinistra)
-  {
-    if(x<50)
-      {
-        vita=false;
-        vita=false;
-        totInnevato=false;
-        colpito=false;
-        nColpito=0;
-        colpitoInnevato=false;
-      }
-    x-=spostamento+20;
-  }
+  colpitoEdInnevato();
 }
 else
 {

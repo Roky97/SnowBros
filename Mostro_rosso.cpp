@@ -61,6 +61,13 @@ al_destroy_bitmap(salta);
 
 void Mostro_rosso::drawMostro(){
 
+if(!vita)
+{
+  drawSushi();
+}
+else
+{
+
 if(!colpitoInnevato)
 {
   if(saltando || cadendo)
@@ -203,37 +210,13 @@ if(!colpitoInnevato)
     }
   }
 }
+}
 
 void Mostro_rosso::muovi(){
 
 if(colpitoInnevato)
 {
-  //al_stop_timer(congelo);
-  parametroGravita=20;
-  if(andando_destra)
-  {
-    if(x+42>=1105)
-      {
-        vita=false;
-        totInnevato=false;
-        colpito=false;
-        nColpito=0;
-        colpitoInnevato=false;
-      } //qua caso mai facciamo una animazione
-    x+=spostamento+20;
-  }
-  else if(andando_sinistra)
-  {
-    if(x<50)
-      {
-        vita=false;
-        totInnevato=false;
-        colpito=false;
-        nColpito=0;
-        colpitoInnevato=false;
-      }
-    x-=spostamento+20;
-  }
+  colpitoEdInnevato();
 }
 else
 {

@@ -11,7 +11,8 @@ Mostro::Mostro(){
   colpitoInnevato=false;
   totInnevato=false;
   saltoDistanza=0;
-vita=true;
+  vita=true;
+  sushi=false;
 
   verso_sinistra1= NULL;
   verso_sinistra2= NULL;
@@ -28,6 +29,12 @@ vita=true;
   innevando3=al_load_bitmap("./images/neve/innevando3.png");
   palladineve1=al_load_bitmap("./images/neve/palladineve1.png");
   palladineve2=al_load_bitmap("./images/neve/palladineve2.png");
+  im_sushi[0]=al_load_bitmap("./images/objects/sushi1.png");
+  im_sushi[1]=al_load_bitmap("./images/objects/sushi2.png");
+  im_sushi[2]=al_load_bitmap("./images/objects/sushi3.png");
+  im_sushi[3]=al_load_bitmap("./images/objects/sushi4.png");
+  im_sushi[4]=al_load_bitmap("./images/objects/sushi5.png");
+
 
   congelo=al_create_timer(1.0/5);
 
@@ -36,7 +43,7 @@ vita=true;
 
   srand((unsigned)time(NULL));
 
-  contPrimaDiSaltare=rand()%3+2;
+  contPrimaDiSaltare=rand()%3+3;
 
   int a=rand()%1001;
 
@@ -57,6 +64,7 @@ Mostro::Mostro(float posx, float posy)
 
   andando_sinistra=false;
   passo=false;
+  sushi=false;
   cont=0;
 
 	verso_sinistra1= NULL;
@@ -137,6 +145,10 @@ void Mostro::setnColpito(unsigned c){
 nColpito=c;
 }
 
+void Mostro::setSushi(bool s)
+{
+  sushi=true;
+}
 
 
 //GETS
@@ -206,6 +218,11 @@ int Mostro::getxFuoco()
 int Mostro::getyFuoco()
 {
   return yFuoco;
+}
+
+bool Mostro::getSushi()
+{
+  return sushi;
 }
 
 void Mostro::gravita()
@@ -280,4 +297,46 @@ bool Mostro::collisioneProiettile(int a, int b, bool dir)
     return true;
     }
   return false;
+}
+
+void Mostro::drawSushi()
+{
+  if(sushi)
+  {
+    srand(time(0));
+    int i=rand()%5;
+    al_draw_scaled_bitmap(im_sushi[i], 0, 0, 11, 10, x-30, y, 11*6, 10*6, 0);
+
+  }
+}
+
+void Mostro::colpitoEdInnevato()
+{
+  parametroGravita=20;
+  if(andando_destra)
+  {
+    if(x+42>=1105)
+      {
+        vita=false;
+        sushi=true;
+        totInnevato=false;
+        colpito=false;
+        nColpito=0;
+        colpitoInnevato=false;
+      } //qua caso mai facciamo una animazione
+    x+=spostamento+20;
+  }
+  else if(andando_sinistra)
+  {
+    if(x<50)
+      {
+        vita=false;
+        sushi=true;
+        totInnevato=false;
+        colpito=false;
+        nColpito=0;
+        colpitoInnevato=false;
+      }
+    x-=spostamento+20;
+  }
 }
