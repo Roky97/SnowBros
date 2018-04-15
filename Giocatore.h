@@ -120,6 +120,7 @@ ALLEGRO_BITMAP *grande_sinistra2;
   void setToccato(bool s);
   void setSpostaMostro(bool s);
   void setCont1(unsigned c);
+  void setPotere(bool p);
 
 
   //get
@@ -156,6 +157,7 @@ ALLEGRO_BITMAP *grande_sinistra2;
   void controllaseToccato(int a,int b);
   bool controllaseToccatoSushi(int a, int b);
   void presaLanterna(int a,int b);
+  void disattivaPotere();
 
 };
 #endif

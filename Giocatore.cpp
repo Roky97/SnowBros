@@ -125,6 +125,11 @@ void Giocatore::setToccato(bool s)
   toccato=s;
 }
 
+void Giocatore::setPotere(bool p)
+{
+  potere_v=p;
+}
+
 //GETS
 float Giocatore::getX()
 {
@@ -278,9 +283,9 @@ void Giocatore::drawPersonaggio()
 {
   if(potere_v)
   {
-    if(al_get_timer_count(trasformazione)>3)
+    if(al_get_timer_count(trasformazione)>=3)
     {
-      if(andando_destra && passo )
+      if(andando_destra && passo)
       {
         al_draw_scaled_bitmap(grande_destra1, 0, 0, 46, 48, x-60, y-25, 46*4, 48*4, 0);
         cont++;
@@ -329,7 +334,7 @@ void Giocatore::drawPersonaggio()
         }
         fermoAlternato=false;
       }
-      else if((andando_sopra || andando_sotto) && passo )
+      else if((andando_sopra || andando_sotto||fermo) && passo )
       {
         al_draw_scaled_bitmap(grande_fermo1, 0, 0, 45, 48, x-60, y-25, 45*4, 48*4, 0);
         cont++;
@@ -340,7 +345,7 @@ void Giocatore::drawPersonaggio()
           cont=0;
         }
       }
-      else if((andando_sopra || andando_sotto) && !passo )
+      else if((andando_sopra || andando_sotto||fermo) && !passo )
       {
         al_draw_scaled_bitmap(grande_fermo2, 0, 0, 48, 47, x-60, y-25, 48*4, 47*4, 0);
         cont++;
@@ -354,33 +359,27 @@ void Giocatore::drawPersonaggio()
     }
     else
     {
-      if(al_get_timer_count(trasformazione)==1)
+      if(al_get_timer_count(trasformazione)==0)
       {
         if(andando_destra)
-          al_draw_scaled_bitmap(trasformazione1dx, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
+          al_draw_scaled_bitmap(trasformazione1dx, 0, 0, 22, 32, x-60, y-25, 22*4, 32*4, 0);
         else
-          al_draw_scaled_bitmap(trasformazione1sx, 0, 0, 30, 30, x-60, y-25, 30*4, 30*4, 0);
-
-
+          al_draw_scaled_bitmap(trasformazione1sx, 0, 0,22, 32, x-60, y-25, 22*4, 32*4, 0);
       }
-      else if(al_get_timer_count(trasformazione)==2)
+      else if(al_get_timer_count(trasformazione)==1)
       {
         if(andando_destra)
           al_draw_scaled_bitmap(trasformazione2dx, 0, 0, 26, 38, x-60, y-25, 26*4, 38*4, 0);
         else
-          al_draw_scaled_bitmap(trasformazione2sx, 0, 0, 30, 30, x-60, y-25, 26*4, 38*4, 0);
+          al_draw_scaled_bitmap(trasformazione2sx, 0, 0, 26, 38, x-60, y-25, 26*4, 38*4, 0);
       }
-      else if(al_get_timer_count(trasformazione)==3)
+      else if(al_get_timer_count(trasformazione)==2)
       {
         if(andando_destra)
           al_draw_scaled_bitmap(trasformazione3dx, 0, 0, 33, 43, x-60, y-25, 33*4, 43*4, 0);
         else
           al_draw_scaled_bitmap(trasformazione3sx, 0, 0, 33, 43, x-60, y-25, 33*4, 43*4, 0);
       }
-
-
-
-
     }
   }
   else
@@ -576,21 +575,20 @@ void Giocatore::muovi()
 {
   if(potere_v)
   {
-    al_start_timer(trasformazione);
-    if(andando_sopra && y<0)
+    if(andando_sopra && y>0)
     {
       y-=spostamento;
     }
-    else if(andando_sotto && y>990)
+    if(andando_sotto && y<990)
     {
       y+=spostamento;
     }
-    else if(andando_destra && x<=w-30-spostamento) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+   if(andando_destra && x<=w-30-spostamento) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
     {
       x+=spostamento;
     }
 
-    else if(andando_sinistra && x>35) //movimento a sx
+   if(andando_sinistra && x>35) //movimento a sx
       x-=spostamento;
   }
   else
@@ -674,5 +672,13 @@ void Giocatore::presaLanterna(int a, int b)
   if((a+60>=static_cast<int>(x) && a-60<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y))
   {
     potere_v=true;
+      al_start_timer(trasformazione);
   }
+}
+
+void Giocatore::disattivaPotere()
+{
+  potere_v=false;
+  al_set_timer_count(trasformazione,0.0);
+  al_stop_timer(trasformazione);
 }

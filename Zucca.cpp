@@ -75,40 +75,64 @@ float Zucca::getY()
 
 void Zucca::muoviZucca(float posX, float posY) //PASSIAMO LE POSIZIONI DEL PERSONAGGIO IN MODO DA RAGGIUNGERLO OVUNQUE ESSO SIA
 {
-
-
-
-
-    if(posX>=x && posY>=y)
+  if(posX-50<=x && posX+50>=x)
+  {
+    if(posY<y)
+    {
+    y-=spostamento;
+    andando_sinistra=true;
+    andando_destra=false;
+    }
+    if(posY>y)
+    {
+    y+=spostamento;
+    andando_destra=true;
+    andando_sinistra=false;
+    }
+  }
+  else
+  {
+    if(posX>x && posY>y)
     {
       x+=spostamento;
       y+=spostamento;
       andando_destra=true;
       andando_sinistra=false;
     }
-    else if(posX>=x && posY<=y)
+    else if(posX>x && posY<y)
     {
       x+=spostamento;
       y-=spostamento;
       andando_destra=true;
       andando_sinistra=false;
     }
-    else if(posX<=x && posY>=y)
+    else if(posX<x && posY>y)
     {
       x-=spostamento;
       y+=spostamento;
       andando_sinistra=true;
       andando_destra=false;
     }
-   else if(posX<=x && posY<=y)
+   else if(posX<x && posY<y)
     {
       x-=spostamento;
       y-=spostamento;
      andando_sinistra=true;
      andando_destra=false;
     }
-
-
+   else if(posX<x && posY==y)
+   {
+     x-=spostamento;
+     andando_sinistra=true;
+     andando_destra=false;
+   }
+   else if(posX>x && posY==y)
+   {
+     x+=spostamento;
+     andando_sinistra=false;
+     andando_destra=true;
+   }
+ }
 }
 void Zucca::drawZucca()
 {

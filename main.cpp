@@ -298,6 +298,7 @@ int main(int argc, char **argv){
            tommy->setSparando(false);
            tommy->setAndando_destra(false);
            tommy->setAndando_sinistra(false);
+           tommy->disattivaPotere();
            zucca->setX(0.0);
            zucca->setY(0.0);
            contMostriColpiti=0;
@@ -395,7 +396,7 @@ int main(int argc, char **argv){
           if(b<0)
             b=0;
 
-          if(tommy->getToccato()==false && !mostralivello)//SE IL MOSTRO NON E' STATO TOCCATO GLI PERMETTIAMO DI MUOVERSI
+          if(tommy->getToccato()==false && !mostralivello)//SE TOMMY NON E' STATO TOCCATO GLI PERMETTIAMO DI MUOVERSI
           tommy->muovi();
 
 
@@ -447,7 +448,7 @@ int main(int argc, char **argv){
 
           for(int i=0; i<nMostri; i++) //CONTROLLIAMO SE QUALCHE MOSTRO O SE QUALCHE COLPO TOCCA IL PERSONAGGIO
           {
-            if((!mostri[i]->getColpito() && !tommy->getToccato() && mostri[i]->getVita() && !mostri[i]->getcolpitoInnevato()))
+            if((!mostri[i]->getColpito() && !tommy->getToccato() && mostri[i]->getVita() && !mostri[i]->getcolpitoInnevato()&& !tommy->getPotere()))
               {
                 tommy->controllaseToccato(mostri[i]->getX(), mostri[i]->getY());
 
@@ -462,14 +463,16 @@ int main(int argc, char **argv){
               }
           }
 
-         for(int i=0;i<nMostri;i++)
+         for(int i=0;i<nMostri;i++) //CONTROLLIAMO SE TOMMY PRENDE IL SUSHI
          {
            if(mostri[i]->getSushi() && tommy->controllaseToccatoSushi(mostri[i]->getX(),mostri[i]->getY()))
            mostri[i]->setSushi(false);
          }
 
-         if(!tommy->getToccato() && mostrivivi)
-         tommy->controllaseToccato(zucca->getX(),zucca->getY());
+         if(!tommy->getToccato() && mostrivivi && !tommy->getPotere()) //CONTROLLIAMO SE TOMMY VIENE TOCCATO DALLA ZUCCA
+         {
+           tommy->controllaseToccato(zucca->getX(),zucca->getY());
+         }
 
 
           for(int i=0; i<nMostri; i++)
@@ -528,12 +531,18 @@ int main(int argc, char **argv){
            {
              if(mostri[i]->getVita())
              {
-               for(int j=0; j<ncolpi; j++)
-               {
-                 if(colpi[j].getVita())
-                  if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
-                    colpi[j].setVita(false);
-               }
+                if(tommy->getPotere() && mostri[i]->collisioneProiettile(tommy->getX(),tommy->getY(),tommy->getFermoalternato()))
+                {
+                  mostri[i]->setcolpitoInnevato(true);
+                  mostri[i]->setTotInnevato(true);
+                }
+                else
+                  for(int j=0; j<ncolpi; j++)
+                  {
+                    if(colpi[j].getVita())
+                      if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
+                        colpi[j].setVita(false);
+                  }
              }
            }
 
@@ -644,7 +653,6 @@ int main(int argc, char **argv){
             case ALLEGRO_KEY_LEFT:
                tommy->setAndando_sinistra(true);
                tommy->setFermo(false);
-
                break;
 
             case ALLEGRO_KEY_RIGHT:
@@ -667,8 +675,11 @@ int main(int argc, char **argv){
               break;
 
             case ALLEGRO_KEY_A:
-              tommy->setSparando(true);
-              for(int i=0;i<ncolpi && !colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());i++);
+              if(!tommy->getPotere())
+              {
+                tommy->setSparando(true);
+                  for(int i=0;i<ncolpi && !colpi[i].fireColpo(tommy->getX(),tommy->getY(),tommy->getFermoalternato());i++);
+              }
               break;
          }
        }
@@ -689,6 +700,16 @@ int main(int argc, char **argv){
              case ALLEGRO_KEY_A:
              tommy->setSparando(false);
              break;
+
+            case ALLEGRO_KEY_UP:
+            tommy->setAndando_sopra(false);
+            tommy->setFermo(true);
+            break;
+
+            case ALLEGRO_KEY_DOWN:
+            tommy->setAndando_sotto(false);
+            tommy->setFermo(true);
+            break;
          }
       }
 
