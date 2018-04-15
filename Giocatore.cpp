@@ -575,27 +575,49 @@ void Giocatore::drawLanterna(float posX, float posY)
 void Giocatore::muovi()
 {
   if(potere_v)
+  {
     al_start_timer(trasformazione);
-  if(andando_destra && x<=w-30-spostamento&&!toccato) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
-  {
-    x+=spostamento;
-  }
-
-  else if(andando_sinistra && x>35&&!toccato) //movimento a sx
-    x-=spostamento;
-
-  if(saltando && saltoDistanza<=210 && !cadendo&&!toccato) //aggiorna le posizioni per saltare
-  {
-    y-=15;
-    saltoDistanza+=15;
-    if(saltoDistanza>=210)
+    if(andando_sopra && y<0)
     {
-      saltando=false;
-      fermo=false;
-      saltoDistanza=0;
-      cadendo=true;
+      y-=spostamento;
+    }
+    else if(andando_sotto && y>990)
+    {
+      y+=spostamento;
+    }
+    else if(andando_destra && x<=w-30-spostamento) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+    {
+      x+=spostamento;
+    }
+
+    else if(andando_sinistra && x>35) //movimento a sx
+      x-=spostamento;
+  }
+  else
+  {
+    if(andando_destra && x<=w-30-spostamento&&!toccato) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+    {
+      x+=spostamento;
+    }
+
+    else if(andando_sinistra && x>35&&!toccato) //movimento a sx
+      x-=spostamento;
+
+
+    if(saltando && saltoDistanza<=210 && !cadendo&&!toccato) //aggiorna le posizioni per saltare
+    {
+      y-=15;
+      saltoDistanza+=15;
+      if(saltoDistanza>=210)
+      {
+        saltando=false;
+        fermo=false;
+        saltoDistanza=0;
+        cadendo=true;
+      }
     }
   }
+
  }
 
 

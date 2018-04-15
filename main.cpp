@@ -408,12 +408,13 @@ int main(int argc, char **argv){
             tommy->setAndando_sinistra(false);
           }*/
 
-
+          if(!tommy->getPotere()) //SE TOMMY HA IL POTERE NON HA GRAVITA'
+          {
           if(tommy->getSaltando()==false)  //CONTROLLIAMO CHE IL PERSONAGGIO NON VADA DENTRO I MURETTI
           {
             if(tommy->getY()>400)
             {
-              if((((int)tommy->getY()+30)/100)%2!=0)
+              if((((int)tommy->getY()+30)/100)%2!=0 && !tommy->getPotere())
               {
                 tommy->setCadendo(true);
                 tommy->gravita();
@@ -437,6 +438,7 @@ int main(int argc, char **argv){
             tommy->setCadendo(false);
             tommy->setFermo(true);
           }
+        }
 
 
 
@@ -585,7 +587,6 @@ int main(int argc, char **argv){
                       mostri[j]->setTotInnevato(true);
                       mostri[j]->setcolpitoInnevato(true);
                       contMostriColpiti++;
-                      cout<<"Cazzo nel culoo"<<endl<<endl;
                       if(contMostriColpiti==4)
                       {
                           indiceLanterna=i;
@@ -604,7 +605,7 @@ int main(int argc, char **argv){
              if(mostri[i]->getVita())
               mostrivivi=true;
            }
-           cout<<tommy->getPotere()<<endl;
+           // cout<<tommy->getPotere()<<endl;
            if(!mostrivivi)
            {
 
