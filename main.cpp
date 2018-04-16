@@ -321,6 +321,7 @@ int main(int argc, char **argv){
            zucca->setY(0.0);
            contMostriColpiti=0;
            restart=false;
+           mostriBoss.clear();
            if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0 ALTRIMENTI GAMEOVER
            {
             gameover=true;
@@ -710,8 +711,11 @@ int main(int argc, char **argv){
                       if(mostriBoss[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
                         colpi[j].setVita(false);
                 }
+
+                if(mostriBoss[i]->getcolpitoInnevato() && boss->controllaSeToccato(mostriBoss[i]->getX(),mostriBoss[i]->getY(),1))
+                mostriBoss[i]->setVita(false);
              }
-            }
+             }
 
             for(int j=0; j<ncolpi; j++)
             {
@@ -785,7 +789,7 @@ int main(int argc, char **argv){
 
           if(level==2)
            {
-             for(int i=0; i<mostriBoss.size(); i++) //COLLISIONE TRA MOSTRIBOSS
+             for(int i=0; i<mostriBoss.size(); i++) //COLLISIONE TRA MOSTRI BOSS
              {
              if(mostriBoss[i]->getVita() && !mostriBoss[i]->getTotInnevato())
              {
@@ -847,7 +851,6 @@ int main(int argc, char **argv){
            }
 
 
-
            mostrivivi=false;
            if(level!=2)
            for(int i=0; i<nMostri; i++) //CONTROLLA SE TUTTI I MOSTRI SONO ANCORA VIVI PER PASSARE DI LIVELLO
@@ -855,6 +858,8 @@ int main(int argc, char **argv){
              if(mostri[i]->getVita())
               mostrivivi=true;
            }
+
+
            // cout<<tommy->getPotere()<<endl;
            if(!mostrivivi && level!=2)
            {
