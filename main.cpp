@@ -8,7 +8,12 @@ using namespace std;
 #include "Mostro_rosso.h"
 #include "Mostro_Verde.h"
 #include "Zucca.h"
+#include "Boss.h"
 #include <unistd.h>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
 
 const int ncolpi=10;
 const int maxmostri=100;
@@ -55,29 +60,36 @@ int main(int argc, char **argv){
   */
   unsigned level=0; //INDICE DELLA MAPPA PER CAMBIARE LIVELLO
   int nMostri=0; //NUMERO MOSTRI NELLA MAPPA
-  int contMostriColpiti=0;
-  int indiceLanterna=0;
+  int contMostriColpiti=0; //CONTATORE DEI MOSTRI COLPITI DALLA PALLA DI NEVE PER GESTIRE LA COMPARSA DELLA LANTERNA
+  int indiceLanterna=0;   //INDICE DEL MOSTRO CHE TRASFORMATO IN PALLA DI NEVE HA COLPITO PIÙ MOSTRI.(GESTIONE POSIZIONI LANTERNA)
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-  ALLEGRO_TIMER *timer = NULL;
-  ALLEGRO_TIMER *fantasma = NULL;
-  ALLEGRO_TIMER *mostraliv=NULL;
-  ALLEGRO_TIMER *passalivello=NULL;
+  ALLEGRO_TIMER *timer = NULL; //TIMER PER GESTIONE DEGLI EVENTI
+  ALLEGRO_TIMER *fantasma = NULL;  //TIMER PER GESTIRE LA COMPARSA DELLA ZUCCA DOPO UN TOT DI SECONDI
+  ALLEGRO_TIMER *mostraliv=NULL;  //TIMER PER GESTIRE LA COMPARSA DEL LIVELLO NEL QUALE CI TROVIAMO
+  ALLEGRO_TIMER *passalivello=NULL; //TIMER PER GESTIRE IL PASSAGGIO DA UN LIVELLO ALL'ALTRO. (TEMPO PER PRENDERE TUTTI I SUSHI)
+  ALLEGRO_TIMER *creaMostriBoss=NULL;
   Colpo colpi[ncolpi]; //ARRAY DI COLPI
   Mappa mappe[levMax]; //ARRAY DI MAPPE
   Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
   Giocatore * tommy= new Giocatore(w,h); //DICHIARAZIONE GIOCATORE
-  Zucca *zucca=new Zucca(0,0);
+  Zucca *zucca=new Zucca(0,0); //DICHIARAZIONE ZUCCA
+  Boss *boss=new Boss();
   bool main_screen=true;  //BOOLEANA CHE CONTROLLA LA PAGINA PRINCIPALE DEL GIOCO
-  bool esc=false;       //BOOLEANA CHE CONTROLLA SE CLICCIAMO SULLA X
-  bool mostrivivi=true;
-  bool restart=false;  //BOOLEANA CHE SI ATTIVA QUANDO IL MOSTRO VIENE toccato
-  bool gameover=false; //
-  bool mostralivello=true;
-  bool finitiSushi=false;
-  ALLEGRO_BITMAP *schermate_livello[levMax];
+  bool esc=false;       //BOOLEANA CHE CONTROLLA SE CLICCHIAMO SULLA X
+  bool mostrivivi=true; //BOOLEANA CHE CONTROLLA SE TUTTI I MOSTRI SONO MORTI
+  bool restart=false;  //BOOLEANA CHE SI ATTIVA QUANDO IL GIOCATORE PERDE LE 3 VITE
+  bool gameover=false; //BOOLEANA PER GESTIRE IL GAMEOVER
+  bool mostralivello=true; //BOOLEANA PER GESTIRE IL TIMER CHE CI MOSTRA IL LIVELLO NEL QUALE CI TROVIAMO
+  bool finitiSushi=false; //BOOLEANA CHE CI INDICA SE ABBIAMO PRESO TUTTI I SUSHI
+  ALLEGRO_BITMAP *schermate_livello[levMax]; //ARRAY DI LIVELLI
   schermate_livello[0]=al_load_bitmap("./images/schermate/level1.png");
   schermate_livello[1]=al_load_bitmap("./images/schermate/level2.png");
   schermate_livello[2]=al_load_bitmap("./images/schermate/final_level.png");
+
+  vector<Mostro*> mostriBoss;
+  Mostro *mostroBoss;
+  int mostroDaCreare;
+
 
 
 
@@ -94,6 +106,7 @@ int main(int argc, char **argv){
   fantasma=al_create_timer(1.0);
   mostraliv=al_create_timer(1.0);
   passalivello=al_create_timer(1.0);
+  creaMostriBoss=al_create_timer(1.0);
   event_queue = al_create_event_queue();
 
   al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -103,19 +116,21 @@ int main(int argc, char **argv){
   al_flip_display();
   al_start_timer(timer);
 
+
   tommy->carica_immagini();
   mappe[0].caricaElementi("./images/objects/tile1.png");
   mappe[0].caricaMappa("./mappe/mappa1.txt");
   mappe[1].caricaElementi("./images/objects/tile4.png");
   mappe[1].caricaMappa("./mappe/mappa2.txt");
+  mappe[2].caricaElementi("./images/objects/tile3.png");
+  mappe[2].caricaMappa("./mappe/mappa3.txt");
 
 
-
-  for(int i=0;i<mappe[0].getMapSizeX();i++)  //CREIAMO UN ARRAY DI MOSTRI
+  for(int i=0;i<mappe[0].getMapSizeX();i++)  //CREIAMO I MOSTRI E LI INSERIAMO NELL'ARRAY IN BASE A DOVE SONO POSIZIONATI NELLA MAPPA
   {
     for(int j=0;j<mappe[0].getMapSizeY();j++)
     {
-      switch (mappe[0].getValore(i,j)) {
+      switch (mappe[0].getValore(i,j)){
         case 2:
         mostri[nMostri]=new Mostro_rosso();
         mostri[nMostri]->setX(i*92.08);
@@ -142,13 +157,12 @@ int main(int argc, char **argv){
 
   while(!esc)
   {
-  // al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
     ALLEGRO_EVENT ev;
     al_wait_for_event(event_queue, &ev);
 
-    //******************************************************//
-    //WHILE UTILIZZATO PER ALTERNARE LE SCHERMATE PRINCIPALI//
-    //******************************************************//
+    //*******************************//
+    //ALTERNANZA SCHERMATE PRINCIPALI//
+    //*******************************//
 
     if(main_screen) //SE MAIN SCREEN È TRUE SIAMO NELLA SCHERMATA PRINCIPALE
     {
@@ -156,8 +170,6 @@ int main(int argc, char **argv){
       bool redraw=true;
       ALLEGRO_BITMAP* schermata1= al_load_bitmap("./images/schermate/schermata_iniziale_1.png");
       ALLEGRO_BITMAP* schermata2= al_load_bitmap("./images/schermate/schermata_iniziale_2.png");
-
-
 
       while(main_screen)
       {
@@ -199,9 +211,9 @@ int main(int argc, char **argv){
       }
     }
 
-    //*********//
-    //GAME OVER//
-    //*********//
+    //******************************//
+    //ALTERNANZA SCHERMATE GAME OVER//
+    //******************************//
 
     if(gameover) //SE PERDIAMO TUTTE E 3 LE VITE
     {
@@ -211,7 +223,7 @@ int main(int argc, char **argv){
       bool redraw=true;
       ALLEGRO_BITMAP* gameover1= al_load_bitmap("./images/schermate/game_over1.png");
       ALLEGRO_BITMAP* gameover2= al_load_bitmap("./images/schermate/game_over2.png");
-      while(gameover)   //WHILE UTILIZZATO PER ALTERNARE LA SCHERMATA DI GAMEOVER
+      while(gameover)
       {
 
         al_wait_for_event(event_queue, &ev);
@@ -260,40 +272,46 @@ int main(int argc, char **argv){
     }
 
 
-    if(!esc && !gameover) //
+    //*****//
+    //GIOCO//
+    //*****//
+    if(!esc && !gameover)
     {
       bool redraw=true;
       while(!esc && !gameover)
       {
-         al_start_timer(fantasma);
-         al_start_timer(mostraliv);
+         srand(time(0));
+         al_start_timer(fantasma); //FACCIAMO PARTIRE IL TIMER PER LA COMPARSA DEL FANTASMA
+         al_start_timer(mostraliv);//FACCIAMO PARTIRE IL TIMER CHE MI MOSTRA IL LIVELLO NEL QUALE CI TROVIAMO
 
-         if(al_get_timer_count(mostraliv)>1)
+         if(!al_get_timer_started(creaMostriBoss)&&level==2)
+         al_start_timer(creaMostriBoss);
+
+
+
+         if(al_get_timer_count(mostraliv)>1) //SE IL LIVELLO NEL QUALE CI TROVIAMO È STATO MOSTRATO PER PIÙ DI 1 SECONDO, NON LO MOSTRARE PIÙ
          mostralivello=false;
 
-         if(al_get_timer_count(fantasma)>10 && mostrivivi)
+         if(al_get_timer_count(fantasma)>30 && mostrivivi && level!=2) //SE CI SONO ANCORA MOSTRI VIVI E SONO PASSATI 30 SECONDI FACCIAMO COMPARIRE LA ZUCCA
          {
           zucca->muoviZucca(tommy->getX(),tommy->getY());
          }
 
-         if(contMostriColpiti>=3)
+         if(contMostriColpiti>=1) //CONTROLLIAMO SE TOMMY SI TROVA NELLA STESSA POSIZIONE DELLA LANTERNA
            {
              tommy->presaLanterna(mostri[indiceLanterna]->getX(),mostri[indiceLanterna]->getY());
            }
 
-
-
-
          if(restart ||(tommy->getToccato() && tommy->getCont1()>60)) //CONTROLLIAMO CHE RESTART NON SIA TRUE E CHE IL CONT1 ABBIA SUPERATO 60.
                                                                     //SE CONT1 SUPERA 60 VUOL DIRE CHE È STATA DISEGNATA L'INTERA ANIMAZIONE
          {
-           al_set_timer_count(fantasma,0.0);
+           al_set_timer_count(fantasma,0.0);  //SETTIAMO I TIMER A 0
            al_set_timer_count(mostraliv,0.0);
-           mostralivello=true;
-           tommy->setX(w/2.0 - 15);         //SETTIAMO LE POS DEL GIOCATORE A QUELLE INIZIALI
+           mostralivello=true;                //BOOLEANA CHE SI RIATTIVA PER MOSTRARE NUOVAMENTE IL LIVELLO
+           tommy->setX(w/2.0 - 15);           //SETTIAMO LE IMPOSTAZIONI DI TOMMY A QUELLE INIZIALI
            tommy->setY(h-30*4 -21*(4));
            tommy->setToccato(false);
-           tommy->setCont1(0);              //SETTIAMO IL CONT1 A 0
+           tommy->setCont1(0);
            tommy->setSpostaMostro(false);
            tommy->setSparando(false);
            tommy->setAndando_destra(false);
@@ -311,11 +329,12 @@ int main(int argc, char **argv){
             level=0;
            }
 
-           for(int i=0;i<nMostri;i++)       //ELIMINIAMO I MOSTRI E CREIAMO NUOVI
+           for(int i=0;i<nMostri;i++)       //ELIMINIAMO I MOSTRI E CREIAMO NUOVI PER EVITARE DI IMPOSTARE I SETTAGGI A QUELLI INIZIALI
            delete mostri[i];
 
            nMostri=0;
-
+            if(level!=2)
+            {
              for(int i=0;i<mappe[level].getMapSizeX();i++)
              {
                for(int j=0;j<mappe[level].getMapSizeY();j++)
@@ -339,6 +358,7 @@ int main(int argc, char **argv){
                     }
                   }
                 }
+              }
 
                 // ALLEGRO_TIMER *temp;
                 // temp=al_create_timer(1.0);
@@ -381,13 +401,50 @@ int main(int argc, char **argv){
             colpi[i].updateColpo();
           }
 
-          for(int i=0;i<nMostri;i++) //FACCIAMO MUOVERE I MOSTRI
+          for(int i=0;i<nMostri;i++) //FACCIAMO MUOVERE I MOSTRI SE NON SONO MORTI E SE C'È LA SCHERMATA DEL LIVELLO
           {
             if(mostri[i]->getVita() && !mostralivello)
               mostri[i]->muovi();
           }
 
-          float a=tommy->getX()/92.08;   //VARIABILI UTILIZZATE PER INTERAGIRE CON LA MAPPA
+          if(level==2)            //FACCIAMO MUOVERE I MOSTRI DEL BOSS SE NON SONO MORTI E SE C'È LA SCHERMATA DEL LIVELLO
+          {
+            boss->gestisciBoss();
+            for(int i=0;i<mostriBoss.size();i++)
+            if(mostriBoss[i]->getVita() && !mostralivello)
+            mostriBoss[i]->muovi();
+
+            if(al_get_timer_count(creaMostriBoss)==5) //OGNI 5 SEC VIENE CREATO UN NUOVO MOSTRO DEL BOSS
+            {
+              al_set_timer_count(creaMostriBoss,0.0);
+              mostroDaCreare=rand()%2+1;
+
+              if(mostroDaCreare==1)
+              {
+                cout<<"cazzo"<<endl<<endl;
+                mostroBoss=new Mostro_rosso();
+                mostroBoss->setX(500);
+                mostroBoss->setY(10);
+                mostriBoss.push_back(mostroBoss);
+                mostriBoss.back()->carica_immagini();
+              }
+              else if(mostroDaCreare==2)
+              {
+                cout<<"figaaa"<<endl<<endl;
+                mostroBoss=new Mostro_Verde();
+                mostroBoss->setX(500);
+                mostroBoss->setY(10);
+                mostriBoss.push_back(mostroBoss);
+                mostriBoss.back()->carica_immagini();
+
+              }
+            }
+          }
+
+
+
+
+          float a=tommy->getX()/92.08;   //VARIABILI UTILIZZATE PER INTERAGIRE CON IL FILE DI TESTO DELLA MAPPA E GESTIRE LA GRAVITÀ
           float b=((tommy->getY()+90)/91.63);
 
           if(a<0)
@@ -411,8 +468,8 @@ int main(int argc, char **argv){
 
           if(!tommy->getPotere()) //SE TOMMY HA IL POTERE NON HA GRAVITA'
           {
-          if(tommy->getSaltando()==false)  //CONTROLLIAMO CHE IL PERSONAGGIO NON VADA DENTRO I MURETTI
-          {
+            if(tommy->getSaltando()==false)  //CONTROLLIAMO CHE IL PERSONAGGIO NON VADA DENTRO I MURETTI
+            {
             if(tommy->getY()>400)
             {
               if((((int)tommy->getY()+30)/100)%2!=0 && !tommy->getPotere())
@@ -427,27 +484,25 @@ int main(int argc, char **argv){
               tommy->gravita();
             }
           }
-
-          if((mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false)) //GESTIAMO LA GRAVITA' DEL PERSONAGGIO
-          {
+            if((mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false)) //GESTIAMO LA GRAVITA' DEL PERSONAGGIO
+            {
             tommy->setCadendo(true);
             tommy->gravita();
-            //cout<<tommy->getX()<<"   "<<tommy->getY()<<"   "<<((int)tommy->getY()+5)/100<<endl<<endl;
           }
-          else
-          {
+            else
+            {
             tommy->setCadendo(false);
             tommy->setFermo(true);
           }
-        }
+          }
 
 
 
 
 
 
-          for(int i=0; i<nMostri; i++) //CONTROLLIAMO SE QUALCHE MOSTRO O SE QUALCHE COLPO TOCCA IL PERSONAGGIO
-          {
+         for(int i=0; i<nMostri; i++) //CONTROLLIAMO SE QUALCHE MOSTRO O SE QUALCHE COLPO TOCCA IL PERSONAGGIO
+         {
             if((!mostri[i]->getColpito() && !tommy->getToccato() && mostri[i]->getVita() && !mostri[i]->getcolpitoInnevato()&& !tommy->getPotere()))
               {
                 tommy->controllaseToccato(mostri[i]->getX(), mostri[i]->getY());
@@ -457,11 +512,29 @@ int main(int argc, char **argv){
 
                 if(tommy->getToccato())
                 {
-                  //restart=true; //SE IL PERSONAGGIO VIENE TOCCATO SI ATTIVA IL RESTART E RICOMINCIA LA PARTITA
                   break;
                 }
               }
           }
+
+         if(level==2)  //CONTROLLIAMO SE I MOSTRI DEL BOSS O QUALCHE COLPO TOCCA TOMMY
+         {
+           for(int i=0;i<mostriBoss.size();i++)
+           {
+             if((!mostriBoss[i]->getColpito() && !tommy->getToccato() && mostriBoss[i]->getVita() && !mostriBoss[i]->getcolpitoInnevato()&& !tommy->getPotere()))
+               {
+                 tommy->controllaseToccato(mostriBoss[i]->getX(), mostriBoss[i]->getY());
+
+                 if(mostriBoss[i]->getTipo()==1)
+                 tommy->controllaseToccato(mostriBoss[i]->getxFuoco(), mostriBoss[i]->getyFuoco());
+
+                 if(tommy->getToccato())
+                 {
+                   break;
+                 }
+               }
+           }
+         }
 
          for(int i=0;i<nMostri;i++) //CONTROLLIAMO SE TOMMY PRENDE IL SUSHI
          {
@@ -469,13 +542,38 @@ int main(int argc, char **argv){
            mostri[i]->setSushi(false);
          }
 
+         for(int i=0;i<mostriBoss.size();i++) //CONTROLLIAMO SE TOMMY PRENDE IL SUSHI DEI MOSTRI DEL BOSS
+         {
+           if(mostriBoss[i]->getSushi() && tommy->controllaseToccatoSushi(mostriBoss[i]->getX(),mostriBoss[i]->getY()))
+           mostriBoss[i]->setSushi(false);
+         }
+
          if(!tommy->getToccato() && mostrivivi && !tommy->getPotere()) //CONTROLLIAMO SE TOMMY VIENE TOCCATO DALLA ZUCCA
          {
            tommy->controllaseToccato(zucca->getX(),zucca->getY());
          }
 
+         if(level==2)
+         {
+           float ma=boss->getX()/92.08; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
+           float mb=(boss->getY()/91.63)+3;
+           if(ma<0)
+             ma=0;
+           if(mb<0)
+             mb=0;
+          if(mappe[level].getValore(ma, mb)!=1 && boss->getSaltando()==false) //GRAVITA' DEI MOSTRI
+             {
+               boss->setCadendo(true);
+               boss->gravita();
+             }
+          else
+           {
+               boss->setCadendo(false);
+           }
 
-          for(int i=0; i<nMostri; i++)
+
+         }
+          for(int i=0; i<nMostri; i++) //CONTROLLIAMO LA GRAVITÀ DEI MOSTRI E CONTROLLIAMO CHE NON VADANO DENTRO I MURETTI
           {
             if(mostri[i]->getVita())
             {
@@ -523,9 +621,57 @@ int main(int argc, char **argv){
               if(mostri[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //FA SALTARE I MOSTRI IN BASE AD UN NUMERO RANDOM
                 mostri[i]->setSaltando(true);
             }
-
           }
 
+          for(int i=0; i<mostriBoss.size(); i++) //CONTROLLIAMO LA GRAVITÀ DEI MOSTRI DEL BOSS E CONTROLLIAMO CHE NON VADANO DENTRO I MURETTI
+          {
+            if(mostriBoss[i]->getVita())
+            {
+            float ma=mostriBoss[i]->getX()/92.08; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
+            float mb=(mostriBoss[i]->getY()/91.63)+1;
+            if(ma<0)
+              ma=0;
+            if(mb<0)
+              mb=0;
+
+            if(mostriBoss[i]->getTotInnevato())
+            if(tommy->controllaTocco(mostriBoss[i]->getX(), mostriBoss[i]->getY(), mostriBoss[i]->getTotInnevato(),mostriBoss[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
+                {
+                  mostriBoss[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
+                }
+
+                if(mostriBoss[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
+                {
+                  if(mostriBoss[i]->getY()>400)
+                  {
+                    if((((int)mostriBoss[i]->getY()+30)/100)%2!=0)
+                    {
+                      mostriBoss[i]->setCadendo(true);
+                      mostriBoss[i]->gravita();
+                    }
+                  }
+                  else if((((int)mostriBoss[i]->getY())/100)%2!=0)
+                  {
+                    mostriBoss[i]->setCadendo(true);
+                    mostriBoss[i]->gravita();
+                  }
+                }
+
+
+              if(mappe[level].getValore(ma, mb)!=1 && mostriBoss[i]->getSaltando()==false) //GRAVITA' DEI MOSTRI
+              {
+                mostriBoss[i]->setCadendo(true);
+                mostriBoss[i]->gravita();
+              }
+              else
+              {
+                mostriBoss[i]->setCadendo(false);
+              }
+
+              if(mostriBoss[i]->getContPrimaDiSaltare()==0 && mappe[level].getValore(ma, mb-2)==1) //FA SALTARE I MOSTRI IN BASE AD UN NUMERO RANDOM
+                mostriBoss[i]->setSaltando(true);
+            }
+          }
 
            for(int i=0; i<nMostri; i++) //CONTROLLIAMO LA COLLISIONE TRA COLPI E MOSTRI
            {
@@ -537,17 +683,47 @@ int main(int argc, char **argv){
                   mostri[i]->setTotInnevato(true);
                 }
                 else
-                  for(int j=0; j<ncolpi; j++)
-                  {
+                for(int j=0; j<ncolpi; j++)
+                {
                     if(colpi[j].getVita())
                       if(mostri[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
                         colpi[j].setVita(false);
-                  }
+                }
              }
            }
 
+           if(level==2)
+           {
+             for(int i=0; i<mostriBoss.size(); i++) //CONTROLLIAMO LA COLLISIONE TRA COLPI E MOSTRI DEL BOSS
+             {
+             if(mostriBoss[i]->getVita())
+             {
+                if(tommy->getPotere() && mostriBoss[i]->collisioneProiettile(tommy->getX(),tommy->getY(),tommy->getFermoalternato()))
+                {
+                  mostriBoss[i]->setcolpitoInnevato(true);
+                  mostriBoss[i]->setTotInnevato(true);
+                }
+                else
+                for(int j=0; j<ncolpi; j++)
+                {
+                    if(colpi[j].getVita())
+                      if(mostriBoss[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
+                        colpi[j].setVita(false);
+                }
+             }
+            }
 
-           for(int i=0; i<nMostri; i++)
+            for(int j=0; j<ncolpi; j++)
+            {
+                if(colpi[j].getVita())
+                  if(boss->controllaSeToccato(colpi[j].getX(),colpi[j].getY(),0))
+                    colpi[j].setVita(false);
+            }
+           }
+
+
+
+           for(int i=0; i<nMostri; i++) //COLLISIONE TRA MOSTRI
            {
              if(mostri[i]->getVita() && !mostri[i]->getTotInnevato())
              {
@@ -558,7 +734,7 @@ int main(int argc, char **argv){
 
                    // if(i!=j)
                    //cout<<i<<" "<<mostri[i]->getY()<<" - "<<j<<" "<<mostri[j]->getY()<<endl<<endl;
-                   if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra() && i!=j) ) //CONTROLLA LA COLLISIONE TRA MOSTRI
+                   if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra() && i!=j)) //CONTROLLA LA COLLISIONE TRA MOSTRI ED INVERTE LO SPOSTAMENTO
                    {
                      if(mostri[i]->getAndando_destra())
                      {
@@ -596,26 +772,91 @@ int main(int argc, char **argv){
                       mostri[j]->setTotInnevato(true);
                       mostri[j]->setcolpitoInnevato(true);
                       contMostriColpiti++;
-                      if(contMostriColpiti==4)
+                      if(contMostriColpiti==1)
                       {
                           indiceLanterna=i;
-                          //contMostriColpiti=0;
                       }
                     }
-                    //cout<<"cazzoooo"<<mostri[i]->getTotInnevato()<<" "<<mostri[j]->getTotInnevato()<<endl;
                   }
                 }
               }
              }
            }
+
+          if(level==2)
+           {
+             for(int i=0; i<mostriBoss.size(); i++) //COLLISIONE TRA MOSTRIBOSS
+             {
+             if(mostriBoss[i]->getVita() && !mostriBoss[i]->getTotInnevato())
+             {
+               for(int j=0; j<mostriBoss.size(); j++)
+               {
+                 if(mostriBoss[j]->getVita())
+                 {
+
+                   // if(i!=j)
+                   //cout<<i<<" "<<mostriBoss[i]->getY()<<" - "<<j<<" "<<mostriBoss[j]->getY()<<endl<<endl;
+                   if(mostriBoss[i]->controllaSeToccato(mostriBoss[j]->getX(), mostriBoss[j]->getY(), mostriBoss[j]->getAndando_destra(), mostriBoss[j]->getAndando_sinistra() && i!=j)) //CONTROLLA LA COLLISIONE TRA MOSTRI ED INVERTE LO SPOSTAMENTO
+                   {
+                     if(mostriBoss[i]->getAndando_destra())
+                     {
+                       mostriBoss[i]->setAndando_destra(false);
+                       mostriBoss[i]->setAndando_sinistra(true);
+
+                       mostriBoss[j]->setAndando_destra(true);
+                       mostriBoss[j]->setAndando_sinistra(false);
+
+                       mostriBoss[i]->setX(mostriBoss[i]->getX()-35);
+                       mostriBoss[j]->setX(mostriBoss[j]->getX()+35);
+
+                       mostriBoss[i]->diminuisciContPrimaDiSaltare();
+                       mostriBoss[j]->diminuisciContPrimaDiSaltare();
+                     }
+                     else if(mostriBoss[j]->getAndando_destra())
+                     {
+                       mostriBoss[i]->setAndando_destra(true);
+                       mostriBoss[i]->setAndando_sinistra(false);
+
+                       mostriBoss[j]->setAndando_destra(false);
+                       mostriBoss[j]->setAndando_sinistra(true);
+
+                       mostriBoss[i]->setX(mostriBoss[i]->getX()+35);
+                       mostriBoss[j]->setX(mostriBoss[j]->getX()-35);
+
+                      mostriBoss[i]->diminuisciContPrimaDiSaltare();
+                      mostriBoss[j]->diminuisciContPrimaDiSaltare();
+                    }
+
+                    if(mostriBoss[i]->getTotInnevato() || mostriBoss[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO
+                    {
+                      mostriBoss[i]->setTotInnevato(true);
+                      mostriBoss[i]->setcolpitoInnevato(true);
+                      mostriBoss[j]->setTotInnevato(true);
+                      mostriBoss[j]->setcolpitoInnevato(true);
+                      contMostriColpiti++;
+                      if(contMostriColpiti==1)
+                      {
+                          indiceLanterna=i;
+                      }
+                    }
+                  }
+                }
+              }
+             }
+           }
+           }
+
+
+
            mostrivivi=false;
+           if(level!=2)
            for(int i=0; i<nMostri; i++) //CONTROLLA SE TUTTI I MOSTRI SONO ANCORA VIVI PER PASSARE DI LIVELLO
            {
              if(mostri[i]->getVita())
               mostrivivi=true;
            }
            // cout<<tommy->getPotere()<<endl;
-           if(!mostrivivi)
+           if(!mostrivivi && level!=2)
            {
 
              al_start_timer(passalivello);
@@ -631,7 +872,7 @@ int main(int argc, char **argv){
                restart=true;
                al_set_timer_count(passalivello,0.0);
                al_stop_timer(passalivello);
-               if(level>=2)
+               if(level>=3)
                gameover=true;
              }
              else if(al_get_timer_count(passalivello)>4 && !finitiSushi)
@@ -640,7 +881,7 @@ int main(int argc, char **argv){
                restart=true;
                al_set_timer_count(passalivello,0.0);
                al_stop_timer(passalivello);
-               if(level>=2)
+               if(level>=3)
                gameover=true;
              }
            }
@@ -715,8 +956,6 @@ int main(int argc, char **argv){
 
         if( redraw && al_is_event_queue_empty(event_queue))
         {
-
-
         mappe[level].drawMappa();
         if(mostralivello)
         {
@@ -734,12 +973,18 @@ int main(int argc, char **argv){
           zucca->drawZucca();
 
 
-        if(contMostriColpiti>=3 && !tommy->getToccato() && !mostri[indiceLanterna]->getVita() && !tommy->getPotere())
+        if(contMostriColpiti>=1 && !tommy->getToccato() && !mostri[indiceLanterna]->getVita() && !tommy->getPotere())
         {
           tommy->drawLanterna(mostri[indiceLanterna]->getX(), mostri[indiceLanterna]->getY());
         }
 
+        if(level==2)
+        {
+          boss->drawBoss();
 
+          for(int i=0;i<mostriBoss.size();i++)
+           mostriBoss[i]->drawMostro();
+        }
 
 
 

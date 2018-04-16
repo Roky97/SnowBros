@@ -8,7 +8,7 @@ Giocatore::Giocatore(int w, int h)
   x=w/2.0 - 15;
   //y=0;
   spostamento=7;
-  vite=3;
+  vite=1000;
   cont=0;
   parametroGravita=10;
   saltoDistanza=0;
@@ -29,7 +29,7 @@ Giocatore::Giocatore(int w, int h)
   toccato=false;
   spostaMostro=false;
   potere_v=false;
-  trasformazione=al_create_timer(1.0/2);
+  trasformazione=al_create_timer(1.0/10);
 
 
   salta= NULL;
@@ -579,7 +579,7 @@ void Giocatore::muovi()
     {
       y-=spostamento;
     }
-    if(andando_sotto && y<990)
+    if(andando_sotto && y+(45*3)<990)
     {
       y+=spostamento;
     }
