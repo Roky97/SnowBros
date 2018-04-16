@@ -1,5 +1,5 @@
-#define BOSS_H
 #ifndef BOSS_H
+#define BOSS_H
 
 #include <cstdlib>
 #include <ctime>
@@ -20,12 +20,16 @@ private:
   float y;
   int nColpito;
   bool vita;
+
   bool passo;
+  int cont;
+  int parametroGravita;
 
   bool cadendo;
 
   bool saltando;
   int saltoDistanza;
+
 
   int xFuoco, yFuoco;
   bool sparaFuoco;
@@ -48,8 +52,8 @@ public:
   ALLEGRO_BITMAP * salta;
   ALLEGRO_BITMAP * sconfitto1;
   ALLEGRO_BITMAP * sconfitto2;
-  ALLEGRO_BITMAP * fuoco1_dx
-  ALLEGRO_BITMAP * fuoco2_dx
+  ALLEGRO_BITMAP * fuoco1;
+  ALLEGRO_BITMAP * fuoco2;
 
 
   Boss();
@@ -58,9 +62,10 @@ public:
   void setX(float);
   void setY(float);
   void setnColpito(float);
-  void setSaltando(float);
-  void setCadendo(float);
+  void setSaltando(bool);
+  void setCadendo(bool);
 
+  float getX();
   float getY();
   int getnColpito();
   bool getVita();
@@ -71,7 +76,7 @@ public:
   bool getCadendo();
 
   void gestisciBoss();
-  void salta();
+  void saltare();
   void gravita();
   bool controllaSeToccato(int, int, int);
   void drawBoss();
