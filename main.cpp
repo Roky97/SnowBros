@@ -217,12 +217,14 @@ int main(int argc, char **argv){
 
     if(gameover) //SE PERDIAMO TUTTE E 3 LE VITE
     {
+
       if(level==2)
       {
         mostriBoss.clear();
         boss->restartBoss();
       }
       level=0;
+
       bool screen=0;
       bool redraw=true;
       ALLEGRO_BITMAP* gameover1= al_load_bitmap("./images/schermate/game_over1.png");
@@ -325,7 +327,6 @@ int main(int argc, char **argv){
            zucca->setY(0.0);
            contMostriColpiti=0;
            restart=false;
-<<<<<<< HEAD
            if(level==2)
            {
              // for(int i=0; i<mostriBoss.size(); i++)
@@ -334,9 +335,6 @@ int main(int argc, char **argv){
             boss->restartBoss();
            }
 
-=======
-           mostriBoss.clear();
->>>>>>> 2ca707a2f105b5609ade1ca6e5e93b5f75ea2866
            if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0 ALTRIMENTI GAMEOVER
            {
             gameover=true;
@@ -734,19 +732,12 @@ int main(int argc, char **argv){
                       if(mostriBoss[i]->collisioneProiettile(colpi[j].getX(), colpi[j].getY(),tommy->getFermoalternato()))
                         colpi[j].setVita(false);
                 }
-
-                if(mostriBoss[i]->getcolpitoInnevato() && boss->controllaSeToccato(mostriBoss[i]->getX(),mostriBoss[i]->getY(),1))
-                mostriBoss[i]->setVita(false);
              }
-             }
-<<<<<<< HEAD
 
              if(mostriBoss[i]->getTotInnevato() && mostriBoss[i]->getcolpitoInnevato())
               if(boss->controllaSeToccato(mostriBoss[i]->getX(),mostriBoss[i]->getY(),1))
                 mostriBoss[i]->sconfitto();
             }
-=======
->>>>>>> 2ca707a2f105b5609ade1ca6e5e93b5f75ea2866
 
             for(int j=0; j<ncolpi; j++)
             {
@@ -820,7 +811,7 @@ int main(int argc, char **argv){
 
           if(level==2)
            {
-             for(int i=0; i<mostriBoss.size(); i++) //COLLISIONE TRA MOSTRI BOSS
+             for(int i=0; i<mostriBoss.size(); i++) //COLLISIONE TRA MOSTRIBOSS
              {
              if(mostriBoss[i]->getVita() && !mostriBoss[i]->getTotInnevato())
              {
@@ -899,12 +890,8 @@ int main(int argc, char **argv){
            }
 
 
-<<<<<<< HEAD
 
 
-=======
-           mostrivivi=false;
->>>>>>> 2ca707a2f105b5609ade1ca6e5e93b5f75ea2866
            if(level!=2)
            {
              mostrivivi=false;
@@ -913,8 +900,6 @@ int main(int argc, char **argv){
              if(mostri[i]->getVita())
               mostrivivi=true;
            }
-
-
            // cout<<tommy->getPotere()<<endl;
            if(!mostrivivi && level!=2)
            {

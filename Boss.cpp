@@ -271,7 +271,7 @@ int Boss::getTimerCaduta()
   return -1;
 }
 
-void restartBoss()
+void Boss::restartBoss()
 {
   x=800;
   y=500;
