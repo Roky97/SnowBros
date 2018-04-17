@@ -325,14 +325,7 @@ void Mostro::colpitoEdInnevato()
   {
     if(x+42>=1105)
       {
-        vita=false;
-        srand(time(0));
-        iSushi=rand()%4;
-        sushi=true;
-        totInnevato=false;
-        colpito=false;
-        nColpito=0;
-        colpitoInnevato=false;
+        sconfitto();
       } //qua caso mai facciamo una animazione
     x+=spostamento+20;
   }
@@ -340,15 +333,21 @@ void Mostro::colpitoEdInnevato()
   {
     if(x<50)
       {
-        vita=false;
-        sushi=true;
-        iSushi=rand()%4;
-        sushi=true;
-        totInnevato=false;
-        colpito=false;
-        nColpito=0;
-        colpitoInnevato=false;
+
+        sconfitto();
+
       }
     x-=spostamento+20;
   }
+}
+
+void Mostro::sconfitto()
+{
+  vita=false;
+  sushi=true;
+  iSushi=rand()%4;
+  totInnevato=false;
+  colpito=false;
+  nColpito=0;
+  colpitoInnevato=false;
 }

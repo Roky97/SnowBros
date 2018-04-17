@@ -119,6 +119,7 @@ public:
   void muoviDaTommySeInnevato(bool, bool, unsigned);
   void drawSushi();
   void colpitoEdInnevato();
+  void sconfitto();
 
   void gravita();
 
