@@ -217,8 +217,12 @@ int main(int argc, char **argv){
 
     if(gameover) //SE PERDIAMO TUTTE E 3 LE VITE
     {
+      if(level==2)
+      {
+        mostriBoss.clear();
+        boss->restartBoss();
+      }
       level=0;
-
       bool screen=0;
       bool redraw=true;
       ALLEGRO_BITMAP* gameover1= al_load_bitmap("./images/schermate/game_over1.png");
@@ -321,6 +325,14 @@ int main(int argc, char **argv){
            zucca->setY(0.0);
            contMostriColpiti=0;
            restart=false;
+           if(level==2)
+           {
+             // for(int i=0; i<mostriBoss.size(); i++)
+             //  delete mostri[i];
+            mostriBoss.clear();
+            boss->restartBoss();
+           }
+
            if(tommy->getVite()==0)          //CONTROLLIAMO CHE LE VITE NON SIANO 0 ALTRIMENTI GAMEOVER
            {
             gameover=true;
@@ -411,17 +423,17 @@ int main(int argc, char **argv){
           {
             boss->gestisciBoss();
             for(int i=0;i<mostriBoss.size();i++)
-            if(mostriBoss[i]->getVita() && !mostralivello)
-            mostriBoss[i]->muovi();
+              if(mostriBoss[i]->getVita() && !mostralivello)
+                mostriBoss[i]->muovi();
 
-            if(al_get_timer_count(creaMostriBoss)==5) //OGNI 5 SEC VIENE CREATO UN NUOVO MOSTRO DEL BOSS
+            if(al_get_timer_count(creaMostriBoss)==2 && boss->getVita()) //OGNI 5 SEC VIENE CREATO UN NUOVO MOSTRO DEL BOSS
             {
               al_set_timer_count(creaMostriBoss,0.0);
               mostroDaCreare=rand()%2+1;
 
               if(mostroDaCreare==1)
               {
-                cout<<"cazzo"<<endl<<endl;
+                //cout<<"cazzo"<<endl<<endl;
                 mostroBoss=new Mostro_rosso();
                 mostroBoss->setX(500);
                 mostroBoss->setY(10);
@@ -430,7 +442,7 @@ int main(int argc, char **argv){
               }
               else if(mostroDaCreare==2)
               {
-                cout<<"figaaa"<<endl<<endl;
+                //cout<<"figaaa"<<endl<<endl;
                 mostroBoss=new Mostro_Verde();
                 mostroBoss->setX(500);
                 mostroBoss->setY(10);
@@ -488,12 +500,12 @@ int main(int argc, char **argv){
             {
             tommy->setCadendo(true);
             tommy->gravita();
-          }
+            }
             else
             {
             tommy->setCadendo(false);
             tommy->setFermo(true);
-          }
+            }
           }
 
 
@@ -526,7 +538,7 @@ int main(int argc, char **argv){
                  tommy->controllaseToccato(mostriBoss[i]->getX(), mostriBoss[i]->getY());
 
                  if(mostriBoss[i]->getTipo()==1)
-                 tommy->controllaseToccato(mostriBoss[i]->getxFuoco(), mostriBoss[i]->getyFuoco());
+                  tommy->controllaseToccato(mostriBoss[i]->getxFuoco(), mostriBoss[i]->getyFuoco());
 
                  if(tommy->getToccato())
                  {
@@ -534,6 +546,11 @@ int main(int argc, char **argv){
                  }
                }
            }
+
+           tommy->controllaseToccato(boss->getxFuoco(), boss->getyFuoco());
+
+
+
          }
 
          for(int i=0;i<nMostri;i++) //CONTROLLIAMO SE TOMMY PRENDE IL SUSHI
@@ -553,7 +570,7 @@ int main(int argc, char **argv){
            tommy->controllaseToccato(zucca->getX(),zucca->getY());
          }
 
-         if(level==2)
+         if(level==2) //GRAVITA DEL MOSTRO BOSS
          {
            float ma=boss->getX()/92.08; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
            float mb=(boss->getY()/91.63)+3;
@@ -623,6 +640,8 @@ int main(int argc, char **argv){
             }
           }
 
+          if(level==2)
+          {
           for(int i=0; i<mostriBoss.size(); i++) //CONTROLLIAMO LA GRAVITÀ DEI MOSTRI DEL BOSS E CONTROLLIAMO CHE NON VADANO DENTRO I MURETTI
           {
             if(mostriBoss[i]->getVita())
@@ -635,7 +654,7 @@ int main(int argc, char **argv){
               mb=0;
 
             if(mostriBoss[i]->getTotInnevato())
-            if(tommy->controllaTocco(mostriBoss[i]->getX(), mostriBoss[i]->getY(), mostriBoss[i]->getTotInnevato(),mostriBoss[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
+              if(tommy->controllaTocco(mostriBoss[i]->getX(), mostriBoss[i]->getY(), mostriBoss[i]->getTotInnevato(),mostriBoss[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
                 {
                   mostriBoss[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
                 }
@@ -672,6 +691,7 @@ int main(int argc, char **argv){
                 mostriBoss[i]->setSaltando(true);
             }
           }
+        }
 
            for(int i=0; i<nMostri; i++) //CONTROLLIAMO LA COLLISIONE TRA COLPI E MOSTRI
            {
@@ -711,6 +731,10 @@ int main(int argc, char **argv){
                         colpi[j].setVita(false);
                 }
              }
+
+             if(mostriBoss[i]->getTotInnevato() && mostriBoss[i]->getcolpitoInnevato())
+              if(boss->controllaSeToccato(mostriBoss[i]->getX(),mostriBoss[i]->getY(),1))
+                mostriBoss[i]->sconfitto();
             }
 
             for(int j=0; j<ncolpi; j++)
@@ -796,7 +820,7 @@ int main(int argc, char **argv){
 
                    // if(i!=j)
                    //cout<<i<<" "<<mostriBoss[i]->getY()<<" - "<<j<<" "<<mostriBoss[j]->getY()<<endl<<endl;
-                   if(mostriBoss[i]->controllaSeToccato(mostriBoss[j]->getX(), mostriBoss[j]->getY(), mostriBoss[j]->getAndando_destra(), mostriBoss[j]->getAndando_sinistra() && i!=j)) //CONTROLLA LA COLLISIONE TRA MOSTRI ED INVERTE LO SPOSTAMENTO
+                   if(mostriBoss[i]->controllaSeToccato(mostriBoss[j]->getX(), mostriBoss[j]->getY(), mostriBoss[j]->getAndando_destra(), mostriBoss[j]->getAndando_sinistra()) && i!=j) //CONTROLLA LA COLLISIONE TRA MOSTRI ED INVERTE LO SPOSTAMENTO //MODIFICARE LA FUNZIONE
                    {
                      if(mostriBoss[i]->getAndando_destra())
                      {
@@ -827,17 +851,34 @@ int main(int argc, char **argv){
                       mostriBoss[j]->diminuisciContPrimaDiSaltare();
                     }
 
+                    if(mostriBoss[j]->controllaSeToccato(boss->getX(), boss->getY(), false, false))
+                    {
+                      if(mostriBoss[j]->getAndando_destra())
+                      {
+
+
+                        mostriBoss[j]->setAndando_destra(false);
+                        mostriBoss[j]->setAndando_sinistra(true);
+
+                        mostriBoss[j]->setX(mostriBoss[j]->getX()-35);
+
+                        mostriBoss[j]->diminuisciContPrimaDiSaltare();
+                     }
+
+                    }
+
+
                     if(mostriBoss[i]->getTotInnevato() || mostriBoss[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO
                     {
                       mostriBoss[i]->setTotInnevato(true);
                       mostriBoss[i]->setcolpitoInnevato(true);
                       mostriBoss[j]->setTotInnevato(true);
                       mostriBoss[j]->setcolpitoInnevato(true);
-                      contMostriColpiti++;
-                      if(contMostriColpiti==1)
-                      {
-                          indiceLanterna=i;
-                      }
+                      // contMostriColpiti++;
+                      // if(contMostriColpiti==1)
+                      // {
+                      //     indiceLanterna=i;
+                      // }
                     }
                   }
                 }
@@ -848,8 +889,10 @@ int main(int argc, char **argv){
 
 
 
-           mostrivivi=false;
+
            if(level!=2)
+           {
+             mostrivivi=false;
            for(int i=0; i<nMostri; i++) //CONTROLLA SE TUTTI I MOSTRI SONO ANCORA VIVI PER PASSARE DI LIVELLO
            {
              if(mostri[i]->getVita())
@@ -882,9 +925,17 @@ int main(int argc, char **argv){
                al_set_timer_count(passalivello,0.0);
                al_stop_timer(passalivello);
                if(level>=3)
-               gameover=true;
+                gameover=true;
              }
            }
+         }
+         else if(level==2)
+         {
+           if(!boss->getVita())
+            mostriBoss.clear();
+           if(boss->getTimerCaduta()>=50)
+            gameover=true; //FARE LA SCHERMATA WIN
+         }
          }
 
 
