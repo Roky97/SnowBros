@@ -275,6 +275,8 @@ void Boss::restartBoss()
 {
   x=800;
   y=500;
+  xFuoco=-100;
+  yFuoco=-100;
 
   vita=true;
   nColpito=0;

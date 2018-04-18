@@ -74,12 +74,14 @@ public:
   int getyFuoco();
   bool getSparaFuoco();
   bool getCadendo();
+  int getTimerCaduta();
 
   void gestisciBoss();
   void saltare();
   void gravita();
   bool controllaSeToccato(int, int, int);
   void drawBoss();
+  void restartBoss();
 
 
 
