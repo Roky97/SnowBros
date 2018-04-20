@@ -6,7 +6,7 @@ Zucca::Zucca()
   y=0;
   cont=0;
   changeBitmap=false;
-  spostamento=7;
+  spostamento=1.5;
   vita=false;
   andando_destra=false;
   andando_sinistra=false;
@@ -23,7 +23,7 @@ Zucca::Zucca(float posx, float posy)
   y=posy;
   cont=0;
   changeBitmap=false;
-  spostamento=3;
+  spostamento=1.5;
   vita=false;
   andando_destra=false;
   andando_sinistra=false;
@@ -138,7 +138,7 @@ void Zucca::drawZucca()
 {
   if(andando_destra && !changeBitmap)
   {
-      al_draw_bitmap(dx1, x, y, 0);
+      al_draw_scaled_bitmap(dx1,  0, 0, al_get_bitmap_width(dx1),  al_get_bitmap_height(dx1), x, y, al_get_bitmap_width(dx1)*1.5, al_get_bitmap_height(dx1)*1.5, 0);
       cont++;
 
        if(cont==7)
@@ -151,7 +151,7 @@ void Zucca::drawZucca()
 
   else if(andando_destra && changeBitmap)
   {
-      al_draw_bitmap(dx2, x, y, 0);
+      al_draw_scaled_bitmap(dx2,  0, 0, al_get_bitmap_width(dx2),  al_get_bitmap_height(dx2), x, y, al_get_bitmap_width(dx2)*1.5, al_get_bitmap_height(dx2)*1.5, 0);
       cont++;
 
        if(cont==7)
@@ -163,7 +163,7 @@ void Zucca::drawZucca()
 
   else if(andando_sinistra && !changeBitmap)
   {
-    al_draw_bitmap(sx1, x, y, 0);
+    al_draw_scaled_bitmap(sx1,  0, 0, al_get_bitmap_width(sx1),  al_get_bitmap_height(sx1), x, y, al_get_bitmap_width(sx1)*1.5, al_get_bitmap_height(sx1)*1.5, 0);
     cont++;
 
      if(cont==7)
@@ -175,7 +175,7 @@ void Zucca::drawZucca()
 
   else if(andando_sinistra && changeBitmap)
   {
-    al_draw_bitmap(sx2, x, y, 0);
+    al_draw_scaled_bitmap(sx2,  0, 0, al_get_bitmap_width(sx2),  al_get_bitmap_height(sx2), x, y, al_get_bitmap_width(sx2)*1.5, al_get_bitmap_height(sx2)*1.5, 0);
     cont++;
 
      if(cont==7)
