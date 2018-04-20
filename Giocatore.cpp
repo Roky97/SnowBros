@@ -4,11 +4,11 @@ Giocatore::Giocatore(int w, int h)
   this->w=w;
   this->h=h;
   // x=w/2.0 - 15;
-  y=h-(21*2)-100;
+  y=h-(21*2)-15;
   x=w/2.0 - 15;
   //y=0;
   spostamento=2;
-  vite=1000;
+  vite=3;
   cont=0;
   parametroGravita=3;
   saltoDistanza=0;

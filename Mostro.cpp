@@ -13,6 +13,8 @@ Mostro::Mostro(){
   saltoDistanza=0;
   vita=true;
   sushi=false;
+  contPrimaDiSaltare=500;
+  cadendo=false;
 
   verso_sinistra1= NULL;
   verso_sinistra2= NULL;
@@ -238,7 +240,7 @@ void Mostro::gravita()
 void Mostro::diminuisciContPrimaDiSaltare()
 {
   if(contPrimaDiSaltare>0)
-    contPrimaDiSaltare--;
+    contPrimaDiSaltare-=1;
 }
 
 void Mostro::muoviDaTommySeInnevato(bool dest, bool sini, unsigned spost)
