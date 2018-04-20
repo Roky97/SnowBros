@@ -19,7 +19,7 @@ class Zucca
 private:
   float x;
   float y;
-  int spostamento;
+  float spostamento;
   int cont;
   bool vita;
   bool changeBitmap;
