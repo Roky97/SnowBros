@@ -72,11 +72,11 @@ if(!colpitoInnevato)
 {
   if(saltando || cadendo)
   {
-    al_draw_scaled_bitmap(salta, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+    al_draw_scaled_bitmap(salta,  0, 0, al_get_bitmap_width(salta), al_get_bitmap_height(salta), x, y, al_get_bitmap_width(salta)+6, al_get_bitmap_height(salta)+6, 0);
   }
  else if(andando_destra && !colpito && !passo)
     {
-      al_draw_scaled_bitmap(verso_destra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+      al_draw_scaled_bitmap(verso_destra1,  0, 0, al_get_bitmap_width(verso_destra1), al_get_bitmap_height(verso_destra1), x, y, al_get_bitmap_width(verso_destra1)+6, al_get_bitmap_height(verso_destra1)+6, 0);
       cont++;
 
       if(cont==7)
@@ -88,7 +88,7 @@ if(!colpitoInnevato)
 
   else if(andando_destra && !colpito && passo)
     {
-        al_draw_scaled_bitmap(verso_destra2, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+        al_draw_scaled_bitmap(verso_destra2,  0, 0, al_get_bitmap_width(verso_destra2),  al_get_bitmap_height(verso_destra2), x, y, al_get_bitmap_width(verso_destra2)+6, al_get_bitmap_height(verso_destra2)+6, 0);
         cont++;
 
       if(cont==7)
@@ -99,7 +99,7 @@ if(!colpitoInnevato)
     }
   else if(andando_destra && colpito && !passo)
     {
-      al_draw_scaled_bitmap(colpito_destra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+      al_draw_scaled_bitmap(colpito_destra1,  0, 0, al_get_bitmap_width(colpito_destra1),  al_get_bitmap_height(colpito_destra1), x, y, al_get_bitmap_width(colpito_destra1)+6, al_get_bitmap_height(colpito_destra1)+6, 0);
       cont++;
 
     if(cont==7)
@@ -110,7 +110,7 @@ if(!colpitoInnevato)
     }
   else if(andando_destra && colpito && passo)
     {
-      al_draw_scaled_bitmap(colpito_destra2, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+      al_draw_scaled_bitmap(colpito_destra2,  0, 0, al_get_bitmap_width(colpito_destra2),  al_get_bitmap_height(colpito_destra2), x, y, al_get_bitmap_width(colpito_destra2)+6, al_get_bitmap_height(colpito_destra2)+6, 0);
       cont++;
 
     if(cont==7)
@@ -122,7 +122,7 @@ if(!colpitoInnevato)
 
   else if(andando_sinistra && !colpito && !passo)
   {
-    al_draw_scaled_bitmap(verso_sinistra1, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+    al_draw_scaled_bitmap(verso_sinistra1,  0, 0, al_get_bitmap_width(verso_sinistra1),  al_get_bitmap_height(verso_sinistra1), x, y, al_get_bitmap_width(verso_sinistra1)+6, al_get_bitmap_height(verso_sinistra1)+6, 0);
     cont++;
 
     if(cont==7)
@@ -133,7 +133,7 @@ if(!colpitoInnevato)
   }
   else if(andando_sinistra && !colpito && passo)
   {
-   al_draw_scaled_bitmap(verso_sinistra2, 0, 0, 20, 17, x-78, y, 20*6, 17*6, 0);
+   al_draw_scaled_bitmap(verso_sinistra2,  0, 0, al_get_bitmap_width(verso_sinistra2),  al_get_bitmap_height(verso_sinistra2), x, y, al_get_bitmap_width(verso_sinistra2)+6, al_get_bitmap_height(verso_sinistra2)+6, 0);
     cont++;
 
     if(cont==7)
@@ -144,7 +144,7 @@ if(!colpitoInnevato)
   }
   else if(andando_sinistra && colpito && !passo)
   {
-    al_draw_scaled_bitmap(colpito_sinistra1, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+    al_draw_scaled_bitmap(colpito_sinistra1,  0, 0, al_get_bitmap_width(colpito_sinistra1),  al_get_bitmap_height(colpito_sinistra1), x, y, al_get_bitmap_width(colpito_sinistra1)+6, al_get_bitmap_height(colpito_sinistra1)+6, 0);
     cont++;
 
   if(cont==7)
@@ -155,7 +155,7 @@ if(!colpitoInnevato)
   }
   else if(andando_sinistra && colpito && passo)
   {
-    al_draw_scaled_bitmap(colpito_sinistra2, 0, 0, 20, 17, x-78, y-25, 20*6, 17*6, 0);
+    al_draw_scaled_bitmap(colpito_sinistra2,  0, 0, al_get_bitmap_width(colpito_sinistra2),  al_get_bitmap_height(colpito_sinistra2), x, y, al_get_bitmap_width(colpito_sinistra2)+6, al_get_bitmap_height(colpito_sinistra2)+6, 0);
     cont++;
 
   if(cont==7)
@@ -167,21 +167,21 @@ if(!colpitoInnevato)
 
   if(colpito && nColpito>=1 && nColpito<3)
   {
-    al_draw_scaled_bitmap(innevando1, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+    al_draw_scaled_bitmap(innevando1, 0, 0, al_get_bitmap_width(innevando1), al_get_bitmap_height(innevando1), x-2, y-9, al_get_bitmap_width(innevando1)+6, al_get_bitmap_height(innevando1)+6, 0);
   }
   else if(colpito && nColpito>=3 && nColpito<5)
     {
-      al_draw_scaled_bitmap(innevando2, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+      al_draw_scaled_bitmap(innevando2, 0, 0, al_get_bitmap_width(innevando2),   al_get_bitmap_height(innevando2), x-2, y-9, al_get_bitmap_width(innevando2)+6, al_get_bitmap_height(innevando2)+6, 0);
 
     }
     else if(colpito && nColpito>=5 && nColpito<7)
     {
-      al_draw_scaled_bitmap(innevando3, 0, 0, 26, 30, x-78, y-50, 26*5.2, 30*5.2, 0);
+      al_draw_scaled_bitmap(innevando3, 0, 0, al_get_bitmap_width(innevando3),   al_get_bitmap_height(innevando3), x-2, y-9, al_get_bitmap_width(innevando3)+6, al_get_bitmap_height(innevando3)+6, 0);
 
     }
     else if(colpito && nColpito>=7)
     {
-      al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+      al_draw_scaled_bitmap(palladineve1, 0, 0, al_get_bitmap_width(palladineve1),   al_get_bitmap_height(palladineve1), x-2, y-9, al_get_bitmap_width(palladineve1)+6, al_get_bitmap_height(palladineve1)+6, 0);
 
     }
   }
@@ -190,7 +190,7 @@ if(!colpitoInnevato)
   {
     if(!passo)
     {
-      al_draw_scaled_bitmap(palladineve1, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+      al_draw_scaled_bitmap(palladineve1, 0, 0, al_get_bitmap_width(palladineve1),   al_get_bitmap_height(palladineve1), x-2, y-9, al_get_bitmap_width(palladineve1)+6, al_get_bitmap_height(palladineve1)+6, 0);
       cont++;
       if(cont==7)
        {
@@ -200,7 +200,7 @@ if(!colpitoInnevato)
     }
     if(passo)
     {
-      al_draw_scaled_bitmap(palladineve2, 0, 0, 25, 31, x-78, y-50, 25*5.2, 31*5.2, 0);
+      al_draw_scaled_bitmap(palladineve2, 0, 0, al_get_bitmap_width(palladineve2),   al_get_bitmap_height(palladineve2), x-2, y-9, al_get_bitmap_width(palladineve2)+6, al_get_bitmap_height(palladineve2)+6, 0);
       cont++;
       if(cont==7)
        {
@@ -220,20 +220,20 @@ if(colpitoInnevato)
 }
 else
 {
-if(andando_destra && !colpito && x+42<1105) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+if(andando_destra && !colpito && x+60<252) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
 {
   x+=spostamento;
 }
-else if(andando_destra && !colpito && x+42>=1105)
+else if(andando_destra && !colpito && x+60>=252)
 {
   andando_destra=false;
   andando_sinistra=true;
   diminuisciContPrimaDiSaltare();
 }
 
-else if(andando_sinistra && !colpito && x>=78) //movimento a sx
+else if(andando_sinistra && !colpito && x>=0) //movimento a sx
   x-=spostamento;
-else if(andando_sinistra && !colpito && x<78)
+else if(andando_sinistra && !colpito && x<0)
   {
     andando_destra=true;
     andando_sinistra=false;
@@ -254,11 +254,11 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
     }
   }
 
-  if(saltando && saltoDistanza<=225 && !cadendo) //aggiorna le posizioni per saltare
+  if(saltando && saltoDistanza<=42 && !cadendo) //aggiorna le posizioni per saltare
   {
-    y-=15;
-    saltoDistanza+=15;
-    if(saltoDistanza>=225)
+    y-=5;
+    saltoDistanza+=5;
+    if(saltoDistanza>=42)
     {
       saltando=false;
       saltoDistanza=0;

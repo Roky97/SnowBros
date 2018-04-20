@@ -1,12 +1,12 @@
 #include "Mostro.h"
 
 Mostro::Mostro(){
-  spostamento=4;
+  spostamento=1.5;
   x=0;
   y=0;
   passo=false;
   cont=0;
-  parametroGravita=10;
+  parametroGravita=3;
   colpito=false;
   colpitoInnevato=false;
   totInnevato=false;
@@ -60,7 +60,7 @@ Mostro::Mostro(float posx, float posy)
 {
   x=posx;
   y=posy;
-  spostamento=7;
+  spostamento=1.5;
 
   andando_sinistra=false;
   passo=false;
@@ -264,7 +264,7 @@ bool Mostro::controllaSeToccato(int a, int b, bool dest, bool sin)
 {
   //if((andando_destra && sin) || (andando_sinistra && dest))
   //{
-    if((a+30>=static_cast<int>(x) && a-30<=static_cast<int>(x)) && b+100 >= static_cast<int>(y) && b-100 <= static_cast<int>(y) )
+    if((a+6>=static_cast<int>(x) && a-6<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) )
     {
       return true;
     }
@@ -274,10 +274,10 @@ bool Mostro::controllaSeToccato(int a, int b, bool dest, bool sin)
 
 bool Mostro::collisioneProiettile(int a, int b, bool dir)
 {
-  a+=14;
-  b+=22;
+  a+=1;
+  b+=2;
   //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
-    if((a+40>=static_cast<int>(x) && a-40<=static_cast<int>(x)) && b+70 >= static_cast<int>(y) && b-70 <= static_cast<int>(y) )
+    if((a+10>=static_cast<int>(x) && a-10<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) )
     {
     //al_start_timer(congelo);
     colpito=true;
@@ -311,39 +311,49 @@ void Mostro::drawSushi()
     srand(time(0));
 
     if(andando_destra)
-      al_draw_scaled_bitmap(im_sushi[iSushi], 0, 0, 11, 10, x-70, y+35, 11*6, 10*6, 0);
+      al_draw_bitmap(im_sushi[iSushi], x-10, y,  0);
     else
-      al_draw_scaled_bitmap(im_sushi[iSushi], 0, 0, 11, 10, x, y+35, 11*6, 10*6, 0);
+      al_draw_bitmap(im_sushi[iSushi], x+10, y,  0);
 
   }
 }
 
 void Mostro::colpitoEdInnevato()
 {
-  parametroGravita=20;
+  parametroGravita=6;
   if(andando_destra)
   {
-    if(x+42>=1105)
+    if(x+9>=252)
       {
         sconfitto();
       } //qua caso mai facciamo una animazione
-    x+=spostamento+20;
+    x+=spostamento+6;
   }
   else if(andando_sinistra)
   {
-    if(x<50)
+    if(x<0)
       {
 
         sconfitto();
 
       }
-    x-=spostamento+20;
+    x-=spostamento+6;
   }
 }
 
 void Mostro::sconfitto()
 {
   vita=false;
+  if(andando_destra)
+  {
+    y+=7;
+    x-=15;
+  }
+  else
+  {
+    y+=7;
+    x+=15;
+  }
   sushi=true;
   iSushi=rand()%4;
   totInnevato=false;

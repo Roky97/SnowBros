@@ -3,7 +3,7 @@
 Colpo::Colpo(){
   vita=false;
   raggio=0;
-  spostamento=15;
+  spostamento=7;
   cambiaColore=false;
   colpo_destra=al_load_bitmap("./images/giocatore/sparo_dx1.png");
   colpo_destra2=al_load_bitmap("./images/giocatore/sparo_dx2.png");
@@ -49,12 +49,12 @@ void Colpo::drawColpo(){
   {
     if(!cambiaColore)
     {
-      al_draw_scaled_bitmap(colpo_destra, 0, 0, 7, 11, x, y, 7*4, 11*4, 0);
+      al_draw_bitmap(colpo_destra, x, y, 0);
       cambiaColore=true;
     }
     else
     {
-      al_draw_scaled_bitmap(colpo_destra2, 0, 0, 7, 11, x, y, 7*4, 11*4, 0);
+      al_draw_bitmap(colpo_destra2, x, y, 0);
       cambiaColore=false;
     }
   }
@@ -62,12 +62,12 @@ void Colpo::drawColpo(){
   {
     if(!cambiaColore)
     {
-    al_draw_scaled_bitmap(colpo_sinistra, 0, 0, 7, 11, x, y, 7*4, 11*4, 0);
+    al_draw_bitmap(colpo_sinistra, x, y, 0);
     cambiaColore=true;
   }
   else
   {
-    al_draw_scaled_bitmap(colpo_sinistra2, 0, 0, 7, 11, x, y, 7*4, 11*4, 0);
+    al_draw_bitmap(colpo_sinistra2, x, y, 0);
     cambiaColore=false;
   }
   }
@@ -81,14 +81,14 @@ direzione=d;
 if(!vita && direzione)
 {
  x=a+20;
- y=b;
+ y=b+7;
  vita=true;
  return true;
 }
 else if(!vita && !direzione)
 {
- x=a-20;
- y=b;
+ x=a;
+ y=b+7;
  vita=true;
  return true;
 }
@@ -102,7 +102,7 @@ void Colpo::updateColpo()
   {
     x+=spostamento;
     raggio+=spostamento;
-    if(x>1105 || raggio>=200)
+    if(x>252 || raggio>=50)
        {
          vita=false;
          raggio=0;
@@ -113,7 +113,7 @@ void Colpo::updateColpo()
   {
     x-=spostamento;
     raggio+=spostamento;
-    if(x<0 || raggio>=200)
+    if(x<0 || raggio>=50)
       {
         vita=false;
         raggio=0;

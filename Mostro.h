@@ -17,7 +17,7 @@ class Mostro{
 protected:
   float x;
   float y;
-  int spostamento;
+  float spostamento;
   int cont;
   int tipo;
   int xFuoco, yFuoco;

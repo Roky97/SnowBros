@@ -138,7 +138,7 @@ void Zucca::drawZucca()
 {
   if(andando_destra && !changeBitmap)
   {
-      al_draw_scaled_bitmap(dx1, 0, 0, 30, 30, x, y, 30*6, 30*6, 0);
+      al_draw_bitmap(dx1, x, y, 0);
       cont++;
 
        if(cont==7)
@@ -151,7 +151,7 @@ void Zucca::drawZucca()
 
   else if(andando_destra && changeBitmap)
   {
-      al_draw_scaled_bitmap(dx2, 0, 0, 30, 30, x, y, 30*6, 30*6, 0);
+      al_draw_bitmap(dx2, x, y, 0);
       cont++;
 
        if(cont==7)
@@ -163,7 +163,7 @@ void Zucca::drawZucca()
 
   else if(andando_sinistra && !changeBitmap)
   {
-    al_draw_scaled_bitmap(sx1, 0, 0, 30, 30, x, y, 30*6, 30*6, 0);
+    al_draw_bitmap(sx1, x, y, 0);
     cont++;
 
      if(cont==7)
@@ -175,7 +175,7 @@ void Zucca::drawZucca()
 
   else if(andando_sinistra && changeBitmap)
   {
-    al_draw_scaled_bitmap(sx2, 0, 0, 30, 30, x, y, 30*6, 30*6, 0);
+    al_draw_bitmap(sx2, x, y, 0);
     cont++;
 
      if(cont==7)
