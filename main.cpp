@@ -42,8 +42,8 @@ int main(int argc, char **argv){
 
   cout<<w1<<endl<<h1<<endl<<endl;
 
-  w=w1;
-  h=h1;
+  // w=w1;
+  // h=h1;
 
 
   /*
