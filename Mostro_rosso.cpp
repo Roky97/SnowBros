@@ -220,15 +220,21 @@ if(colpitoInnevato)
 }
 else
 {
-if(andando_destra && !colpito && x+60<252) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+  if(!cadendo && !saltando)
+    diminuisciContPrimaDiSaltare();
+  else if(cadendo && saltando)
+    {
+      contPrimaDiSaltare=1;
+      saltando=false;
+    }
+if(andando_destra && !colpito && x+20<252) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
 {
   x+=spostamento;
 }
-else if(andando_destra && !colpito && x+60>=252)
+else if(andando_destra && !colpito && x+20>=252)
 {
   andando_destra=false;
   andando_sinistra=true;
-  diminuisciContPrimaDiSaltare();
 }
 
 else if(andando_sinistra && !colpito && x>=0) //movimento a sx
@@ -237,7 +243,6 @@ else if(andando_sinistra && !colpito && x<0)
   {
     andando_destra=true;
     andando_sinistra=false;
-    diminuisciContPrimaDiSaltare();
   }
 
 if(colpito && al_get_timer_count(congelo)%25==0 )
@@ -262,7 +267,7 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
     {
       saltando=false;
       saltoDistanza=0;
-      contPrimaDiSaltare=rand()%6;
+      contPrimaDiSaltare=rand()%200+50;
       cadendo=true;
     }
   }

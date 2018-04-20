@@ -294,6 +294,7 @@ if(!colpitoInnevato)
 }
 
 void Mostro_Verde::muovi(){
+
 if(colpitoInnevato)
 {
   //al_stop_timer(congelo);
@@ -301,6 +302,13 @@ if(colpitoInnevato)
 }
 else
 {
+  if(!cadendo && !saltando)
+    diminuisciContPrimaDiSaltare();
+  else if(cadendo && saltando)
+    {
+      contPrimaDiSaltare=1;
+      saltando=false;
+    }
   if(sparaFuoco)
   {
     if(fuocoDir)
@@ -354,7 +362,6 @@ else if(andando_destra && !colpito && x+15>=252)
 {
   andando_destra=false;
   andando_sinistra=true;
-  diminuisciContPrimaDiSaltare();
 }
 
 else if(andando_sinistra && !colpito && x>=0)
@@ -375,7 +382,6 @@ else if(andando_sinistra && !colpito && x<0)
   {
     andando_destra=true;
     andando_sinistra=false;
-    diminuisciContPrimaDiSaltare();
   }
 
 
@@ -402,7 +408,7 @@ if(colpito && al_get_timer_count(congelo)%25==0 )
     {
       saltando=false;
       saltoDistanza=0;
-      contPrimaDiSaltare=rand()%7;
+      contPrimaDiSaltare=rand()%200+70;
       cadendo=true;
     }
   }
