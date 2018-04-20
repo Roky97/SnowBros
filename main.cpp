@@ -66,11 +66,11 @@ int main(int argc, char **argv){
 
 	//al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
-	display = al_create_display(monitor_w, monitor_w);
+	display = al_create_display(monitor_w, monitor_h);
 
 	al_identity_transform(&t);
 
-	al_scale_transform(&t, resize_x, resize_x);
+	al_scale_transform(&t, resize_x, resize_y);
 
 	al_use_transform(&t);
 
