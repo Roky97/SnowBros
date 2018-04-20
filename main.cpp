@@ -29,48 +29,53 @@ int main(int argc, char **argv){
   init();
 
 
-  int w=1105;
-  int h=1008;
+  int w=12 *21; //252
+  int h=11*21;//231
 
   ALLEGRO_DISPLAY       *display = NULL;
-  ALLEGRO_DISPLAY_MODE disp_data;
+  //ALLEGRO_DISPLAY_MODE disp_data;
 
-  al_get_display_mode(al_get_num_display_modes()*0.30,&disp_data);
-
-  int w1=disp_data.width;
-  int h1=disp_data.height;
-
-  cout<<w1<<endl<<h1<<endl<<endl;
+  // al_get_display_mode(al_get_num_display_modes()*0.30,&disp_data);
+  //
+  // int w1=disp_data.width;
+  // int h1=disp_data.height;
+  //
+  // cout<<w1<<endl<<h1<<endl<<endl;
 
   // w=w1;
   // h=h1;
 
 
-  /*
+
 
   ALLEGRO_TRANSFORM t;
 	ALLEGRO_MONITOR_INFO data;
 
-	al_get_monitor_info(0, &data);
+	al_get_monitor_info(al_get_num_video_adapters()-1, &data);
 
 	int monitor_w = data.x2 - data.x1;
 	int monitor_h = data.y2 - data.y1;
 
+  //cout<<monitor_w<<" "<<monitor_h<<endl;
+
 	float resize_x = monitor_w / static_cast<float>(w);
 	float resize_y = monitor_h / static_cast<float>(h);
+  cout<<monitor_w<<" "<<resize_x<<endl;
+  cout<<monitor_w<<" "<<resize_x<<endl;
 
-	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
-	display = al_create_display(monitor_w, monitor_h);
+	//al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+
+	display = al_create_display(monitor_w, monitor_w);
 
 	al_identity_transform(&t);
 
-	al_scale_transform(&t, resize_x, resize_y);
+	al_scale_transform(&t, resize_x, resize_x);
 
 	al_use_transform(&t);
 
 
-  */
+
   unsigned level=0; //INDICE DELLA MAPPA PER CAMBIARE LIVELLO
   int nMostri=0; //NUMERO MOSTRI NELLA MAPPA
   int contMostriColpiti=0; //CONTATORE DEI MOSTRI COLPITI DALLA PALLA DI NEVE PER GESTIRE LA COMPARSA DELLA LANTERNA
@@ -114,7 +119,7 @@ int main(int argc, char **argv){
 
 
 
-  display=al_create_display(w, h);
+  //display=al_create_display(w, h);
   timer=al_create_timer(1.0/60);
   fantasma=al_create_timer(1.0);
   mostraliv=al_create_timer(1.0);
@@ -146,15 +151,15 @@ int main(int argc, char **argv){
       switch (mappe[0].getValore(i,j)){
         case 2:
         mostri[nMostri]=new Mostro_rosso();
-        mostri[nMostri]->setX(i*92.08);
-        mostri[nMostri]->setY(j*91.63);
+        mostri[nMostri]->setX(i*21);
+        mostri[nMostri]->setY(j*21);
         mostri[nMostri]->carica_immagini();
         nMostri++;
         break;
         case 3:
         mostri[nMostri]=new Mostro_Verde();
-        mostri[nMostri]->setX(i*92.08);
-        mostri[nMostri]->setY(j*91.63);
+        mostri[nMostri]->setX(i*21);
+        mostri[nMostri]->setY(j*21);
         mostri[nMostri]->carica_immagini();
         nMostri++;
         break;
@@ -207,7 +212,7 @@ int main(int argc, char **argv){
         if(screen && redraw && al_is_event_queue_empty(event_queue))
         {
           al_clear_to_color(al_map_rgb(0,0,0));
-          al_draw_scaled_bitmap(schermata1, 0, 0, 256, 224, 0,0,w,h,0);
+          al_draw_bitmap(schermata1,  0,0, 0);
           al_flip_display();
           al_rest(0.5);
           screen=false;
@@ -216,7 +221,7 @@ int main(int argc, char **argv){
         else if(!screen && redraw && al_is_event_queue_empty(event_queue))
         {
           al_clear_to_color(al_map_rgb(0,0,0));
-          al_draw_scaled_bitmap(schermata2, 0, 0, 256, 224, 0,0,w,h,0);
+          al_draw_bitmap(schermata2,  0,0, 0);
           al_flip_display();
           al_rest(0.5);
           screen=true;
@@ -273,7 +278,7 @@ int main(int argc, char **argv){
         if(!screen && redraw && al_is_event_queue_empty(event_queue))
         {
           al_clear_to_color(al_map_rgb(0,0,0));
-          al_draw_scaled_bitmap(gameover1, 0, 0, 256, 224, 0,0,w,h,0);
+          al_draw_bitmap(gameover1,  0,0, 0);
           al_flip_display();
           al_rest(0.5);
           screen=true;
@@ -282,7 +287,7 @@ int main(int argc, char **argv){
         else if(screen && redraw && al_is_event_queue_empty(event_queue))
         {
           al_clear_to_color(al_map_rgb(0,0,0));
-          al_draw_scaled_bitmap(gameover2, 0, 0, 256, 224, 0,0,w,h,0);
+          al_draw_bitmap(gameover2,  0,0, 0);
           al_flip_display();
           al_rest(0.5);
           screen=false;
@@ -328,7 +333,7 @@ int main(int argc, char **argv){
            al_set_timer_count(mostraliv,0.0);
            mostralivello=true;                //BOOLEANA CHE SI RIATTIVA PER MOSTRARE NUOVAMENTE IL LIVELLO
            tommy->setX(w/2.0 - 15);           //SETTIAMO LE IMPOSTAZIONI DI TOMMY A QUELLE INIZIALI
-           tommy->setY(h-30*4 -21*(4));
+           tommy->setY(h-(21*2)-30); //MODIFICARE
            tommy->setToccato(false);
            tommy->setCont1(0);
            tommy->setSpostaMostro(false);
@@ -370,16 +375,16 @@ int main(int argc, char **argv){
                  switch (mappe[level].getValore(i,j)) {
                    case 2:
                    mostri[nMostri]=new Mostro_rosso();
-                   mostri[nMostri]->setX(i*92.08);
-                   mostri[nMostri]->setY(j*91.63);
+                   mostri[nMostri]->setX(i*21);
+                   mostri[nMostri]->setY(j*21);
                    mostri[nMostri]->carica_immagini();
                    nMostri++;
                    break;
 
                    case 3:
                    mostri[nMostri]=new Mostro_Verde();
-                   mostri[nMostri]->setX(i*92.08);
-                   mostri[nMostri]->setY(j*91.63);
+                   mostri[nMostri]->setX(i*21);
+                   mostri[nMostri]->setY(j*21);
                    mostri[nMostri]->carica_immagini();
                    nMostri++;
                    break;
@@ -401,7 +406,7 @@ int main(int argc, char **argv){
                 //     {
                 //       mostri[i]->drawMostro();
                 //     }
-                //   al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
+                //   al_draw_bitmap(schermate_livello[level],  0,0, 0);
                 //   al_flip_display();
                 // }
                 //
@@ -447,8 +452,8 @@ int main(int argc, char **argv){
               {
                 //cout<<"cazzo"<<endl<<endl;
                 mostroBoss=new Mostro_rosso();
-                mostroBoss->setX(500);
-                mostroBoss->setY(10);
+                mostroBoss->setX(100);
+                mostroBoss->setY(5);
                 mostriBoss.push_back(mostroBoss);
                 mostriBoss.back()->carica_immagini();
               }
@@ -456,8 +461,8 @@ int main(int argc, char **argv){
               {
                 //cout<<"figaaa"<<endl<<endl;
                 mostroBoss=new Mostro_Verde();
-                mostroBoss->setX(500);
-                mostroBoss->setY(10);
+                mostroBoss->setX(100);
+                mostroBoss->setY(5);
                 mostriBoss.push_back(mostroBoss);
                 mostriBoss.back()->carica_immagini();
 
@@ -468,14 +473,15 @@ int main(int argc, char **argv){
 
 
 
-          float a=tommy->getX()/92.08;   //VARIABILI UTILIZZATE PER INTERAGIRE CON IL FILE DI TESTO DELLA MAPPA E GESTIRE LA GRAVITÀ
-          float b=((tommy->getY()+90)/91.63);
+          float a=(tommy->getX()+15)/21;   //VARIABILI UTILIZZATE PER INTERAGIRE CON IL FILE DI TESTO DELLA MAPPA E GESTIRE LA GRAVITÀ
+          float b=((tommy->getY()+28)/21);
 
           if(a<0)
             a=0;
 
           if(b<0)
             b=0;
+          //cout<<a<< " - "<<b<<endl;
 
           if(tommy->getToccato()==false && !mostralivello)//SE TOMMY NON E' STATO TOCCATO GLI PERMETTIAMO DI MUOVERSI
           tommy->muovi();
@@ -492,22 +498,23 @@ int main(int argc, char **argv){
 
           if(!tommy->getPotere()) //SE TOMMY HA IL POTERE NON HA GRAVITA'
           {
-            if(tommy->getSaltando()==false)  //CONTROLLIAMO CHE IL PERSONAGGIO NON VADA DENTRO I MURETTI
+            /*if(tommy->getSaltando()==false)  //CONTROLLIAMO CHE IL PERSONAGGIO NON VADA DENTRO I MURETTI
             {
-            if(tommy->getY()>400)
-            {
-              if((((int)tommy->getY()+30)/100)%2!=0 && !tommy->getPotere())
+              if(tommy->getY()>231)
+              {
+                if((((int)tommy->getY())/100)%2!=0 && !tommy->getPotere())
+                {
+                  tommy->setCadendo(true);
+                  tommy->gravita();
+                }
+              }
+              else if((((int)tommy->getY())/100)%2!=0)
               {
                 tommy->setCadendo(true);
                 tommy->gravita();
               }
             }
-            else if((((int)tommy->getY())/100)%2!=0)
-            {
-              tommy->setCadendo(true);
-              tommy->gravita();
-            }
-          }
+            */
             if((mappe[level].getValore(a, b)!=1 && tommy->getSaltando()==false)) //GESTIAMO LA GRAVITA' DEL PERSONAGGIO
             {
             tommy->setCadendo(true);
@@ -550,8 +557,8 @@ int main(int argc, char **argv){
 
             if(mostri[i]->getVita())
               {
-              float ma=mostri[i]->getX()/92.08; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
-              float mb=(mostri[i]->getY()/91.63)+1;
+              float ma=(mostri[i]->getX()+9)/21; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
+              float mb=(mostri[i]->getY()/21)+1;
               if(ma<0)
                 ma=0;
               if(mb<0)
@@ -564,7 +571,7 @@ int main(int argc, char **argv){
                   }
 
                   if(mostri[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
-                  {
+                  /*{
                     if(mostri[i]->getY()>400)
                     {
                       if((((int)mostri[i]->getY()+30)/100)%2!=0)
@@ -578,7 +585,7 @@ int main(int argc, char **argv){
                       mostri[i]->setCadendo(true);
                       mostri[i]->gravita();
                     }
-                  }
+                  }*/
 
 
                 if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //GRAVITA' DEI MOSTRI
@@ -640,8 +647,8 @@ int main(int argc, char **argv){
 
          if(level==2) //GRAVITA DEL MOSTRO BOSS
          {
-           float ma=boss->getX()/92.08; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
-           float mb=(boss->getY()/91.63)+3;
+           float ma=boss->getX()/21; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
+           float mb=(boss->getY()/21)+3;
            if(ma<0)
              ma=0;
            if(mb<0)
@@ -657,19 +664,14 @@ int main(int argc, char **argv){
            }
          }
 
-          for(int i=0; i<nMostri; i++) //CONTROLLIAMO LA GRAVITÀ DEI MOSTRI E CONTROLLIAMO CHE NON VADANO DENTRO I MURETTI
-          {
-
-          }
-
           if(level==2)
           {
               for(int i=0; i<mostriBoss.size(); i++) //CONTROLLIAMO LA GRAVITÀ DEI MOSTRI DEL BOSS E CONTROLLIAMO CHE NON VADANO DENTRO I MURETTI
                 {
                     if(mostriBoss[i]->getVita())
                       {
-                        float ma=mostriBoss[i]->getX()/92.08; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
-                        float mb=(mostriBoss[i]->getY()/91.63)+1;
+                        float ma=(mostriBoss[i]->getX()-9)/21; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
+                        float mb=(mostriBoss[i]->getY()/21)+1;
                           if(ma<0)
                             ma=0;
                           if(mb<0)
@@ -681,7 +683,7 @@ int main(int argc, char **argv){
                                 mostriBoss[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
                               }
 
-                          if(mostriBoss[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
+                          /*if(mostriBoss[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
                           {
                             if(mostriBoss[i]->getY()>400)
                             {
@@ -696,7 +698,7 @@ int main(int argc, char **argv){
                               mostriBoss[i]->setCadendo(true);
                               mostriBoss[i]->gravita();
                             }
-                          }
+                          }*/
 
 
                     if(mappe[level].getValore(ma, mb)!=1 && mostriBoss[i]->getSaltando()==false) //GRAVITA' DEI MOSTRI
@@ -787,8 +789,8 @@ int main(int argc, char **argv){
                        mostri[j]->setAndando_destra(true);
                        mostri[j]->setAndando_sinistra(false);
 
-                       mostri[i]->setX(mostri[i]->getX()-35);
-                       mostri[j]->setX(mostri[j]->getX()+35);
+                       mostri[i]->setX(mostri[i]->getX()-7);
+                       mostri[j]->setX(mostri[j]->getX()+7);
 
                        mostri[i]->diminuisciContPrimaDiSaltare();
                        mostri[j]->diminuisciContPrimaDiSaltare();
@@ -801,14 +803,14 @@ int main(int argc, char **argv){
                        mostri[j]->setAndando_destra(false);
                        mostri[j]->setAndando_sinistra(true);
 
-                       mostri[i]->setX(mostri[i]->getX()+35);
-                       mostri[j]->setX(mostri[j]->getX()-35);
+                       mostri[i]->setX(mostri[i]->getX()+7);
+                       mostri[j]->setX(mostri[j]->getX()-7);
 
                       mostri[i]->diminuisciContPrimaDiSaltare();
                       mostri[j]->diminuisciContPrimaDiSaltare();
                     }
 
-                    if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO
+                    if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO // NON FUNZIONA
                     {
                       mostri[i]->setTotInnevato(true);
                       mostri[i]->setcolpitoInnevato(true);
@@ -849,8 +851,8 @@ int main(int argc, char **argv){
                        mostriBoss[j]->setAndando_destra(true);
                        mostriBoss[j]->setAndando_sinistra(false);
 
-                       mostriBoss[i]->setX(mostriBoss[i]->getX()-35);
-                       mostriBoss[j]->setX(mostriBoss[j]->getX()+35);
+                       mostriBoss[i]->setX(mostriBoss[i]->getX()-7);
+                       mostriBoss[j]->setX(mostriBoss[j]->getX()+7);
 
                        mostriBoss[i]->diminuisciContPrimaDiSaltare();
                        mostriBoss[j]->diminuisciContPrimaDiSaltare();
@@ -863,8 +865,8 @@ int main(int argc, char **argv){
                        mostriBoss[j]->setAndando_destra(false);
                        mostriBoss[j]->setAndando_sinistra(true);
 
-                       mostriBoss[i]->setX(mostriBoss[i]->getX()+35);
-                       mostriBoss[j]->setX(mostriBoss[j]->getX()-35);
+                       mostriBoss[i]->setX(mostriBoss[i]->getX()+7);
+                       mostriBoss[j]->setX(mostriBoss[j]->getX()-7);
 
                       mostriBoss[i]->diminuisciContPrimaDiSaltare();
                       mostriBoss[j]->diminuisciContPrimaDiSaltare();
@@ -879,7 +881,7 @@ int main(int argc, char **argv){
                         mostriBoss[j]->setAndando_destra(false);
                         mostriBoss[j]->setAndando_sinistra(true);
 
-                        mostriBoss[j]->setX(mostriBoss[j]->getX()-35);
+                        mostriBoss[j]->setX(mostriBoss[j]->getX()-7);
 
                         mostriBoss[j]->diminuisciContPrimaDiSaltare();
                      }
@@ -1030,7 +1032,7 @@ int main(int argc, char **argv){
         mappe[level].drawMappa();
         if(mostralivello)
         {
-          al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
+          al_draw_bitmap(schermate_livello[level],  0,0, 0);
         }
 
         for(int i=0;i<nMostri;i++)
@@ -1104,7 +1106,7 @@ void init()
 //       {
 //         mostri[i]->drawMostro();
 //       }
-//     al_draw_scaled_bitmap(schermate_livello[level], 0, 0, 256, 224, 0,0,w,h,0);
+//     al_draw_bitmap(schermate_livello[level],  0,0, 0);
 //     al_flip_display();
 //   }
 //   al_destroy_timer(temp);
