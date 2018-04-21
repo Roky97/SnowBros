@@ -195,8 +195,8 @@ void Boss::gestisciBoss()
     al_start_timer(sputaFuoco);
   }
 
-  cout<<nColpito<<endl;
-  if(al_get_timer_count(sputaFuoco)==1)
+
+  if(al_get_timer_count(sputaFuoco)==0)
   {
     sparaFuoco=true;
     xFuoco=x+15;

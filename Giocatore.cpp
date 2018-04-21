@@ -655,7 +655,6 @@ void Giocatore::controllaseToccato(int a,int b)
     sparando=false;
     potere_v=false;
     vite--;
-    cout<<vite<<endl<<endl;
   }
 }
 

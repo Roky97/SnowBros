@@ -276,10 +276,10 @@ bool Mostro::controllaSeToccato(int a, int b, bool dest, bool sin)
 
 bool Mostro::collisioneProiettile(int a, int b, bool dir)
 {
-  a+=1;
-  b+=2;
+  // a+=1;
+  // b+=2;
   //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
-    if((a+10>=static_cast<int>(x) && a-10<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) )
+    if((a+15>=static_cast<int>(x) && a-15<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) )
     {
     //al_start_timer(congelo);
     colpito=true;
