@@ -59,8 +59,8 @@ int main(int argc, char **argv){
 	int monitor_h = data.y2 - data.y1;
 
   //cout<<monitor_w<<" "<<monitor_h<<endl;
-  monitor_w=1512;
-  monitor_h=1386;
+  // monitor_w=1512;
+  // monitor_h=1386;
 	float resize_x = monitor_w / static_cast<float>(w);
 	float resize_y = monitor_h / static_cast<float>(h);
   cout<<monitor_w<<" "<<resize_x<<endl;
