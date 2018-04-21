@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cstring>
 using namespace std;
 #include "Giocatore.h"
 #include "Mostro.h"
@@ -21,6 +22,7 @@ const int levMax=10;
 
 void init();
 void draw(string);
+void drawBar(unsigned, int, ALLEGRO_FONT*, ALLEGRO_BITMAP*);
 //void mostraLivello(ALLEGRO_BITMAP*[],Mappa[],int&, int&);
 
 
@@ -57,11 +59,13 @@ int main(int argc, char **argv){
 	int monitor_h = data.y2 - data.y1;
 
   //cout<<monitor_w<<" "<<monitor_h<<endl;
-
+  monitor_w=1512;
+  monitor_h=1386;
 	float resize_x = monitor_w / static_cast<float>(w);
 	float resize_y = monitor_h / static_cast<float>(h);
   cout<<monitor_w<<" "<<resize_x<<endl;
   cout<<monitor_w<<" "<<resize_x<<endl;
+
 
 
 	//al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
@@ -80,12 +84,15 @@ int main(int argc, char **argv){
   int nMostri=0; //NUMERO MOSTRI NELLA MAPPA
   int contMostriColpiti=0; //CONTATORE DEI MOSTRI COLPITI DALLA PALLA DI NEVE PER GESTIRE LA COMPARSA DELLA LANTERNA
   int indiceLanterna=0;   //INDICE DEL MOSTRO CHE TRASFORMATO IN PALLA DI NEVE HA COLPITO PIÙ MOSTRI.(GESTIONE POSIZIONI LANTERNA)
+  int punti=0;
   ALLEGRO_EVENT_QUEUE *event_queue = NULL;
   ALLEGRO_TIMER *timer = NULL; //TIMER PER GESTIONE DEGLI EVENTI
   ALLEGRO_TIMER *fantasma = NULL;  //TIMER PER GESTIRE LA COMPARSA DELLA ZUCCA DOPO UN TOT DI SECONDI
   ALLEGRO_TIMER *mostraliv=NULL;  //TIMER PER GESTIRE LA COMPARSA DEL LIVELLO NEL QUALE CI TROVIAMO
   ALLEGRO_TIMER *passalivello=NULL; //TIMER PER GESTIRE IL PASSAGGIO DA UN LIVELLO ALL'ALTRO. (TEMPO PER PRENDERE TUTTI I SUSHI)
   ALLEGRO_TIMER *creaMostriBoss=NULL;
+  ALLEGRO_FONT *bar = al_load_ttf_font("Snow Bros.ttf",8,0 ); //FONT PER VISUALIZZARE LA DELLA VITA E I PUNTI
+  ALLEGRO_BITMAP *bar_faccia= al_load_bitmap("./images/giocatore/elemento_barra.png");
   Colpo colpi[ncolpi]; //ARRAY DI COLPI
   Mappa mappe[levMax]; //ARRAY DI MAPPE
   Mostro *mostri[maxmostri]; //ARRAY DI MOSTRI
@@ -333,7 +340,7 @@ int main(int argc, char **argv){
            al_set_timer_count(mostraliv,0.0);
            mostralivello=true;                //BOOLEANA CHE SI RIATTIVA PER MOSTRARE NUOVAMENTE IL LIVELLO
            tommy->setX(w/2.0 - 15);           //SETTIAMO LE IMPOSTAZIONI DI TOMMY A QUELLE INIZIALI
-           tommy->setY(h-(21*2)-30); //MODIFICARE
+           tommy->setY(h-(21*2)-15);
            tommy->setToccato(false);
            tommy->setCont1(0);
            tommy->setSpostaMostro(false);
@@ -558,7 +565,7 @@ int main(int argc, char **argv){
             if(mostri[i]->getVita())
               {
               float ma=(mostri[i]->getX()+9)/21; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
-              float mb=(mostri[i]->getY()/21)+1;
+              float mb=((mostri[i]->getY()+0.2)/21)+1;
               if(ma<0)
                 ma=0;
               if(mb<0)
@@ -587,12 +594,16 @@ int main(int argc, char **argv){
                     }
                   }*/
 
-
-                if(mappe[level].getValore(ma, mb)!=1 && mostri[i]->getSaltando()==false) //GRAVITA' DEI MOSTRI
+                  //cout<<mappe[level].getValore(ma, mb)<<endl;
+                if(mappe[level].getValore(ma, mb)!=1) //GRAVITA' DEI MOSTRI
                 {
-                  mostri[i]->setCadendo(true);
-                  mostri[i]->gravita();
+                  if(mostri[i]->getSaltando()==false)
+                  {
+                    mostri[i]->setCadendo(true);
+                    mostri[i]->gravita();
+                  }
                 }
+
                 else
                 {
                   mostri[i]->setCadendo(false);
@@ -648,7 +659,7 @@ int main(int argc, char **argv){
          if(level==2) //GRAVITA DEL MOSTRO BOSS
          {
            float ma=boss->getX()/21; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
-           float mb=(boss->getY()/21)+3;
+           float mb=((boss->getY()+10)/21)+3;
            if(ma<0)
              ma=0;
            if(mb<0)
@@ -791,9 +802,6 @@ int main(int argc, char **argv){
 
                        mostri[i]->setX(mostri[i]->getX()-7);
                        mostri[j]->setX(mostri[j]->getX()+7);
-
-                       mostri[i]->diminuisciContPrimaDiSaltare();
-                       mostri[j]->diminuisciContPrimaDiSaltare();
                      }
                      else if(mostri[j]->getAndando_destra())
                      {
@@ -806,8 +814,6 @@ int main(int argc, char **argv){
                        mostri[i]->setX(mostri[i]->getX()+7);
                        mostri[j]->setX(mostri[j]->getX()-7);
 
-                      mostri[i]->diminuisciContPrimaDiSaltare();
-                      mostri[j]->diminuisciContPrimaDiSaltare();
                     }
 
                     if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO // NON FUNZIONA
@@ -1030,10 +1036,7 @@ int main(int argc, char **argv){
         if( redraw && al_is_event_queue_empty(event_queue))
         {
         mappe[level].drawMappa();
-        if(mostralivello)
-        {
-          al_draw_bitmap(schermate_livello[level],  0,0, 0);
-        }
+
 
         for(int i=0;i<nMostri;i++)
           if(mostri[i]->getVita()|| mostri[i]->getSushi())
@@ -1068,13 +1071,20 @@ int main(int argc, char **argv){
           colpi[i].drawColpo();
         }
 
+        drawBar(tommy->getVite(), punti, bar, bar_faccia);
+        if(mostralivello)
+        {
+          al_draw_bitmap(schermate_livello[level],  0,0, 0);
+        }
+
         al_flip_display();
         }
       }
     }
   }
 
-
+  al_destroy_bitmap(bar_faccia);
+  al_destroy_font(bar);
   al_destroy_display(display);
   al_destroy_timer(timer);
   al_destroy_event_queue(event_queue);
@@ -1089,6 +1099,31 @@ void init()
   al_init_image_addon();
   al_init_primitives_addon();
   al_install_keyboard();
+  al_init_font_addon();
+  al_init_ttf_addon();
+}
+
+void drawBar(unsigned vite, int punti, ALLEGRO_FONT * bar, ALLEGRO_BITMAP * faccia)
+{
+  string vit=to_string(vite);
+  char * v= new char [vit.length()+1];
+  strcpy(v, vit.c_str());
+
+  string punt=to_string(punti);
+  char * p= new char [punt.length()+1];
+  strcpy(p, punt.c_str());
+
+  al_draw_scaled_bitmap(faccia,  0, 0, al_get_bitmap_width(faccia),  al_get_bitmap_height(faccia), 72, 0, al_get_bitmap_width(faccia)-4, al_get_bitmap_height(faccia)-5, 0);
+  al_draw_text(bar, al_map_rgb(255,242,0), 82, 2,ALLEGRO_ALIGN_LEFT, "X");
+  al_draw_text(bar, al_map_rgb(255,242,0), 92, 2,ALLEGRO_ALIGN_LEFT, v);
+
+  al_draw_text(bar, al_map_rgb(255,242,0), 110, 2,ALLEGRO_ALIGN_LEFT, "HISCORE");
+  al_draw_text(bar, al_map_rgb(255,242,0), 175, 2,ALLEGRO_ALIGN_LEFT, p);
+
+
+
+
+
 }
 
 // void mostraLivello(ALLEGRO_BITMAP* schermate_livello[levMax],Mappa &mappe[levMax],int& level, int& nMostri)
