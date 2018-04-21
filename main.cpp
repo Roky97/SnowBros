@@ -110,6 +110,11 @@ int main(int argc, char **argv){
   schermate_livello[0]=al_load_bitmap("./images/schermate/level1.png");
   schermate_livello[1]=al_load_bitmap("./images/schermate/level2.png");
   schermate_livello[2]=al_load_bitmap("./images/schermate/final_level.png");
+  ALLEGRO_BITMAP * sfondi[levMax];
+  sfondi[0]=al_load_bitmap("./images/schermate/im_level1.png");
+  sfondi[1]=al_load_bitmap("./images/schermate/im_level2.png");
+  sfondi[2]=al_load_bitmap("./images/schermate/level_boss.png");
+
 
   vector<Mostro*> mostriBoss;
   Mostro *mostroBoss;
@@ -792,7 +797,7 @@ int main(int argc, char **argv){
                    //cout<<i<<" "<<mostri[i]->getY()<<" - "<<j<<" "<<mostri[j]->getY()<<endl<<endl;
                    if(mostri[i]->controllaSeToccato(mostri[j]->getX(), mostri[j]->getY(), mostri[j]->getAndando_destra(), mostri[j]->getAndando_sinistra() && i!=j)) //CONTROLLA LA COLLISIONE TRA MOSTRI ED INVERTE LO SPOSTAMENTO
                    {
-                     if(mostri[i]->getAndando_destra())
+                     if(mostri[i]->getAndando_destra() || mostri[i]->getColpito())
                      {
                        mostri[i]->setAndando_destra(false);
                        mostri[i]->setAndando_sinistra(true);
@@ -803,7 +808,7 @@ int main(int argc, char **argv){
                        mostri[i]->setX(mostri[i]->getX()-7);
                        mostri[j]->setX(mostri[j]->getX()+7);
                      }
-                     else if(mostri[j]->getAndando_destra())
+                     else if(mostri[j]->getAndando_destra()  || mostri[i]->getColpito())
                      {
                        mostri[i]->setAndando_destra(true);
                        mostri[i]->setAndando_sinistra(false);
@@ -816,7 +821,7 @@ int main(int argc, char **argv){
 
                     }
 
-                    if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO // NON FUNZIONA
+                    if(mostri[i]->getTotInnevato() || mostri[j]->getTotInnevato()) //CONTROLLA SE UN MOSTRO TOT INNEVATO TOCCA UN ALTRO MOSTRO
                     {
                       mostri[i]->setTotInnevato(true);
                       mostri[i]->setcolpitoInnevato(true);
@@ -849,7 +854,7 @@ int main(int argc, char **argv){
                    //cout<<i<<" "<<mostriBoss[i]->getY()<<" - "<<j<<" "<<mostriBoss[j]->getY()<<endl<<endl;
                    if(mostriBoss[i]->controllaSeToccato(mostriBoss[j]->getX(), mostriBoss[j]->getY(), mostriBoss[j]->getAndando_destra(), mostriBoss[j]->getAndando_sinistra()) && i!=j) //CONTROLLA LA COLLISIONE TRA MOSTRI ED INVERTE LO SPOSTAMENTO //MODIFICARE LA FUNZIONE
                    {
-                     if(mostriBoss[i]->getAndando_destra())
+                     if(mostriBoss[i]->getAndando_destra() || mostriBoss[i]->getColpito())
                      {
                        mostriBoss[i]->setAndando_destra(false);
                        mostriBoss[i]->setAndando_sinistra(true);
@@ -863,7 +868,7 @@ int main(int argc, char **argv){
                        mostriBoss[i]->diminuisciContPrimaDiSaltare();
                        mostriBoss[j]->diminuisciContPrimaDiSaltare();
                      }
-                     else if(mostriBoss[j]->getAndando_destra())
+                     else if(mostriBoss[j]->getAndando_destra() || mostriBoss[i]->getColpito())
                      {
                        mostriBoss[i]->setAndando_destra(true);
                        mostriBoss[i]->setAndando_sinistra(false);
@@ -878,7 +883,7 @@ int main(int argc, char **argv){
                       mostriBoss[j]->diminuisciContPrimaDiSaltare();
                     }
 
-                    if(mostriBoss[j]->controllaSeToccato(boss->getX(), boss->getY(), false, false))
+                    if(mostriBoss[j]->controllaSeToccato(boss->getX(), boss->getY()+100, false, false))
                     {
                       if(mostriBoss[j]->getAndando_destra())
                       {
@@ -1035,6 +1040,7 @@ int main(int argc, char **argv){
 
         if( redraw && al_is_event_queue_empty(event_queue))
         {
+        al_draw_bitmap(sfondi[level],  0,0, 0);
         mappe[level].drawMappa();
 
 
