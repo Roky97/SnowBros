@@ -60,7 +60,9 @@ Giocatore::~Giocatore()
   al_destroy_bitmap(lancia_destra2);
 }
 
-//SETS
+//************//
+//SEZIONE SETS//
+//************//
 void Giocatore::setX(unsigned sx)
 {
   x=sx;
@@ -129,8 +131,25 @@ void Giocatore::setPotere(bool p)
 {
   potere_v=p;
 }
+void Giocatore::setCadendo(bool s)
+{
+  cadendo=s;
+}
 
-//GETS
+void Giocatore::setSpostaMostro(bool s)
+{
+  spostaMostro=s;
+}
+
+void Giocatore::setCont1(unsigned c)
+{
+  cont1=c;
+}
+
+//************//
+//SEZIONE GETS//
+//************//
+
 float Giocatore::getX()
 {
   return x;
@@ -214,20 +233,7 @@ bool Giocatore::getPotere()
 {
   return potere_v;
 }
-void Giocatore::setCadendo(bool s)
-{
-  cadendo=s;
-}
 
-void Giocatore::setSpostaMostro(bool s)
-{
-  spostaMostro=s;
-}
-
-void Giocatore::setCont1(unsigned c)
-{
-  cont1=c;
-}
 
 
 
@@ -640,7 +646,6 @@ else
   spostaMostro=false;
   return false;
 }
-
 }
 
 void Giocatore::controllaseToccato(int a,int b)

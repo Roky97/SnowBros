@@ -75,7 +75,7 @@ float Zucca::getY()
 
 void Zucca::muoviZucca(float posX, float posY) //PASSIAMO LE POSIZIONI DEL PERSONAGGIO IN MODO DA RAGGIUNGERLO OVUNQUE ESSO SIA
 {
-  if(posX-50<=x && posX+50>=x)
+  if(posX-15<=x && posX+15>=x)
   {
     if(posY<y)
     {

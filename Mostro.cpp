@@ -92,7 +92,9 @@ Mostro::~Mostro()
 
 }
 
-//SETS
+//************//
+//SEZIONE SETS//
+//************//
 void Mostro::setX(float sx)
 {
   x=sx;
@@ -158,7 +160,9 @@ void Mostro::setSushi(bool s)
 }
 
 
-//GETS
+//************//
+//SEZIONE GETS//
+//************//
 float Mostro::getX()
 {
   return x;
@@ -231,6 +235,9 @@ bool Mostro::getSushi()
 {
   return sushi;
 }
+
+
+//MOVIMENTI GRAVITÀ E DISEGNO
 
 void Mostro::gravita()
 {
