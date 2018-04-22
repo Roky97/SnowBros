@@ -10,6 +10,7 @@ using namespace std;
 #include "Mostro_Verde.h"
 #include "Zucca.h"
 #include "Boss.h"
+#include <sstream>
 #include <unistd.h>
 #include <vector>
 #include <cstdlib>
@@ -22,8 +23,8 @@ const int levMax=10;
 
 void init();
 void draw(string);
-//void drawBar(unsigned, int, ALLEGRO_FONT*, ALLEGRO_BITMAP*);
-//void mostraLivello(ALLEGRO_BITMAP*[],Mappa[],int&, int&);
+void drawBar(unsigned, int, ALLEGRO_FONT*, ALLEGRO_BITMAP*);
+
 
 
 int main(int argc, char **argv){
@@ -76,7 +77,7 @@ int main(int argc, char **argv){
 
 	al_scale_transform(&t, resize_x, resize_y);
 
-	//al_use_transform(&t);
+	al_use_transform(&t);
 
 
 
@@ -334,10 +335,11 @@ int main(int argc, char **argv){
           zucca->muoviZucca(tommy->getX(),tommy->getY());
          }
 
-         if(contMostriColpiti>=1) //CONTROLLIAMO SE TOMMY SI TROVA NELLA STESSA POSIZIONE DELLA LANTERNA E QUINDI SE LA PRENDE
+         if(contMostriColpiti>=1 && !tommy->getToccato()) //CONTROLLIAMO SE TOMMY SI TROVA NELLA STESSA POSIZIONE DELLA LANTERNA E QUINDI SE LA PRENDE
            {
              tommy->presaLanterna(mostri[indiceLanterna]->getX(),mostri[indiceLanterna]->getY());
            }
+
 
 
         //***************//
@@ -363,7 +365,7 @@ int main(int argc, char **argv){
            zucca->setX(0.0);
            zucca->setY(0.0);
 
-           cout<<tommy->getVite()<<endl<<endl;
+           //cout<<tommy->getVite()<<endl<<endl;
            contMostriColpiti=0;
            restart=false;
            finitiSushi=false;
@@ -436,6 +438,7 @@ int main(int argc, char **argv){
 
          else if(ev.type == ALLEGRO_EVENT_TIMER)
          {
+           //cout<<tommy->getSpostaMostro()<<endl;
 
           for(int i=0; i<ncolpi; i++) //AGGIORNIAMO LA POSIZIONE DEI COLPI
           {
@@ -492,7 +495,7 @@ int main(int argc, char **argv){
                if(mb<0)
                  mb=0;
 
-               if(mostri[i]->getTotInnevato() && !mostri[i]->getcolpitoInnevato())
+               if(mostri[i]->getTotInnevato())
                if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato(),mostri[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
                    {
                      mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
@@ -507,7 +510,7 @@ int main(int argc, char **argv){
                          mostri[i]->gravita();
                      }
                    }
-                     cout<<mostri[i]->getX()<<"         "<<mostri[i]->getY()<<endl<<endl;
+                     //cout<<mostri[i]->getX()<<"         "<<mostri[i]->getY()<<endl<<endl;
 
                    //cout<<mappe[level].getValore(ma, mb)<<endl;
                  if(mappe[level].getValore(ma, mb)!=1) //GRAVITA' DEI MOSTRI
@@ -1031,7 +1034,7 @@ int main(int argc, char **argv){
           colpi[i].drawColpo();
         }
 
-        //drawBar(tommy->getVite(), punti, bar, bar_faccia);
+        drawBar(tommy->getVite(), punti, bar, bar_faccia);
         if(mostralivello)
         {
           al_draw_bitmap(schermate_livello[level],  0,0, 0);
@@ -1067,20 +1070,22 @@ void init()
   al_init_ttf_addon();
 }
 
-/*void drawBar(unsigned vite, int punti, ALLEGRO_FONT * bar, ALLEGRO_BITMAP * faccia)
+void drawBar(unsigned vite, int punti, ALLEGRO_FONT * bar, ALLEGRO_BITMAP * faccia)
 {
-   std::string vit=to_string(vite);
-   char * v= new char [vit.length()+1];
-  strcpy(v, vit.c_str());
+   string vit;
+   stringstream v;
+   v<<vite;
+   vit=v.str();
 
-  string punt=to_string(punti);
-  char * p= new char [punt.length()+1];
-  strcpy(p, punt.c_str());
+   string punt;
+   stringstream p;
+   p<<punti;
+   punt=p.str();
 
   al_draw_scaled_bitmap(faccia,  0, 0, al_get_bitmap_width(faccia),  al_get_bitmap_height(faccia), 72, 0, al_get_bitmap_width(faccia)-4, al_get_bitmap_height(faccia)-5, 0);
   al_draw_text(bar, al_map_rgb(255,242,0), 82, 2,ALLEGRO_ALIGN_LEFT, "X");
-  al_draw_text(bar, al_map_rgb(255,242,0), 92, 2,ALLEGRO_ALIGN_LEFT, v);
+  al_draw_text(bar, al_map_rgb(255,242,0), 92, 2,ALLEGRO_ALIGN_LEFT, vit.c_str());
 
   al_draw_text(bar, al_map_rgb(255,242,0), 110, 2,ALLEGRO_ALIGN_LEFT, "HISCORE");
-  al_draw_text(bar, al_map_rgb(255,242,0), 175, 2,ALLEGRO_ALIGN_LEFT, p);
-}*/
+  al_draw_text(bar, al_map_rgb(255,242,0), 175, 2,ALLEGRO_ALIGN_LEFT, punt.c_str());
+}
