@@ -635,17 +635,38 @@ void Giocatore::gravita()
 
 bool Giocatore::controllaTocco(int a,int b, bool i,bool c){
 
-if((a+10>=static_cast<int>(x) && a-10<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) )
-{
-
-    spostaMostro=true;
-    return true;
-}
-else
-{
-  spostaMostro=false;
+  if(fermoAlternato)
+  {
+    if(x+25 > a && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) && i && x<a)
+    {
+      //cout<<"tocco DX"<<endl;
+      spostaMostro=true;
+      return true;
+    }
+    else
+    {
+      //cout<<"NO tocco DX"<<endl;
+      spostaMostro=false;
+      return false;
+    }
+  }
+  else if(!fermoAlternato)
+  {
+    if(x-20 < a && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) && i && x>a)
+    {
+      //cout<<"tocco SX"<<endl;
+      spostaMostro=true;
+      return true;
+    }
+    else
+    {
+      //cout<<"NO tocco SX"<<endl;
+      spostaMostro=false;
+      return false;
+    }
+  }
+  //cout<<"niente"<<endl;
   return false;
-}
 }
 
 void Giocatore::controllaseToccato(int a,int b)

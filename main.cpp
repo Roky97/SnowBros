@@ -495,11 +495,12 @@ int main(int argc, char **argv){
                if(mb<0)
                  mb=0;
 
-               if(mostri[i]->getTotInnevato())
-               if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato(),mostri[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
+               //if(mostri[i]->getTotInnevato())
+                if(tommy->controllaTocco(mostri[i]->getX(), mostri[i]->getY(), mostri[i]->getTotInnevato(),mostri[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
                    {
                      mostri[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
-
+                     // cout<<tommy->getX()<<" - "<<tommy->getFermoalternato()<<endl;
+                     // cout<<mostri[i]->getX()<<endl;
                    }
 
                    if(mostri[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
