@@ -474,7 +474,7 @@ int main(int argc, char **argv){
                  tommy->controllaseToccato(mostri[i]->getX(), mostri[i]->getY());
 
                  if(mostri[i]->getTipo()==1)
-                 tommy->controllaseToccato(mostri[i]->getxFuoco(), mostri[i]->getyFuoco());
+                  tommy->controllaseToccato(mostri[i]->getxFuoco(), mostri[i]->getyFuoco());
 
                  if(tommy->getToccato())
                  {
@@ -695,10 +695,12 @@ int main(int argc, char **argv){
 
             if(level==2 && !mostralivello)
             {
-              boss->gestisciBoss();             //FACCIAMO MUOVERE I MOSTRI DEL BOSS SE NON SONO MORTI E SE C'È LA SCHERMATA DEL LIVELLO
+              boss->gestisciBoss(tommy->getX(), tommy->getY());             //FACCIAMO MUOVERE I MOSTRI DEL BOSS SE NON SONO MORTI E SE C'È LA SCHERMATA DEL LIVELLO
               for(int i=0;i<mostriBoss.size();i++)
                 if(mostriBoss[i]->getVita() && !mostralivello)
                   mostriBoss[i]->muovi();
+              if(!tommy->getToccato())
+                tommy->controllaseToccato(boss->getX()-10, boss->getY()+30);
 
               if(al_get_timer_count(creaMostriBoss)==2 && boss->getVita()) //OGNI 2 SEC VIENE CREATO UN NUOVO MOSTRO DEL BOSS
               {
@@ -1057,7 +1059,7 @@ int main(int argc, char **argv){
   al_destroy_timer(timer);
   al_destroy_event_queue(event_queue);
   delete tommy;
-
+  delete mostroBoss;
   return 0;
 }
 

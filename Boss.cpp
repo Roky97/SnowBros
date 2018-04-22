@@ -3,13 +3,13 @@
 Boss::Boss()
 {
   x=170;
-  y=100;
+  y=-200;
 
   vita=true;
   nColpito=0;
   parametroGravita=10;
   cont=0;
-  lunghezzaFuoco=250;
+  lunghezzaFuoco=400;
 
   timerSalta=al_create_timer(1.0);
   sputaFuoco=al_create_timer(1.0);
@@ -130,10 +130,10 @@ void Boss::drawBoss()
       //al_draw_bitmap(sputa_fuoco_dx,  x-78, y, 0);
       if(passo)
       {
-        al_draw_scaled_bitmap(fuoco1,  0, 0, al_get_bitmap_width(fuoco1),  al_get_bitmap_height(fuoco1), xFuoco, yFuoco, al_get_bitmap_width(fuoco1)*2, al_get_bitmap_height(fuoco1)*2, 0);
+        al_draw_scaled_bitmap(fuoco1,  0, 0, al_get_bitmap_width(fuoco1),  al_get_bitmap_height(fuoco1), xFuoco, yFuoco, al_get_bitmap_width(fuoco1)*3, al_get_bitmap_height(fuoco1)*3, 0);
         cont++;
 
-        if(cont==7)
+        if(cont>=7)
         {
           passo=false;
           cont=0;
@@ -141,10 +141,10 @@ void Boss::drawBoss()
       }
       else if(!passo)
       {
-        al_draw_scaled_bitmap(fuoco2,  0, 0, al_get_bitmap_width(fuoco2),  al_get_bitmap_height(fuoco2), xFuoco, yFuoco, al_get_bitmap_width(fuoco2)*2, al_get_bitmap_height(fuoco2)*2, 0);
+        al_draw_scaled_bitmap(fuoco2,  0, 0, al_get_bitmap_width(fuoco2),  al_get_bitmap_height(fuoco2), xFuoco, yFuoco, al_get_bitmap_width(fuoco2)*3, al_get_bitmap_height(fuoco2)*3, 0);
         cont++;
 
-        if(cont==7)
+        if(cont>=7)
         {
           passo=true;
           cont=0;
@@ -160,7 +160,7 @@ void Boss::drawBoss()
                 al_draw_scaled_bitmap(fermo1,  0, 0, al_get_bitmap_width(fermo1),  al_get_bitmap_height(fermo1), x, y, al_get_bitmap_width(fermo1)*1.5, al_get_bitmap_height(fermo1)*1.5, 0);
         cont++;
 
-        if(cont==15)
+        if(cont>=25)
         {
           passo=false;
           cont=0;
@@ -171,7 +171,7 @@ void Boss::drawBoss()
                 al_draw_scaled_bitmap(fermo2,  0, 0, al_get_bitmap_width(fermo2),  al_get_bitmap_height(fermo2), x, y, al_get_bitmap_width(fermo2)*1.5, al_get_bitmap_height(fermo2)*1.5, 0);
         cont++;
 
-        if(cont==15)
+        if(cont>=25)
         {
           passo=true;
           cont=0;
@@ -183,7 +183,7 @@ void Boss::drawBoss()
 
 }
 
-void Boss::gestisciBoss()
+void Boss::gestisciBoss(int tommyX, int tommyY)
 {
   if(!al_get_timer_started(timerSalta))
   {
@@ -198,11 +198,30 @@ void Boss::gestisciBoss()
 
   if(al_get_timer_count(sputaFuoco)==0)
   {
-    sparaFuoco=true;
-    xFuoco=x+15;
-    yFuoco=y+5;
-  }
+    finexFuoco=tommyX;
+    fineyFuoco=tommyY;
 
+    if(abs(y-tommyY)>5)
+    {
+      if(y-tommyY>0)
+        dirFuoco=true;
+      else
+        dirFuoco=false;
+      int distX=x-tommyX;
+      float diag=sqrt(pow(distX,2) + pow(y-tommyY, 2));
+      spostyFuoco=diag/distX;
+      // cout<<diag<<" "<<x<<endl;
+      // cout<<spostyFuoco<<endl<<endl;
+
+    }
+    else
+      spostyFuoco=0;
+
+
+    sparaFuoco=true;
+    xFuoco=x+25;
+    yFuoco=y+10;
+  }
   if(al_get_timer_count(timerSalta)==4)
   {
     saltando=true;
@@ -223,14 +242,18 @@ void Boss::gestisciBoss()
   if(sparaFuoco && nColpito<30)
   {
     xFuoco-=2;
-    yFuoco+=0;
+    if(dirFuoco)
+      yFuoco-=spostyFuoco;
+    else
+      yFuoco+=spostyFuoco;
+
     lunghezzaFuoco-=2;
     if(lunghezzaFuoco<=0)
     {
       sparaFuoco=false;
       xFuoco=-100;
       yFuoco=-100;
-      lunghezzaFuoco=190;
+      lunghezzaFuoco=400;
       al_set_timer_count(sputaFuoco,0.0);
     }
   }
@@ -254,7 +277,7 @@ void Boss::saltare()
 
 bool Boss::controllaSeToccato(int a, int b, int tipo)
 {
-  if((a+20>=x && a-20<=x) && (b+50 >=y && b-50 <= y)) //sistemare l'intervallo
+  if((a+20>=x && a-20<=x) && (b+60 >=y && b-60 <= y)) //sistemare l'intervallo
   {
     if(tipo==0)
       nColpito++;
@@ -274,14 +297,14 @@ int Boss::getTimerCaduta()
 
 void Boss::restartBoss()
 {
-  x=150;
-  y=100;
+  x=170;
+  y=140;
   xFuoco=-100;
   yFuoco=-100;
 
   vita=true;
   nColpito=0;
-  lunghezzaFuoco=250;
+  lunghezzaFuoco=400;
 
   saltoDistanza=0;
   cadendo=false;
