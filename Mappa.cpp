@@ -5,7 +5,8 @@ Mappa::Mappa()
 }
 Mappa::~Mappa()
 {
-  al_destroy_bitmap(tile);
+  // if(!tile==NULL)
+  // al_destroy_bitmap(tile);
 }
 
 int Mappa::getMapSizeX()

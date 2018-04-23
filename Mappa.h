@@ -12,7 +12,7 @@ private:
   int loadcounterY;
   int mapsizeX;
   int mapsizeY;
-  int map[12][11];
+  int map[15][15];
 public:
   ALLEGRO_BITMAP *tile;
   ~Mappa();
