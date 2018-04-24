@@ -15,6 +15,8 @@ using namespace std;
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
+#include "math.h"
 
 
 const int ncolpi=10;
@@ -751,22 +753,22 @@ int main(int argc, char **argv){
 
                             if(mostriBoss[i]->getVita())
                               {
-                                float ma=(mostriBoss[i]->getX()-9)/21; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
-                                float mb=(mostriBoss[i]->getY()/21)+1;
-                                  if(ma<0)
-                                    ma=0;
-                                  if(mb<0)
-                                    mb=0;
+                                float ma=(mostriBoss[i]->getX()+9)/21; //VARIABILI CHE UTILIZZIAMO PER INTERAGIRE CON LA MAPPA PER LA GRAVITA'
+                                float mb=((mostriBoss[i]->getY()+0.2)/21)+1;
+                                if(ma<0)
+                                  ma=0;
+                                if(mb<0)
+                                  mb=0;
 
                                  if(mostriBoss[i]->getTotInnevato())
                                     if(tommy->controllaTocco(mostriBoss[i]->getX(), mostriBoss[i]->getY(), mostriBoss[i]->getTotInnevato(),mostriBoss[i]->getColpito())&& !mostriBoss[i]->getcolpitoInnevato()) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
                                       {
-                                        mostriBoss[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento());
+                                        mostriBoss[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento()); //SE QUALCHE MOSTRO È TOT INNEVATO PERMETTIAMO A TOMMY DI SPOSTARLO
                                       }
 
                                 if(mostriBoss[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
                                   {
-                                    if((mostriBoss[i]->getY()<=(21*1)+18 && mostriBoss[i]->getY()>=(21*1)+5) || (mostriBoss[i]->getY()<=(21*3)+18 && mostriBoss[i]->getY()>=(21*3)+5) ||(mostriBoss[i]->getY()<=(21*5)+18 && mostriBoss[i]->getY()>=(21*5)+5)||(mostriBoss[i]->getY()<=(21*7)+18 && mostriBoss[i]->getY()>=(21*7)+5))
+                                    if((mostriBoss[i]->getY()<=(21*1)+20 && mostriBoss[i]->getY()>=(21*1)+5) || (mostriBoss[i]->getY()<=(21*3)+20 && mostriBoss[i]->getY()>=(21*3)+5) ||(mostriBoss[i]->getY()<=(21*5)+20 && mostriBoss[i]->getY()>=(21*5)+5)||(mostriBoss[i]->getY()<=(21*7)+20 && mostriBoss[i]->getY()>=(21*7)+5))
                                     {
                                         mostriBoss[i]->setCadendo(true);
                                         mostriBoss[i]->gravita();
@@ -897,6 +899,7 @@ int main(int argc, char **argv){
 
                             }
 
+                        if(!tommy->getToccato())
                         tommy->controllaseToccato(boss->getxFuoco(), boss->getyFuoco());
              }
 
