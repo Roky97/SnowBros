@@ -332,7 +332,7 @@ int main(int argc, char **argv){
          if(al_get_timer_count(mostraliv)>1) //SE LA STRINGA DEL LIVELLO NEL QUALE CI TROVIAMO È STATA MOSTRATO PER PIÙ DI 1 SECONDO, NON LA MOSTRARE PIÙ
          mostralivello=false;
 
-         if(al_get_timer_count(fantasma)>100000 && mostrivivi && level!=2) //SE CI SONO ANCORA MOSTRI VIVI E SONO PASSATI 30 SECONDI FACCIAMO COMPARIRE LA ZUCCA
+         if(al_get_timer_count(fantasma)>20 && mostrivivi && level!=2) //SE CI SONO ANCORA MOSTRI VIVI E SONO PASSATI 30 SECONDI FACCIAMO COMPARIRE LA ZUCCA
          {
           zucca->muoviZucca(tommy->getX(),tommy->getY());
          }
@@ -361,6 +361,7 @@ int main(int argc, char **argv){
            tommy->setCont1(0);
            tommy->setSpostaMostro(false);
            tommy->setSparando(false);
+           tommy->setSaltando(false);
            tommy->setAndando_destra(false);
            tommy->setAndando_sinistra(false);
            tommy->disattivaPotere();
@@ -425,6 +426,10 @@ int main(int argc, char **argv){
             //********************//
             //FINE SEZIONE RESTART//
             //********************//
+
+
+        if(mostralivello)
+        cout<<tommy->getX()<<"         "<<tommy->getY()<<endl<<endl;
 
 
 
@@ -619,6 +624,8 @@ int main(int argc, char **argv){
                      level++;
                      restart=true;
                      finitiSushi=false;
+                     al_stop_timer(passalivello);
+                     al_set_timer_count(passalivello,0.0);
                      if(level>=3)
                      gameover=true;
                    }
@@ -627,6 +634,8 @@ int main(int argc, char **argv){
                      level++;
                      restart=true;
                      finitiSushi=false;
+                     al_stop_timer(passalivello);
+                     al_set_timer_count(passalivello,0.0);
                      if(level>=3)
                       gameover=true;
                    }
@@ -658,7 +667,7 @@ int main(int argc, char **argv){
             {
               if(tommy->getSaltando()==false)  //CONTROLLIAMO CHE IL PERSONAGGIO NON VADA DENTRO I MURETTI
               {
-                if((tommy->getY()<=(21*1)+12 && tommy->getY()>=(21*1)) || (tommy->getY()<=(21*3)+12 && tommy->getY()>=(21*3)) ||(tommy->getY()<=(21*5)+12 && tommy->getY()>=(21*5))||(tommy->getY()<=(21*7)+12 && tommy->getY()>=(21*7)))
+                if((tommy->getY()<=(21*1)+15 && tommy->getY()>=(21*1)) || (tommy->getY()<=(21*3)+15 && tommy->getY()>=(21*3)) ||(tommy->getY()<=(21*5)+15 && tommy->getY()>=(21*5))||(tommy->getY()<=(21*7)+15 && tommy->getY()>=(21*7)))
                 {
                     tommy->setCadendo(true);
                     tommy->gravita();
