@@ -200,8 +200,8 @@ void Boss::gestisciBoss(int tommyX, int tommyY)
   {
     finexFuoco=tommyX;
     fineyFuoco=tommyY;
-
-    if(abs(y-tommyY)>5)
+    int dif=y-tommyY;
+    if(abs(dif)>5)
     {
       if(y-tommyY>0)
         dirFuoco=true;

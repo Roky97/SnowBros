@@ -61,13 +61,47 @@ int main(int argc, char **argv){
 	int monitor_w = data.x2 - data.x1;
 	int monitor_h = data.y2 - data.y1;
 
-  //cout<<monitor_w<<" "<<monitor_h<<endl;
-  // monitor_w=1512;
-  // monitor_h=1386;
+//SEZIONE PER RENDERE IL DISPLAY QUADRATO
+{
+          int x=0;
+          if(monitor_w>=monitor_h)
+          {
+
+            while(true)
+            {
+              if(x*h<=monitor_h)
+              {
+                x++;
+              }
+              else
+                break;
+            }
+          }
+          else
+          {
+            while(true)
+            {
+            if(w*x<=monitor_w)
+            {
+              x++;
+            }
+            else
+              break;
+            }
+          }
+            if(x!=0)
+            {
+              x--;
+            monitor_w=w*x;
+            monitor_h=h*x;
+            }
+}
+
 	float resize_x = monitor_w / static_cast<float>(w);
 	float resize_y = monitor_h / static_cast<float>(h);
   cout<<monitor_w<<" "<<resize_x<<endl;
   cout<<monitor_h<<" "<<resize_x<<endl;
+  cout<<x<<endl;
 
 
 
@@ -428,8 +462,7 @@ int main(int argc, char **argv){
             //********************//
 
 
-        if(mostralivello)
-        cout<<tommy->getX()<<"         "<<tommy->getY()<<endl<<endl;
+
 
 
 
@@ -728,7 +761,7 @@ int main(int argc, char **argv){
               for(int i=0;i<mostriBoss.size();i++)
                 if(mostriBoss[i]->getVita() && !mostralivello)
                   mostriBoss[i]->muovi();
-              if(!tommy->getToccato())
+              if(!tommy->getToccato() && boss->getVita())
                 tommy->controllaseToccato(boss->getX()-10, boss->getY()+30);
 
               if(al_get_timer_count(creaMostriBoss)==2 && boss->getVita()) //OGNI 2 SEC VIENE CREATO UN NUOVO MOSTRO DEL BOSS
@@ -946,7 +979,7 @@ int main(int argc, char **argv){
 
                             }
 
-                        if(!tommy->getToccato())
+                        if(!tommy->getToccato() && boss->getVita())
                         tommy->controllaseToccato(boss->getxFuoco(), boss->getyFuoco());
              }
 

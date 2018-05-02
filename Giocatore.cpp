@@ -8,7 +8,7 @@ Giocatore::Giocatore(int w, int h)
   x=w/2.0 - 15;
   //y=0;
   spostamento=2;
-  vite=3;
+  vite=99;
   cont=0;
   parametroGravita=3;
   saltoDistanza=0;
@@ -586,11 +586,11 @@ void Giocatore::muovi()
     {
       y-=spostamento;
     }
-    if(andando_sotto && y<231)
+    if(andando_sotto && y<h-48)
     {
       y+=spostamento;
     }
-   if(andando_destra && x<=w-spostamento) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+   if(andando_destra && x<=w-30) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
     {
       x+=spostamento;
     }
