@@ -236,6 +236,11 @@ bool Mostro::getSushi()
   return sushi;
 }
 
+int Mostro::getIndiceSushi()
+{
+  return iSushi;
+}
+
 
 //MOVIMENTI GRAVITÀ E DISEGNO
 

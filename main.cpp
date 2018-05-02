@@ -332,7 +332,7 @@ int main(int argc, char **argv){
          if(al_get_timer_count(mostraliv)>1) //SE LA STRINGA DEL LIVELLO NEL QUALE CI TROVIAMO È STATA MOSTRATO PER PIÙ DI 1 SECONDO, NON LA MOSTRARE PIÙ
          mostralivello=false;
 
-         if(al_get_timer_count(fantasma)>20 && mostrivivi && level!=2) //SE CI SONO ANCORA MOSTRI VIVI E SONO PASSATI 30 SECONDI FACCIAMO COMPARIRE LA ZUCCA
+         if(al_get_timer_count(fantasma)>30 && mostrivivi && level!=2) //SE CI SONO ANCORA MOSTRI VIVI E SONO PASSATI 30 SECONDI FACCIAMO COMPARIRE LA ZUCCA
          {
           zucca->muoviZucca(tommy->getX(),tommy->getY());
          }
@@ -490,7 +490,26 @@ int main(int argc, char **argv){
                }
 
              if(mostri[i]->getSushi() && tommy->controllaseToccatoSushi(mostri[i]->getX(),mostri[i]->getY()))//CONTROLLIAMO SE TOMMY PRENDE IL SUSHI
-               mostri[i]->setSushi(false);
+               {
+                 mostri[i]->setSushi(false);
+                 switch (mostri[i]->getIndiceSushi()) { //INCREMENTIAMO IL PUNTEGGIO IN BASE A CHE SUSHI MANGIA TOMMY
+                   case 0:
+                   punti+=10;
+                   break;
+                   case 1:
+                   punti+=20;
+                   break;
+                   case 2:
+                   punti+=30;
+                   break;
+                   case 3:
+                   punti+=40;
+                   break;
+                   case 4:
+                   punti+=50;
+                   break;
+                 }
+               }
 
 
              if(mostri[i]->getVita())
@@ -617,7 +636,6 @@ int main(int argc, char **argv){
 
                  if(!mostrivivi && level!=2)
                  {
-
                    al_start_timer(passalivello);
                    if(finitiSushi)
                    {
@@ -758,7 +776,27 @@ int main(int argc, char **argv){
                             }
 
                           if(mostriBoss[i]->getSushi() && tommy->controllaseToccatoSushi(mostriBoss[i]->getX(),mostriBoss[i]->getY()))//CONTROLLIAMO SE TOMMY PRENDE IL SUSHI DEI MOSTRI DEL BOSS
-                            mostriBoss[i]->setSushi(false);
+                            {
+                              mostriBoss[i]->setSushi(false);
+                              switch (mostriBoss[i]->getIndiceSushi()) { //INCREMENTIAMO IL PUNTEGGIO IN BASE A CHE SUSHI MANGIA TOMMY
+                                case 0:
+                                punti+=10;
+                                break;
+                                case 1:
+                                punti+=20;
+                                break;
+                                case 2:
+                                punti+=30;
+                                break;
+                                case 3:
+                                punti+=40;
+                                break;
+                                case 4:
+                                punti+=50;
+                                break;
+                              }
+                            }
+
 
                             if(mostriBoss[i]->getVita())
                               {
@@ -1023,7 +1061,7 @@ int main(int argc, char **argv){
           }
 
 
-        if(al_get_timer_count(fantasma)>10 && mostrivivi)
+        if(al_get_timer_count(fantasma)>30 && mostrivivi)
           zucca->drawZucca();
 
 

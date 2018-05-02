@@ -106,6 +106,7 @@ public:
   int getxFuoco();
   int getyFuoco();
   bool getSushi();
+  int getIndiceSushi();
 
 
 
