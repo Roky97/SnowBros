@@ -17,37 +17,37 @@ using namespace std;
 class Zucca
 {
 private:
-  float x;
-  float y;
-  float spostamento;
-  int cont;
-  bool vita;
-  bool changeBitmap;
-  bool andando_destra;
-  bool andando_sinistra;
-  ALLEGRO_BITMAP *dx1;
-  ALLEGRO_BITMAP *dx2;
+    float x;
+    float y;
+    float spostamento;
+    int cont;
+    bool vita;
+    bool changeBitmap;
+    bool andando_destra;
+    bool andando_sinistra;
+    ALLEGRO_BITMAP *dx1;
+    ALLEGRO_BITMAP *dx2;
 
-  ALLEGRO_BITMAP *sx1;
-  ALLEGRO_BITMAP *sx2;
+    ALLEGRO_BITMAP *sx1;
+    ALLEGRO_BITMAP *sx2;
 
 
 
 public:
-  Zucca();
-  Zucca(float ,float );
-  ~Zucca();
+    Zucca();
+    Zucca(float,float );
+    ~Zucca();
 
-  void drawZucca();
-  void muoviZucca(float,float);
+    void drawZucca();
+    void muoviZucca(float,float);
 
-  void setVita(bool );
-  void setX(float );
-  void setY(float );
+    void setVita(bool );
+    void setX(float );
+    void setY(float );
 
-  bool getVita();
-  float getX();
-  float getY();
+    bool getVita();
+    float getX();
+    float getY();
 
 
 };

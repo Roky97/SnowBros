@@ -13,116 +13,117 @@
 #include <iostream>
 using namespace std;
 
-class Mostro{
+class Mostro
+{
 protected:
-  float x;
-  float y;
-  float spostamento;
-  int cont;
-  int tipo;
-  int xFuoco, yFuoco;
-  int iSushi;
-  unsigned parametroGravita;
-  unsigned nColpito;
-  unsigned saltoDistanza;
-  unsigned contPrimaDiSaltare;
-  ALLEGRO_TIMER *congelo;
+    float x;
+    float y;
+    float spostamento;
+    int cont;
+    int tipo;
+    int xFuoco, yFuoco;
+    int iSushi;
+    unsigned parametroGravita;
+    unsigned nColpito;
+    unsigned saltoDistanza;
+    unsigned contPrimaDiSaltare;
+    ALLEGRO_TIMER *congelo;
 
 
-  bool andando_destra;
-  bool andando_sinistra;
-  bool vita;
-  bool passo;
-  bool cadendo;
-  bool saltando;
-  bool colpito;
-  bool totInnevato;
-  bool colpitoInnevato;
-  bool sushi;
+    bool andando_destra;
+    bool andando_sinistra;
+    bool vita;
+    bool passo;
+    bool cadendo;
+    bool saltando;
+    bool colpito;
+    bool totInnevato;
+    bool colpitoInnevato;
+    bool sushi;
 
 
 
 
 public:
-	//sinistra
-	ALLEGRO_BITMAP *verso_sinistra1;
-	ALLEGRO_BITMAP *verso_sinistra2;
-  ALLEGRO_BITMAP *colpito_sinistra1;
-  ALLEGRO_BITMAP *colpito_sinistra2;
+    //sinistra
+    ALLEGRO_BITMAP *verso_sinistra1;
+    ALLEGRO_BITMAP *verso_sinistra2;
+    ALLEGRO_BITMAP *colpito_sinistra1;
+    ALLEGRO_BITMAP *colpito_sinistra2;
 
 
-	//destra
-	ALLEGRO_BITMAP *verso_destra1;
-	ALLEGRO_BITMAP *verso_destra2;
-  ALLEGRO_BITMAP *colpito_destra1;
-  ALLEGRO_BITMAP *colpito_destra2;
+    //destra
+    ALLEGRO_BITMAP *verso_destra1;
+    ALLEGRO_BITMAP *verso_destra2;
+    ALLEGRO_BITMAP *colpito_destra1;
+    ALLEGRO_BITMAP *colpito_destra2;
 
-  //neve
-  ALLEGRO_BITMAP *innevando1;
-  ALLEGRO_BITMAP *innevando2;
-  ALLEGRO_BITMAP *innevando3;
-  ALLEGRO_BITMAP *palladineve1;
-  ALLEGRO_BITMAP *palladineve2;
+    //neve
+    ALLEGRO_BITMAP *innevando1;
+    ALLEGRO_BITMAP *innevando2;
+    ALLEGRO_BITMAP *innevando3;
+    ALLEGRO_BITMAP *palladineve1;
+    ALLEGRO_BITMAP *palladineve2;
 
-  ALLEGRO_BITMAP *salta;
+    ALLEGRO_BITMAP *salta;
 
-  ALLEGRO_BITMAP *im_sushi[5];
-
-
-  Mostro();
-  ~Mostro();
-  Mostro(float, float);
-  //sets
-  void setX(float sx);
-  void setY(float sy);
-
-  void setAndando_destra(bool d);
-  void setAndando_sinistra(bool s);
-  void setVita(bool v);
-  void setCadendo(bool c);
-  void setSaltando(bool s);
-  void setColpito(bool c);
-  void setContPrimaDiSaltare(unsigned c);
-  void setTotInnevato(bool i);
-  void setcolpitoInnevato(bool i);
-  void setnColpito(unsigned c);
-  void setSushi(bool s);
-
-  //get
-  float getX();
-  float getY();
-  bool getVita();
-
-  bool getAndando_destra();
-  bool getAndando_sinistra();
-  bool getSaltando();
-  bool getCadendo();
-  bool getColpito();
-  unsigned getContPrimaDiSaltare();
-  bool getTotInnevato();
-  unsigned getnColpito();
-  bool getcolpitoInnevato();
-  int getTipo();
-  int getxFuoco();
-  int getyFuoco();
-  bool getSushi();
-  int getIndiceSushi();
+    ALLEGRO_BITMAP *im_sushi[5];
 
 
+    Mostro();
+    ~Mostro();
+    Mostro(float, float);
+    //sets
+    void setX(float sx);
+    void setY(float sy);
 
-  virtual void carica_immagini(){}
-  virtual void drawMostro(){}
-  virtual void muovi(){}
-  bool collisioneProiettile(int, int, bool); //non virtual?
+    void setAndando_destra(bool d);
+    void setAndando_sinistra(bool s);
+    void setVita(bool v);
+    void setCadendo(bool c);
+    void setSaltando(bool s);
+    void setColpito(bool c);
+    void setContPrimaDiSaltare(unsigned c);
+    void setTotInnevato(bool i);
+    void setcolpitoInnevato(bool i);
+    void setnColpito(unsigned c);
+    void setSushi(bool s);
 
-  bool controllaSeToccato(int, int, bool, bool);
-  void diminuisciContPrimaDiSaltare();
-  void muoviDaTommySeInnevato(bool, bool, unsigned);
-  void drawSushi();
-  void colpitoEdInnevato();
-  void sconfitto();
+    //get
+    float getX();
+    float getY();
+    bool getVita();
 
-  void gravita();
+    bool getAndando_destra();
+    bool getAndando_sinistra();
+    bool getSaltando();
+    bool getCadendo();
+    bool getColpito();
+    unsigned getContPrimaDiSaltare();
+    bool getTotInnevato();
+    unsigned getnColpito();
+    bool getcolpitoInnevato();
+    int getTipo();
+    int getxFuoco();
+    int getyFuoco();
+    bool getSushi();
+    int getIndiceSushi();
+
+
+
+    virtual void carica_immagini() {}
+    virtual void drawMostro() {}
+    virtual void muovi() {}
+    bool collisioneProiettile(int, int, bool); //non virtual?
+
+    bool controllaSeToccato(int, int, bool, bool);
+    void diminuisciContPrimaDiSaltare();
+    void muoviDaTommySeInnevato(bool, bool, unsigned);
+    void drawSushi();
+    void colpitoEdInnevato();
+    void sconfitto();
+
+    void gravita();
 
 };
 #endif

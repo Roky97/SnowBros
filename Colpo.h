@@ -3,38 +3,39 @@
 #include "Giocatore.h"
 
 
-class Colpo{
+class Colpo
+{
 
 private:
-  float x;
-  float y;
-  bool vita;
-  unsigned raggio;
-  unsigned spostamento;
-  bool direzione;
+    float x;
+    float y;
+    bool vita;
+    unsigned raggio;
+    unsigned spostamento;
+    bool direzione;
 
-  bool cambiaColore;
+    bool cambiaColore;
 
 public:
-  Colpo();
-  ~Colpo();
-  Colpo(int,int,bool);
+    Colpo();
+    ~Colpo();
+    Colpo(int,int,bool);
 
-  float getX();
-  float getY();
-  bool getVita();
-  void setVita(bool);
+    float getX();
+    float getY();
+    bool getVita();
+    void setVita(bool);
 
-  void drawColpo();
-  bool fireColpo(float,float,bool);
-  void updateColpo();
+    void drawColpo();
+    bool fireColpo(float,float,bool);
+    void updateColpo();
 
-  //colpo
-  ALLEGRO_BITMAP *colpo_destra;
-  ALLEGRO_BITMAP *colpo_destra2;
+    //colpo
+    ALLEGRO_BITMAP *colpo_destra;
+    ALLEGRO_BITMAP *colpo_destra2;
 
-  ALLEGRO_BITMAP *colpo_sinistra;
-  ALLEGRO_BITMAP *colpo_sinistra2;
+    ALLEGRO_BITMAP *colpo_sinistra;
+    ALLEGRO_BITMAP *colpo_sinistra2;
 
 
 

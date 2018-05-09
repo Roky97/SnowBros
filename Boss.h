@@ -15,34 +15,35 @@
 #include <iostream>
 using namespace std;
 
-class Boss{
+class Boss
+{
 private:
-  float x;
-  float y;
-  int nColpito;
-  bool vita;
+    float x;
+    float y;
+    int nColpito;
+    bool vita;
 
-  bool passo;
-  int cont;
-  int parametroGravita;
-  float spostyFuoco;
-  bool dirFuoco; //INDICA DOVE IL FUOCO SI DIRIGE (ALTO(1), BASSO(0))
+    bool passo;
+    int cont;
+    int parametroGravita;
+    float spostyFuoco;
+    bool dirFuoco; //INDICA DOVE IL FUOCO SI DIRIGE (ALTO(1), BASSO(0))
 
-  bool cadendo;
+    bool cadendo;
 
-  bool saltando;
-  int saltoDistanza;
-
-
-  float xFuoco, yFuoco;
-  float finexFuoco, fineyFuoco;
-  bool sparaFuoco;
-  int lunghezzaFuoco;
+    bool saltando;
+    int saltoDistanza;
 
 
-  ALLEGRO_TIMER *timerSalta;
-  ALLEGRO_TIMER *sputaFuoco;
-  ALLEGRO_TIMER *caduta;
+    float xFuoco, yFuoco;
+    float finexFuoco, fineyFuoco;
+    bool sparaFuoco;
+    int lunghezzaFuoco;
+
+
+    ALLEGRO_TIMER *timerSalta;
+    ALLEGRO_TIMER *sputaFuoco;
+    ALLEGRO_TIMER *caduta;
 
 
 
@@ -51,41 +52,41 @@ private:
 
 public:
 
-  ALLEGRO_BITMAP * fermo1;
-  ALLEGRO_BITMAP * fermo2;
-  ALLEGRO_BITMAP * salta;
-  ALLEGRO_BITMAP * sconfitto1;
-  ALLEGRO_BITMAP * sconfitto2;
-  ALLEGRO_BITMAP * fuoco1;
-  ALLEGRO_BITMAP * fuoco2;
+    ALLEGRO_BITMAP * fermo1;
+    ALLEGRO_BITMAP * fermo2;
+    ALLEGRO_BITMAP * salta;
+    ALLEGRO_BITMAP * sconfitto1;
+    ALLEGRO_BITMAP * sconfitto2;
+    ALLEGRO_BITMAP * fuoco1;
+    ALLEGRO_BITMAP * fuoco2;
 
 
-  Boss();
-  ~Boss();
+    Boss();
+    ~Boss();
 
-  void setX(float);
-  void setY(float);
-  void setnColpito(float);
-  void setSaltando(bool);
-  void setCadendo(bool);
+    void setX(float);
+    void setY(float);
+    void setnColpito(float);
+    void setSaltando(bool);
+    void setCadendo(bool);
 
-  float getX();
-  float getY();
-  int getnColpito();
-  bool getVita();
-  bool getSaltando();
-  int getxFuoco();
-  int getyFuoco();
-  bool getSparaFuoco();
-  bool getCadendo();
-  int getTimerCaduta();
+    float getX();
+    float getY();
+    int getnColpito();
+    bool getVita();
+    bool getSaltando();
+    int getxFuoco();
+    int getyFuoco();
+    bool getSparaFuoco();
+    bool getCadendo();
+    int getTimerCaduta();
 
-  void gestisciBoss(int, int);
-  void saltare();
-  void gravita();
-  bool controllaSeToccato(int, int, int);
-  void drawBoss();
-  void restartBoss();
+    void gestisciBoss(int, int);
+    void saltare();
+    void gravita();
+    bool controllaSeToccato(int, int, int);
+    void drawBoss();
+    void restartBoss();
 
 
 

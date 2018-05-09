@@ -6,23 +6,24 @@
 #include <algorithm>
 #include "Mostro.h"
 
-class Mappa{
+class Mappa
+{
 private:
-  int loadcounterX;
-  int loadcounterY;
-  int mapsizeX;
-  int mapsizeY;
-  int map[15][15];
+    int loadcounterX;
+    int loadcounterY;
+    int mapsizeX;
+    int mapsizeY;
+    int map[15][15];
 public:
-  ALLEGRO_BITMAP *tile;
-  ~Mappa();
-  Mappa();
-  void caricaElementi(const char* image);
-  void caricaMappa (const char* nomefile);
-  void drawMappa();
-  int getValore(int, int);
-  int getMapSizeX();
-  int getMapSizeY();
+    ALLEGRO_BITMAP *tile;
+    ~Mappa();
+    Mappa();
+    void caricaElementi(const char* image);
+    void caricaMappa (const char* nomefile);
+    void drawMappa();
+    int getValore(int, int);
+    int getMapSizeX();
+    int getMapSizeY();
 
 
 
