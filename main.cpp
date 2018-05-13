@@ -847,11 +847,11 @@ int main(int argc, char **argv)
                                     if(mb<0)
                                         mb=0;
 
-                                    if(mostriBoss[i]->getTotInnevato())
-                                        if(tommy->controllaTocco(mostriBoss[i]->getX(), mostriBoss[i]->getY(), mostriBoss[i]->getTotInnevato(),mostriBoss[i]->getColpito())&& !mostriBoss[i]->getcolpitoInnevato()) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
-                                        {
-                                            mostriBoss[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento()); //SE QUALCHE MOSTRO È TOT INNEVATO PERMETTIAMO A TOMMY DI SPOSTARLO
-                                        }
+                                    //if(mostriBoss[i]->getTotInnevato())
+                                    if(tommy->controllaTocco(mostriBoss[i]->getX(), mostriBoss[i]->getY(), mostriBoss[i]->getTotInnevato(),mostriBoss[i]->getColpito())) //CONTROLLIAMO SE QUALCHE MOSTRO E' TOT INNEVATO
+                                    {
+                                        mostriBoss[i]->muoviDaTommySeInnevato(tommy->getAndando_destra(), tommy->getAndando_sinistra(),  tommy->getSpostamento()); //SE QUALCHE MOSTRO È TOT INNEVATO PERMETTIAMO A TOMMY DI SPOSTARLO
+                                    }
 
                                     if(mostriBoss[i]->getSaltando()==false) //CONTROLLIAMO CHE I MOSTRI NON VADANO DENTRO I MURETTI
                                     {
