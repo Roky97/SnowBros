@@ -6,7 +6,7 @@ Zucca::Zucca()
     y=0;
     cont=0;
     changeBitmap=false;
-    spostamento=1.5;
+    spostamento=1.1;
     vita=false;
     andando_destra=false;
     andando_sinistra=false;
@@ -23,7 +23,7 @@ Zucca::Zucca(float posx, float posy)
     y=posy;
     cont=0;
     changeBitmap=false;
-    spostamento=1.5;
+    spostamento=1.1;
     vita=false;
     andando_destra=false;
     andando_sinistra=false;

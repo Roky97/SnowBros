@@ -100,13 +100,13 @@ int main(int argc, char **argv)
 
     float resize_x = monitor_w / static_cast<float>(w);
     float resize_y = monitor_h / static_cast<float>(h);
-    cout<<monitor_w<<" "<<resize_x<<endl;
-    cout<<monitor_h<<" "<<resize_x<<endl;
+    // cout<<monitor_w<<" "<<resize_x<<endl;
+    // cout<<monitor_h<<" "<<resize_x<<endl;
     //cout<<x<<endl;
 
 
 
-    //al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+    al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 
     display = al_create_display(monitor_w, monitor_h);
 
@@ -370,7 +370,7 @@ int main(int argc, char **argv)
                 if(al_get_timer_count(mostraliv)>1) //SE LA STRINGA DEL LIVELLO NEL QUALE CI TROVIAMO È STATA MOSTRATO PER PIÙ DI 1 SECONDO, NON LA MOSTRARE PIÙ
                     mostralivello=false;
 
-                if(al_get_timer_count(fantasma)>30 && mostrivivi && level!=2) //SE CI SONO ANCORA MOSTRI VIVI E SONO PASSATI 30 SECONDI FACCIAMO COMPARIRE LA ZUCCA
+                if(al_get_timer_count(fantasma)>20 && mostrivivi && level!=2) //SE CI SONO ANCORA MOSTRI VIVI E SONO PASSATI 30 SECONDI FACCIAMO COMPARIRE LA ZUCCA
                 {
                     zucca->muoviZucca(tommy->getX(),tommy->getY());
                 }
@@ -1105,7 +1105,7 @@ int main(int argc, char **argv)
                         }
 
 
-                    if(al_get_timer_count(fantasma)>30 && mostrivivi)
+                    if(al_get_timer_count(fantasma)>20 && mostrivivi)
                         zucca->drawZucca();
 
 
