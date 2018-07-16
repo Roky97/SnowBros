@@ -20,7 +20,7 @@ class Boss
 private:
     float x;
     float y;
-    int nColpito;
+    int nColpito; //NUMERO DI VOLTE CHE IL BOSS VIENE COLPITO
     bool vita;
 
     bool passo;
@@ -44,11 +44,6 @@ private:
     ALLEGRO_TIMER *timerSalta;
     ALLEGRO_TIMER *sputaFuoco;
     ALLEGRO_TIMER *caduta;
-
-
-
-
-
 
 public:
 
@@ -87,9 +82,6 @@ public:
     bool controllaSeToccato(int, int, int);
     void drawBoss();
     void restartBoss();
-
-
-
 
 
 };

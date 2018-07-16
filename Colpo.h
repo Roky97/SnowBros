@@ -2,7 +2,6 @@
 #define COLPO_H
 #include "Giocatore.h"
 
-
 class Colpo
 {
 
@@ -13,7 +12,6 @@ private:
     unsigned raggio;
     unsigned spostamento;
     bool direzione;
-
     bool cambiaColore;
 
 public:
@@ -30,7 +28,6 @@ public:
     bool fireColpo(float,float,bool);
     void updateColpo();
 
-    //colpo
     ALLEGRO_BITMAP *colpo_destra;
     ALLEGRO_BITMAP *colpo_destra2;
 

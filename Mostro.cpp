@@ -42,7 +42,6 @@ Mostro::Mostro()
     congelo=al_create_timer(1.0/5);
 
     salta=NULL;
-    //al_start_timer(congelo);
 
     srand((unsigned)time(NULL));
 
@@ -282,24 +281,18 @@ void Mostro::muoviDaTommySeInnevato(bool dest, bool sini, unsigned spost)
 
 bool Mostro::controllaSeToccato(int a, int b, bool dest, bool sin)
 {
-    //if((andando_destra && sin) || (andando_sinistra && dest))
-    //{
+
     if((a+6>=static_cast<int>(x) && a-6<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) )
     {
         return true;
     }
-    //}
     return false;
 }
 
 bool Mostro::collisioneProiettile(int a, int b, bool dir)
 {
-    // a+=1;
-    // b+=2;
-    //if(a <= static_cast<int>(x) && a + 10 >= static_cast<int>(x) && b >= y && b <= (y+100))
     if((a+15>=static_cast<int>(x) && a-15<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) )
     {
-        //al_start_timer(congelo);
         colpito=true;
         if(totInnevato)
         {
@@ -346,7 +339,7 @@ void Mostro::colpitoEdInnevato()
         if(x+9>=252)
         {
             sconfitto();
-        } //qua caso mai facciamo una animazione
+        } 
         x+=spostamento+6;
     }
     else if(andando_sinistra)

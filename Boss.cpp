@@ -127,7 +127,6 @@ void Boss::drawBoss()
     {
         if(sparaFuoco)
         {
-            //al_draw_bitmap(sputa_fuoco_dx,  x-78, y, 0);
             if(passo)
             {
                 al_draw_scaled_bitmap(fuoco1,  0, 0, al_get_bitmap_width(fuoco1),  al_get_bitmap_height(fuoco1), xFuoco, yFuoco, al_get_bitmap_width(fuoco1)*3, al_get_bitmap_height(fuoco1)*3, 0);
@@ -155,7 +154,7 @@ void Boss::drawBoss()
             al_draw_scaled_bitmap(salta,  0, 0, al_get_bitmap_width(salta),  al_get_bitmap_height(salta), x, y, al_get_bitmap_width(salta)*1.5, al_get_bitmap_height(salta)*1.5, 0);
         else
         {
-            if(passo)// (passo|| sparafuoco)
+            if(passo)
             {
                 al_draw_scaled_bitmap(fermo1,  0, 0, al_get_bitmap_width(fermo1),  al_get_bitmap_height(fermo1), x, y, al_get_bitmap_width(fermo1)*1.5, al_get_bitmap_height(fermo1)*1.5, 0);
                 cont++;
@@ -210,9 +209,6 @@ void Boss::gestisciBoss(int tommyX, int tommyY)
             int distX=x-tommyX;
             float diag=sqrt(pow(distX,2) + pow(y-tommyY, 2));
             spostyFuoco=diag/distX;
-            // cout<<diag<<" "<<x<<endl;
-            // cout<<spostyFuoco<<endl<<endl;
-
         }
         else
             spostyFuoco=0;
@@ -261,7 +257,7 @@ void Boss::gestisciBoss(int tommyX, int tommyY)
 
 void Boss::saltare()
 {
-    if(saltando && saltoDistanza<=200 && !cadendo && nColpito<30) //aggiorna le posizioni per saltare
+    if(saltando && saltoDistanza<=200 && !cadendo && nColpito<30)
     {
         y-=5;
         saltoDistanza+=5;
@@ -275,9 +271,9 @@ void Boss::saltare()
     }
 }
 
-bool Boss::controllaSeToccato(int a, int b, int tipo)
+bool Boss::controllaSeToccato(int a, int b, int tipo) //TIPO CI INDICA SE È STATO COLPITO DA UN COLPO DI TOMMI OPPURE DA UN MOSTRO CONGELATO
 {
-    if((a+20>=x && a-20<=x) && (b+60 >=y && b-60 <= y)) //sistemare l'intervallo
+    if((a+20>=x && a-20<=x) && (b+60 >=y && b-60 <= y))
     {
         if(tipo==0)
             nColpito++;
@@ -317,6 +313,4 @@ void Boss::restartBoss()
     al_stop_timer(timerSalta);
     al_stop_timer(sputaFuoco);
     al_stop_timer(caduta);
-
-
 }

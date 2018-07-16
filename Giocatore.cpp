@@ -3,12 +3,10 @@ Giocatore::Giocatore(int w, int h)
 {
     this->w=w;
     this->h=h;
-    // x=w/2.0 - 15;
     y=h-(21*2)-15;
     x=w/2.0 - 15;
-    //y=0;
     spostamento=2;
-    vite=99;
+    vite=3;
     cont=0;
     parametroGravita=3;
     saltoDistanza=0;
@@ -243,7 +241,7 @@ bool Giocatore::getPotere()
 
 //IMMAGINI E DISEGNO
 
-void Giocatore::carica_immagini()
+void Giocatore::carica_immagini() //CARICAMENTO IMMAGINI
 {
     salta= al_load_bitmap("./images/giocatore/salto.png");
 
@@ -252,11 +250,9 @@ void Giocatore::carica_immagini()
 
     verso_sinistra1= al_load_bitmap("./images/giocatore/sinistra_1.png");
     verso_sinistra2= al_load_bitmap("./images/giocatore/sinstra_2.png");
-    //verso_sinistra3= al_load_bitmap("./images/giocatore/");
 
     verso_destra1= al_load_bitmap("./images/giocatore/destra_dx1.png");
     verso_destra2= al_load_bitmap("./images/giocatore/destra_2.png");
-    //verso_destra3= al_load_bitmap("./images/giocatore/");
 
 
     lancia_sinistra1=al_load_bitmap("./images/giocatore/lancia_sx2.png");
@@ -289,7 +285,7 @@ void Giocatore::carica_immagini()
     grande_sinistra2=al_load_bitmap("./images/giocatore/grande_sx2.png");
 }
 
-void Giocatore::drawPersonaggio()
+void Giocatore::drawPersonaggio() //DISEGNA IL PERSONAGGIO IN BASE A QUALE BOOLEANA È TRUE
 {
     if(potere_v)
     {
@@ -395,7 +391,6 @@ void Giocatore::drawPersonaggio()
     }
     else
     {
-
         if(toccato)
         {
             if(cont1<=20)
@@ -576,13 +571,13 @@ void Giocatore::drawPersonaggio()
     }
 }
 
-void Giocatore::drawLanterna(float posX, float posY)
+void Giocatore::drawLanterna(float posX, float posY) //DISEGNA LA LANTERNA NELLA POSIZIONE PASSATA
 {
     al_draw_bitmap(lanterna,posX, posY, 0);
 }
 //MOVIMENTI
 
-void Giocatore::muovi()
+void Giocatore::muovi() //FUNZIONE CHIAMATA AD OGNI CICLO DEL WHILE DEL MAIN ED IN BASE A QUALE TASTO VIENE CLICCATO SI ATTIVA UNA BOOLEANA CORRISPONDENTE
 {
     if(potere_v)
     {
@@ -594,26 +589,26 @@ void Giocatore::muovi()
         {
             y+=spostamento;
         }
-        if(andando_destra && x<=w-30) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+        if(andando_destra && x<=w-30)
         {
             x+=spostamento;
         }
 
-        if(andando_sinistra && x>0) //movimento a sx
+        if(andando_sinistra && x>0)
             x-=spostamento;
     }
     else
     {
-        if(andando_destra && x+24<=w-spostamento&&!toccato) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+        if(andando_destra && x+24<=w-spostamento&&!toccato)
         {
             x+=spostamento;
         }
 
-        else if(andando_sinistra && x+6>0&&!toccato) //movimento a sx
+        else if(andando_sinistra && x+6>0&&!toccato)
             x-=spostamento;
 
 
-        if(saltando && saltoDistanza<=42 && !cadendo&&!toccato) //aggiorna le posizioni per saltare
+        if(saltando && saltoDistanza<=42 && !cadendo&&!toccato)
         {
             y-=5;
             saltoDistanza+=5;
@@ -637,20 +632,18 @@ void Giocatore::gravita()
     y+=parametroGravita;
 }
 
-bool Giocatore::controllaTocco(int a,int b, bool i,bool c)
+bool Giocatore::controllaTocco(int a,int b, bool i,bool c) //CONTROLLA SE TOCCHIAMO UN MOSTRO CONGELATO. FERMOLTERNATO CI INDICA LA SE IL PLAYER È RIVOLTO A DESTRA O SINISTRA
 {
 
     if(fermoAlternato)
     {
         if(x+25 > a && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) && i && x<a)
         {
-            //cout<<"tocco DX"<<endl;
             spostaMostro=true;
             return true;
         }
         else
         {
-            //cout<<"NO tocco DX"<<endl;
             spostaMostro=false;
             return false;
         }
@@ -659,22 +652,19 @@ bool Giocatore::controllaTocco(int a,int b, bool i,bool c)
     {
         if(x-20 < a && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y) && i && x>a)
         {
-            //cout<<"tocco SX"<<endl;
             spostaMostro=true;
             return true;
         }
         else
         {
-            //cout<<"NO tocco SX"<<endl;
             spostaMostro=false;
             return false;
         }
     }
-    //cout<<"niente"<<endl;
     return false;
 }
 
-void Giocatore::controllaseToccato(int a,int b)
+void Giocatore::controllaseToccato(int a,int b) //CONTROLLA SE IL PLAYER VIENE TOCCATO DA QUALCHE MOSTRO O QUALCHE COLPO
 {
     if((a+10>=static_cast<int>(x) && a-10<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y))
     {
@@ -689,7 +679,7 @@ void Giocatore::controllaseToccato(int a,int b)
     }
 }
 
-bool Giocatore::controllaseToccatoSushi(int a, int b)
+bool Giocatore::controllaseToccatoSushi(int a, int b) //CONTROLLA SE SIAMO NELLA STESSA POSIZIONE DEL SUSHI
 {
     if((a+12>=static_cast<int>(x) && a-20<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y))
     {
@@ -698,7 +688,7 @@ bool Giocatore::controllaseToccatoSushi(int a, int b)
     return false;
 }
 
-void Giocatore::presaLanterna(int a, int b)
+void Giocatore::presaLanterna(int a, int b) //CONTROLLA SE SIAMO NELLA STESSA POSIZIONE DELLA LANTERNA
 {
     if((a+12>=static_cast<int>(x) && a-20<=static_cast<int>(x)) && b+20 >= static_cast<int>(y) && b-20 <= static_cast<int>(y))
     {

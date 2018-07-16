@@ -45,20 +45,17 @@ protected:
 
 
 public:
-    //sinistra
     ALLEGRO_BITMAP *verso_sinistra1;
     ALLEGRO_BITMAP *verso_sinistra2;
     ALLEGRO_BITMAP *colpito_sinistra1;
     ALLEGRO_BITMAP *colpito_sinistra2;
 
 
-    //destra
     ALLEGRO_BITMAP *verso_destra1;
     ALLEGRO_BITMAP *verso_destra2;
     ALLEGRO_BITMAP *colpito_destra1;
     ALLEGRO_BITMAP *colpito_destra2;
 
-    //neve
     ALLEGRO_BITMAP *innevando1;
     ALLEGRO_BITMAP *innevando2;
     ALLEGRO_BITMAP *innevando3;
@@ -73,7 +70,7 @@ public:
     Mostro();
     ~Mostro();
     Mostro(float, float);
-    //sets
+
     void setX(float sx);
     void setY(float sy);
 
@@ -89,7 +86,6 @@ public:
     void setnColpito(unsigned c);
     void setSushi(bool s);
 
-    //get
     float getX();
     float getY();
     bool getVita();
@@ -114,7 +110,7 @@ public:
     virtual void carica_immagini() {}
     virtual void drawMostro() {}
     virtual void muovi() {}
-    bool collisioneProiettile(int, int, bool); //non virtual?
+    bool collisioneProiettile(int, int, bool);
 
     bool controllaSeToccato(int, int, bool, bool);
     void diminuisciContPrimaDiSaltare();

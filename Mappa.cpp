@@ -5,8 +5,7 @@ Mappa::Mappa()
 }
 Mappa::~Mappa()
 {
-    // if(!tile==NULL)
-    // al_destroy_bitmap(tile);
+
 }
 
 int Mappa::getMapSizeX()
@@ -40,9 +39,9 @@ void Mappa::caricaMappa(const char* nomefile)
     }
 }
 
-void Mappa::drawMappa() //devo creare gli elentibitmap(mattoni, mostri o altre cose) per ogni tipo di mappa
+void Mappa::drawMappa()
 {
-    //cout<<mapsizeX<<" "<<mapsizeY<<endl;
+
     for(int i=0; i<mapsizeX; i++)
     {
         for(int j=0; j<mapsizeY; j++)

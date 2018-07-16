@@ -21,10 +21,6 @@ Colpo::~Colpo()
     al_destroy_bitmap(colpo_sinistra);
     al_destroy_bitmap(colpo_destra2);
     al_destroy_bitmap(colpo_sinistra2);
-
-
-
-
 }
 
 float Colpo::getX()
@@ -62,7 +58,7 @@ void Colpo::drawColpo()
             cambiaColore=false;
         }
     }
-    else if(vita&& !direzione)
+    else if(vita && !direzione)
     {
         if(!cambiaColore)
         {

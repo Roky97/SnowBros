@@ -18,16 +18,16 @@ private:
     unsigned w;
     unsigned h;
 
-    float x;
+    float x; //POSIZIONI DEL GIOCATORE
     float y;
     unsigned velocita;
     unsigned vite;
     unsigned spostamento;
-    unsigned cont;
+    unsigned cont; //UTILIZZATO PER ALTERNARE LE ANIMAZIONI
     unsigned parametroGravita;
     unsigned saltoDistanza;
     unsigned colpoDistanza;
-    unsigned cont1;
+    unsigned cont1; //UTILIZZATO PER ALTERNARE LE ANIMAZIONI QUANDO IL GIOCATORE VIENE TOCCATO
 
     bool fermo;
     bool fermoAlternato;
@@ -46,14 +46,11 @@ private:
     ALLEGRO_TIMER *trasformazione;
 
 public:
-    //salta
     ALLEGRO_BITMAP *salta;
 
-    //fermo
     ALLEGRO_BITMAP *fermo_destra;
     ALLEGRO_BITMAP *fermo_sinistra;
 
-    //sinistra
     ALLEGRO_BITMAP *verso_sinistra1;
     ALLEGRO_BITMAP *verso_sinistra2;
     ALLEGRO_BITMAP *lancia_sinistra1;
@@ -63,8 +60,6 @@ public:
 
 
 
-
-    //destra
     ALLEGRO_BITMAP *verso_destra1;
     ALLEGRO_BITMAP *verso_destra2;
     ALLEGRO_BITMAP *lancia_destra1;
@@ -145,13 +140,10 @@ public:
     bool getPotere();
 
 
-
-    //Immagini e disegno
     void carica_immagini();
     void drawPersonaggio();
     void drawLanterna(float,float);
 
-    //Movimenti
     void muovi();
     void gravita();
     bool controllaTocco(int a, int b, bool i,bool c);

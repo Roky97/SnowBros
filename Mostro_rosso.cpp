@@ -4,8 +4,6 @@ Mostro_rosso::Mostro_rosso()
 {
     Mostro();
     saltando =false;
-    // andando_destra=true;
-    // andando_sinistra=false;
     colpito=false;
     nColpito=0;
     al_start_timer(congelo);
@@ -187,7 +185,7 @@ void Mostro_rosso::drawMostro()
             }
         }
 
-        else         //PALLA DI NEVE CHE ROTOLA
+        else
         {
             if(!passo)
             {
@@ -229,7 +227,7 @@ void Mostro_rosso::muovi()
             contPrimaDiSaltare=1;
             saltando=false;
         }
-        if(andando_destra && !colpito && x+20<252) //movimento a dx aggiorna la x che corrisponde alla larghezza schermo
+        if(andando_destra && !colpito && x+20<252)
         {
             x+=spostamento;
         }
@@ -239,7 +237,7 @@ void Mostro_rosso::muovi()
             andando_sinistra=true;
         }
 
-        else if(andando_sinistra && !colpito && x>=0) //movimento a sx
+        else if(andando_sinistra && !colpito && x>=0)
             x-=spostamento;
         else if(andando_sinistra && !colpito && x<0)
         {
@@ -253,7 +251,6 @@ void Mostro_rosso::muovi()
             if(nColpito==0)
             {
                 colpito=false;
-                //al_stop_timer(congelo);
             }
             if(nColpito<7)
             {
@@ -261,7 +258,7 @@ void Mostro_rosso::muovi()
             }
         }
 
-        if(saltando && saltoDistanza<=42 && !cadendo) //aggiorna le posizioni per saltare
+        if(saltando && saltoDistanza<=42 && !cadendo)
         {
             y-=5;
             saltoDistanza+=5;

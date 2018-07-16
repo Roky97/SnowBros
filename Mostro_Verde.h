@@ -34,8 +34,6 @@ public:
     void carica_immagini();
     void drawMostro();
     void muovi();
-    // bool collisioneProiettile(int, int,bool);
-    // bool controllaSeToccato(int, int, bool, bool);
 
 
 
